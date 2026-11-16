@@ -826,10 +826,10 @@ body.ring-over .oa-panel{box-shadow:0 0 34px rgba(34,211,238,.22)}
            de tu imagen (ejemplo: hal: "Imagenes/hal_icon.jpg").
            ========================================================================== */
         const IMAGENES_PERSONAJES = {
-            hal: "",         // Hal Jordan / Green Lantern (32 años)
-            sinestro: "",    // Thaal Sinestro (49 años)
-            abin_sur: "",    // Abin Sur (Portador caído del Sector 2814)
-            guardianes: ""   // Los Guardianes del Universo (Planeta Oa)
+            hal: "Imagenes/jordan_icon.jpg",         // Hal Jordan / Green Lantern (32 años)
+            sinestro: "Imagenes/sinestro_icon.jfif",    // Thaal Sinestro (49 años)
+            abin_sur: "Imagenes/abinsur_icon.jfif",    // Abin Sur (Portador caído del Sector 2814)
+            guardianes: "Imagenes/guardianes_icon.jpg"   // Los Guardianes del Universo (Planeta Oa)
         };
 
         /* ==========================================================================
@@ -1790,17 +1790,17 @@ body.ring-over .oa-panel{box-shadow:0 0 34px rgba(34,211,238,.22)}
                                 El anillo de Abin Sur proyecta tres lecturas humanas en California. Selecciona al candidato cuya voluntad supere el umbral de Oa:
                             </p>
                             <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                                <button type="button" onclick="app.selectSectorCandidate('official')" class="p-3.5 rounded-xl bg-slate-950 hover:bg-emerald-950/50 border border-emerald-900 text-left font-mono text-xs transition">
+                                <button type="button" onclick="app.selectSectorCandidate('guy')" class="p-3.5 rounded-xl bg-slate-950 hover:bg-emerald-950/50 border border-emerald-900 text-left font-mono text-xs transition">
                                     <div class="text-slate-400">SUJETO 2814-A</div>
-                                    <div class="text-white font-bold mt-1">Coronel de Base Aérea</div>
-                                    <div class="text-[11px] text-amber-400 mt-1">Voluntad: 62% • Rígido, teme romper el protocolo</div>
+                                    <div class="text-white font-bold mt-1">Guy Gardner (Oficíal de Policía)</div>
+                                    <div class="text-[11px] text-amber-400 mt-1">Voluntad: 98.4% • Rígido, teme romper el protocolo</div>
                                 </button>
                                 <button type="button" onclick="app.selectSectorCandidate('hal')" class="p-3.5 rounded-xl bg-slate-950 hover:bg-emerald-950/80 border-2 border-[#00ff88] text-left font-mono text-xs transition shadow-[0_0_18px_rgba(0,255,136,0.2)]">
                                     <div class="text-[#00ff88] font-bold">SUJETO 2814-B • COMPATIBLE</div>
                                     <div class="text-white font-bold mt-1">Hal Jordan (Piloto de Pruebas)</div>
                                     <div class="text-[11px] text-emerald-300 mt-1">Voluntad: 99.6% • Temerario, capaz de superar el gran miedo</div>
                                 </button>
-                                <button type="button" onclick="app.selectSectorCandidate('scientist')" class="p-3.5 rounded-xl bg-slate-950 hover:bg-emerald-950/50 border border-emerald-900 text-left font-mono text-xs transition">
+                                <button type="button" onclick="app.selectSectorCandidate('other')" class="p-3.5 rounded-xl bg-slate-950 hover:bg-emerald-950/50 border border-emerald-900 text-left font-mono text-xs transition">
                                     <div class="text-slate-400">SUJETO 2814-C</div>
                                     <div class="text-white font-bold mt-1">Ingeniero de Radar</div>
                                     <div class="text-[11px] text-amber-400 mt-1">Voluntad: 51% • Bloqueo por pánico escénico</div>
@@ -2020,9 +2020,14 @@ body.ring-over .oa-panel{box-shadow:0 0 34px rgba(34,211,238,.22)}
                ====================================================================== */
             selectSectorCandidate(who) {
                 const fb = document.getElementById('scan-feedback');
-                if (who !== 'hal') {
+                if (who == 'other') {
                     soundEngine.playBeamClash();
-                    if (fb) fb.innerHTML = '<span class="text-amber-400">Candidato descartado por el anillo: no posee la temeridad necesaria para superar el gran miedo.</span>';
+                    if (fb) fb.innerHTML = '<span class="text-red-500">Candidato descartado por el anillo: no posee la temeridad necesaria para superar el gran miedo.</span>';
+                    return;
+                }
+                else if(who == 'guy'){
+                    soundEngine.playBeamClash();
+                    if (fb) fb.innerHTML = '<span class="text-amber-400">Selección interrumpida por el anillo: energía restante insuficiente para alcanzar la posición del sujeto.</span>';
                     return;
                 }
                 soundEngine.playConstructForge();
