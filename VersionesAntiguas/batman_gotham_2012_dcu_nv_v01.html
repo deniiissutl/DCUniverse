@@ -1,0 +1,2502 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BATMAN: GOTHAM 2012 | DCU NV Interactive</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter & JetBrains Mono & Cinzel -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                        display: ['Cinzel', 'serif'],
+                    },
+                    colors: {
+                        bat: {
+                            bg: '#06080c',
+                            panel: '#0d121b',
+                            border: '#1e293b',
+                            gold: '#d4af37',
+                            amber: '#f59e0b',
+                            cyan: '#38bdf8',
+                            riddler: '#10b981',
+                            crimson: '#ef4444'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Estilos personalizados Neo-Noir y Terminal WayneTech */
+        body {
+            background-color: #05070a;
+            color: #e2e8f0;
+            overflow-x: hidden;
+            user-select: none;
+        }
+
+        /* Lienzo de lluvia de fondo */
+        #rain-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 1;
+            opacity: 0.55;
+        }
+
+        /* Efecto Scanline sutil de la Batcomputadora */
+        .scanlines::after {
+            content: " ";
+            display: block;
+            position: fixed;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.28) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.02), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.02));
+            z-index: 2;
+            background-size: 100% 3px, 6px 100%;
+            pointer-events: none;
+        }
+
+        /* Modo Hackeo de Enygma */
+        body.enygma-hack .bat-panel {
+            border-color: rgba(16, 185, 129, 0.5) !important;
+            box-shadow: 0 0 25px rgba(16, 185, 129, 0.12);
+        }
+        body.enygma-hack .accent-text {
+            color: #10b981 !important;
+        }
+
+        /* Animaciones suaves */
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 0.7; filter: drop-shadow(0 0 6px rgba(56, 189, 248, 0.4)); }
+            50% { opacity: 1; filter: drop-shadow(0 0 14px rgba(56, 189, 248, 0.8)); }
+        }
+        .glow-cyan {
+            animation: pulseGlow 3s infinite ease-in-out;
+        }
+
+        @keyframes riddlerGlitch {
+            0%, 100% { transform: translate(0); }
+            20% { transform: translate(-2px, 1px); }
+            40% { transform: translate(2px, -1px); }
+            60% { transform: translate(-1px, -1px); }
+            80% { transform: translate(1px, 2px); }
+        }
+        .glitch-active {
+            animation: riddlerGlitch 0.25s infinite;
+        }
+
+        @keyframes fadeInSlide {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-scene {
+            animation: fadeInSlide 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        /* Scrollbar personalizada */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #070a0f;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #38bdf8;
+        }
+
+        /* Botones tácticos */
+        .choice-btn {
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        .choice-btn::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 3px;
+            background: #d4af37;
+            transform: scaleY(0);
+            transition: transform 0.2s ease;
+        }
+        .choice-btn:hover::before {
+            transform: scaleY(1);
+        }
+        .choice-btn:hover {
+            transform: translateX(4px);
+            background: rgba(30, 41, 59, 0.75);
+        }
+    </style>
+</head>
+<body class="scanlines min-h-screen flex flex-col font-sans selection:bg-amber-500/30 selection:text-amber-200">
+
+    <!-- Lienzo de Lluvia Dinámica y Relámpagos en Gotham -->
+    <canvas id="rain-canvas"></canvas>
+
+    <!-- Contenedor Principal sobre el Canvas -->
+    <div class="relative z-10 flex flex-col min-h-screen max-w-7xl w-full mx-auto px-3 sm:px-6 py-3 sm:py-5 gap-4">
+
+        <!-- CABECERA: TERMINAL DE LA BATCUEVA -->
+        <header class="bat-panel bg-slate-950/90 backdrop-blur-md border border-slate-800/90 rounded-xl p-3 sm:p-4 shadow-2xl flex flex-col lg:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-3 sm:gap-4 w-full lg:w-auto justify-between lg:justify-start">
+                <div class="flex items-center gap-3">
+                    <!-- Emblema de Batman SVG -->
+                    <div class="w-11 h-11 sm:w-12 sm:h-12 rounded-lg bg-slate-900 border border-amber-500/40 flex items-center justify-center shadow-inner group cursor-pointer" onclick="app.showTitleModal()" title="Ver Presentación del Universo">
+                        <svg class="w-8 h-8 text-amber-400 group-hover:scale-110 transition-transform" viewBox="0 0 100 60" fill="currentColor">
+                            <path d="M50 15 C53 15 55 8 56 5 C57 10 61 14 66 14 C75 14 85 6 98 8 C90 18 88 28 94 38 C82 34 74 38 69 45 C63 37 56 42 50 55 C44 42 37 37 31 45 C26 38 18 34 6 38 C12 28 10 18 2 8 C15 6 25 14 34 14 C39 14 43 10 44 5 C45 8 47 15 50 15 Z"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="text-[10px] font-mono uppercase tracking-widest px-2 py-0.5 rounded bg-amber-500/15 text-amber-400 border border-amber-500/30">DCU NV • FASE 1</span>
+                            <span id="header-year-badge" class="text-[10px] font-mono uppercase tracking-widest px-2 py-0.5 rounded bg-sky-500/15 text-sky-400 border border-sky-500/30">AÑO 2012</span>
+                        </div>
+                        <h1 class="font-display text-lg sm:text-2xl font-bold tracking-wider text-slate-100 accent-text">BATMAN: GOTHAM 2012</h1>
+                    </div>
+                </div>
+
+                <!-- Controles Rápidos Móvil -->
+                <div class="flex lg:hidden items-center gap-2">
+                    <button id="audio-btn-mobile" onclick="soundEngine.toggleAudio()" class="p-2.5 rounded-lg bg-slate-900 border border-slate-700 text-slate-300 hover:text-amber-400 transition" title="Activar/Silenciar Audio Procedural">
+                        <i class="fa-solid fa-volume-xmark"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Pestañas de Navegación -->
+            <nav class="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 w-full lg:w-auto">
+                <button onclick="app.switchTab('story')" id="tab-story" class="tab-btn px-3 py-2 rounded-lg font-mono text-xs sm:text-sm flex items-center gap-2 bg-amber-500/20 text-amber-300 border border-amber-500/50 transition">
+                    <i class="fa-solid fa-terminal"></i>
+                    <span>HISTORIA</span>
+                </button>
+                <button onclick="app.switchTab('cast')" id="tab-cast" class="tab-btn px-3 py-2 rounded-lg font-mono text-xs sm:text-sm flex items-center gap-2 bg-slate-900/80 text-slate-400 border border-slate-800 hover:text-slate-200 transition">
+                    <i class="fa-solid fa-id-badge"></i>
+                    <span>REPARTO (7)</span>
+                </button>
+                <button onclick="app.switchTab('acts')" id="tab-acts" class="tab-btn px-3 py-2 rounded-lg font-mono text-xs sm:text-sm flex items-center gap-2 bg-slate-900/80 text-slate-400 border border-slate-800 hover:text-slate-200 transition">
+                    <i class="fa-solid fa-folder-tree"></i>
+                    <span>CAPÍTULOS</span>
+                </button>
+                <button onclick="app.switchTab('world')" id="tab-world" class="tab-btn px-3 py-2 rounded-lg font-mono text-xs sm:text-sm flex items-center gap-2 bg-slate-900/80 text-slate-400 border border-slate-800 hover:text-slate-200 transition">
+                    <i class="fa-solid fa-satellite-dish"></i>
+                    <span>RED GOTHAM / DCU</span>
+                </button>
+                <button id="audio-btn-desktop" onclick="soundEngine.toggleAudio()" class="hidden lg:flex items-center gap-2 px-3 py-2 rounded-lg font-mono text-xs bg-slate-900 border border-slate-700 text-slate-300 hover:border-amber-500/50 hover:text-amber-300 transition" title="Sonido Ambiente Lluvia y Sintetizador">
+                    <i id="audio-icon" class="fa-solid fa-volume-xmark text-slate-400"></i>
+                    <span id="audio-label">AUDIO OFF</span>
+                </button>
+            </nav>
+        </header>
+
+        <!-- BARRA DE TELEMETRÍA TÁCTICA DE BATMAN -->
+        <section class="bat-panel bg-slate-950/85 backdrop-blur-md border border-slate-800/80 rounded-xl p-3 grid grid-cols-2 md:grid-cols-4 gap-3 shadow-lg">
+            <!-- Integridad Física / Blindaje -->
+            <div class="bg-slate-900/70 rounded-lg p-2.5 border border-slate-800/80 flex flex-col justify-between">
+                <div class="flex items-center justify-between text-xs font-mono text-slate-400 mb-1">
+                    <span id="armor-label"><i class="fa-solid fa-shield-halved text-sky-400 mr-1.5"></i>INTEGRIDAD FÍSICA</span>
+                    <span id="stat-health-val" class="text-sky-400 font-bold">100%</span>
+                </div>
+                <div class="w-full h-2 bg-slate-950 rounded-full overflow-hidden border border-slate-800">
+                    <div id="stat-health-bar" class="h-full bg-gradient-to-r from-sky-600 to-cyan-400 transition-all duration-500" style="width: 100%"></div>
+                </div>
+            </div>
+
+            <!-- Intimidación y Guerra Psicológica -->
+            <div class="bg-slate-900/70 rounded-lg p-2.5 border border-slate-800/80 flex flex-col justify-between">
+                <div class="flex items-center justify-between text-xs font-mono text-slate-400 mb-1">
+                    <span><i class="fa-solid fa-skull text-amber-400 mr-1.5"></i>INTIMIDACIÓN</span>
+                    <span id="stat-fear-val" class="text-amber-400 font-bold">65%</span>
+                </div>
+                <div class="w-full h-2 bg-slate-950 rounded-full overflow-hidden border border-slate-800">
+                    <div id="stat-fear-bar" class="h-full bg-gradient-to-r from-amber-600 to-yellow-400 transition-all duration-500" style="width: 65%"></div>
+                </div>
+            </div>
+
+            <!-- Intelecto Detectivesco -->
+            <div class="bg-slate-900/70 rounded-lg p-2.5 border border-slate-800/80 flex flex-col justify-between">
+                <div class="flex items-center justify-between text-xs font-mono text-slate-400 mb-1">
+                    <span><i class="fa-solid fa-microchip text-emerald-400 mr-1.5"></i>ANÁLISIS / PISTAS</span>
+                    <span id="stat-intel-val" class="text-emerald-400 font-bold">50%</span>
+                </div>
+                <div class="w-full h-2 bg-slate-950 rounded-full overflow-hidden border border-slate-800">
+                    <div id="stat-intel-bar" class="h-full bg-gradient-to-r from-emerald-600 to-teal-400 transition-all duration-500" style="width: 50%"></div>
+                </div>
+            </div>
+
+            <!-- Estado del Equipo / Acto Actual -->
+            <div class="bg-slate-900/70 rounded-lg p-2.5 border border-slate-800/80 flex items-center justify-between">
+                <div class="overflow-hidden">
+                    <div class="text-[10px] font-mono uppercase text-slate-500">EQUIPO ACTIVO</div>
+                    <div id="current-suit-status" class="text-xs font-mono text-slate-200 truncate font-semibold">Civil / Sin Blindaje</div>
+                </div>
+                <button onclick="app.resetGamePrompt()" class="px-2.5 py-1.5 rounded bg-slate-800 hover:bg-red-950/80 text-slate-400 hover:text-red-300 border border-slate-700 hover:border-red-800/60 text-xs font-mono transition shrink-0" title="Reiniciar Campaña">
+                    <i class="fa-solid fa-rotate-left"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- ÁREA DE CONTENIDO DINÁMICO POR PESTAÑAS -->
+        <main class="flex-1 flex flex-col">
+
+            <!-- PESTAÑA 1: HISTORIA INTERACTIVA PRINCIPAL -->
+            <div id="view-story" class="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-4 items-start">
+
+                <!-- Columna Principal: Pantalla Cinematográfica, Narrativa y Minijuegos (8 cols) -->
+                <div class="lg:col-span-8 bat-panel bg-slate-950/90 backdrop-blur-md border border-slate-800/90 rounded-xl overflow-hidden shadow-2xl flex flex-col">
+
+                    <!-- Barra de Capítulo y Ubicación -->
+                    <div class="bg-slate-900/90 border-b border-slate-800 px-4 py-2.5 flex flex-wrap items-center justify-between gap-2">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>
+                            <span id="scene-act-title" class="font-mono text-xs uppercase tracking-wider text-amber-400 font-semibold">PRÓLOGO: EL ORIGEN DEL TRAUMA</span>
+                        </div>
+                        <div id="scene-location" class="font-mono text-xs text-slate-400 flex items-center gap-1.5">
+                            <i class="fa-solid fa-location-crosshairs text-sky-400"></i>
+                            <span>Callejón del Crimen, Gotham • 22:47 HRS</span>
+                        </div>
+                    </div>
+
+                    <!-- Visor Visual Cinematográfico SVG -->
+                    <div id="scene-visual-container" class="relative w-full h-48 sm:h-60 bg-slate-950 border-b border-slate-800/80 overflow-hidden flex items-center justify-center">
+                        <!-- Ilustración SVG inyectada dinámicamente según la escena -->
+                    </div>
+
+                    <!-- Tarjeta del Personaje en Escena -->
+                    <div id="speaker-banner" class="bg-slate-900/95 border-b border-slate-800/90 px-4 py-3 flex items-center justify-between gap-3">
+                        <div class="flex items-center gap-3">
+                            <div id="speaker-avatar" class="w-12 h-12 rounded-lg bg-slate-800 border border-amber-500/40 flex items-center justify-center shrink-0 overflow-hidden">
+                                <!-- Avatar SVG -->
+                            </div>
+                            <div>
+                                <div class="flex items-center gap-2 flex-wrap">
+                                    <h3 id="speaker-name" class="font-display font-bold text-sm sm:text-base text-white tracking-wide">BRUCE WAYNE / BATMAN</h3>
+                                    <span id="speaker-actor" class="text-[11px] font-mono px-2 py-0.5 rounded bg-slate-800 text-amber-300 border border-slate-700">Armie Hammer (30 años)</span>
+                                </div>
+                                <p id="speaker-desc" class="text-xs text-slate-400 line-clamp-1 mt-0.5">1,96m • Heredero corporativo calculador • Depredador analítico</p>
+                            </div>
+                        </div>
+                        <button onclick="app.openCharacterModal(app.currentSpeakerId)" class="px-2.5 py-1.5 rounded-lg bg-slate-800/90 hover:bg-slate-700 text-xs font-mono text-sky-300 border border-slate-700 transition shrink-0">
+                            <i class="fa-solid fa-magnifying-glass mr-1"></i>Ficha
+                        </button>
+                    </div>
+
+                    <!-- Cuerpo de Texto Narrativo + Contenedor de Minijuego + Decisiones -->
+                    <div id="scene-content-box" class="p-4 sm:p-6 space-y-5 flex-1 flex flex-col justify-between">
+                        <!-- Texto de la escena -->
+                        <div id="scene-narrative" class="space-y-3.5 text-slate-200 leading-relaxed text-sm sm:text-base font-normal">
+                            <!-- Párrafos dinámicos -->
+                        </div>
+
+                        <!-- Contenedor para Minijuegos Interactivos (Oculto cuando no hay minijuego) -->
+                        <div id="minigame-container" class="hidden my-4 rounded-xl bg-slate-900/95 border border-sky-500/40 p-4 sm:p-5 shadow-inner">
+                            <!-- Inyectado dinámicamente -->
+                        </div>
+
+                        <!-- Opciones de Decisión Narrativa -->
+                        <div id="choices-container" class="pt-3 border-t border-slate-800/80 space-y-2.5">
+                            <!-- Botones de elección -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Columna Lateral: Bitácora de Alfred, Objetivos y Frecuencia Policial (4 cols) -->
+                <div class="lg:col-span-4 space-y-4">
+
+                    <!-- Enlace Táctico con la Batcueva (Alfred / Estado de la Misión) -->
+                    <div class="bat-panel bg-slate-950/90 backdrop-blur-md border border-slate-800/90 rounded-xl p-4 shadow-xl">
+                        <div class="flex items-center justify-between border-b border-slate-800 pb-2.5 mb-3">
+                            <div class="flex items-center gap-2">
+                                <i class="fa-solid fa-headset text-amber-400"></i>
+                                <h2 class="font-mono text-xs uppercase tracking-wider text-slate-200 font-bold">ENLACE BATCUEVA • ALFRED</h2>
+                            </div>
+                            <span class="text-[10px] font-mono text-emerald-400 bg-emerald-950/60 border border-emerald-700/50 px-2 py-0.5 rounded">ENCRIPTADO</span>
+                        </div>
+                        <p id="alfred-commentary" class="text-xs sm:text-sm italic text-slate-300 bg-slate-900/80 p-3 rounded-lg border-l-2 border-amber-400 leading-relaxed">
+                            "Señor Wayne, he calibrado los servidores de la cueva. Recuerde que la fuerza bruta sin estrategia solo le garantizará una visita prematura a mi mesa de sutura."
+                        </p>
+                        <div class="mt-3 pt-3 border-t border-slate-800/70">
+                            <div class="text-[11px] font-mono text-slate-400 uppercase mb-2">PROGRESO DE ARCHIVOS (BATMAN 2012)</div>
+                            <div id="chapter-pills" class="grid grid-cols-4 gap-1.5">
+                                <!-- Indicadores de capítulos 1 a 8 -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Inventario y Armamento WayneTech -->
+                    <div class="bat-panel bg-slate-950/90 backdrop-blur-md border border-slate-800/90 rounded-xl p-4 shadow-xl">
+                        <div class="flex items-center justify-between border-b border-slate-800 pb-2.5 mb-3">
+                            <div class="flex items-center gap-2">
+                                <i class="fa-solid fa-briefcase-medical text-sky-400"></i>
+                                <h2 class="font-mono text-xs uppercase tracking-wider text-slate-200 font-bold">ARSENAL & EVIDENCIAS</h2>
+                            </div>
+                            <span id="inventory-count" class="text-[10px] font-mono text-sky-400">1 ITEM</span>
+                        </div>
+                        <div id="inventory-list" class="space-y-2 max-h-48 overflow-y-auto pr-1">
+                            <!-- Items desbloqueados en la historia -->
+                        </div>
+                    </div>
+
+                    <!-- Interceptador de Radio Policial GCPD & Ecos del Mundo -->
+                    <div class="bat-panel bg-slate-950/90 backdrop-blur-md border border-slate-800/90 rounded-xl p-4 shadow-xl">
+                        <div class="flex items-center justify-between border-b border-slate-800 pb-2.5 mb-3">
+                            <div class="flex items-center gap-2">
+                                <i class="fa-solid fa-tower-broadcast text-red-400 animate-pulse"></i>
+                                <h2 class="font-mono text-xs uppercase tracking-wider text-slate-200 font-bold">ESCÁNER GCPD / PRENSA</h2>
+                            </div>
+                            <button onclick="app.nextRadioFeed()" class="text-[11px] font-mono text-sky-400 hover:underline">Cambiar Frecuencia <i class="fa-solid fa-forward-step ml-0.5"></i></button>
+                        </div>
+                        <div id="radio-feed-box" class="bg-slate-900/90 border border-slate-800 rounded-lg p-3 font-mono text-xs text-slate-300 space-y-1.5">
+                            <!-- Noticias y frecuencias de Gotham / Metrópolis -->
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- PESTAÑA 2: REPARTO Y DOSSIERS EN LA BATCOMPUTADORA -->
+            <div id="view-cast" class="hidden flex-1 space-y-4 animate-scene">
+                <div class="bat-panel bg-slate-950/90 border border-slate-800 rounded-xl p-4 sm:p-6">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-800 pb-4 mb-5">
+                        <div>
+                            <span class="text-xs font-mono text-amber-400 uppercase tracking-widest">ARCHIVOS CONFIDENCIALES • BATCOMPUTADORA</span>
+                            <h2 class="font-display text-xl sm:text-2xl font-bold text-white mt-0.5">REPARTO OFICIAL: BATMAN (2012)</h2>
+                        </div>
+                        <p class="text-xs font-mono text-slate-400 max-w-md">
+                            Perfiles psicológicos, edades en 2012 y análisis táctico de los protagonistas y antagonistas de la primera entrega del DCU NV.
+                        </p>
+                    </div>
+                    <div id="cast-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <!-- Tarjetas de personajes generadas por JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- PESTAÑA 3: SELECTOR DE CAPÍTULOS / ARCHIVOS DEL CASO -->
+            <div id="view-acts" class="hidden flex-1 space-y-4 animate-scene">
+                <div class="bat-panel bg-slate-950/90 border border-slate-800 rounded-xl p-4 sm:p-6">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800 pb-4 mb-5">
+                        <div>
+                            <span class="text-xs font-mono text-sky-400 uppercase tracking-widest">CRONOLOGÍA NARRATIVA INTERACTIVA</span>
+                            <h2 class="font-display text-xl sm:text-2xl font-bold text-white mt-0.5">ESTRUCTURA DE ACTOS: BATMAN (2012)</h2>
+                        </div>
+                        <button onclick="app.unlockAllChapters()" class="px-3.5 py-2 rounded-lg bg-amber-500/20 hover:bg-amber-500/30 border border-amber-500/50 text-amber-300 font-mono text-xs transition self-start sm:self-auto">
+                            <i class="fa-solid fa-unlock-keyhole mr-1.5"></i>Desbloquear Todos los Capítulos
+                        </button>
+                    </div>
+                    <div id="acts-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Lista de los 8 capítulos -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- PESTAÑA 4: RED GOTHAM & SEMILLAS DEL DCU NV (2007 - 2014) -->
+            <div id="view-world" class="hidden flex-1 space-y-4 animate-scene">
+                <div class="bat-panel bg-slate-950/90 border border-slate-800 rounded-xl p-4 sm:p-6">
+                    <div class="border-b border-slate-800 pb-4 mb-5">
+                        <span class="text-xs font-mono text-emerald-400 uppercase tracking-widest">CIMIENTOS NARRATIVOS DEL UNIVERSO</span>
+                        <h2 class="font-display text-xl sm:text-2xl font-bold text-white mt-0.5">EL ESTADO DEL MUNDO Y CONEXIONES (FASE 1)</h2>
+                        <p class="text-xs sm:text-sm text-slate-400 mt-1">
+                            Aunque la cruzada de Batman en 2012 es cruda, callejera y neo-noir, los servidores de la Batcueva interceptan ecos de un mundo a punto de cambiar para siempre.
+                        </p>
+                    </div>
+
+                    <!-- Los 3 Pilares Temáticos de Batman 2012 -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                        <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-4">
+                            <div class="text-amber-400 font-mono text-xs uppercase mb-1"><i class="fa-solid fa-user-injured mr-1.5"></i>Pilar I</div>
+                            <h3 class="font-display font-bold text-base text-white mb-2">El Colapso del Justiciero Solitario</h3>
+                            <p class="text-xs text-slate-300 leading-relaxed">
+                                Bruce arranca su cruzada convencido de que sus 1,96m y su fuerza bruta bastan, pero la realidad lo aplasta con una bala en el hombro. Aprende a base de fracasos que necesita la logística quirúrgica de Alfred (Anton Lesser), el blindaje de Lucius Fox (Giancarlo Esposito) y la placa de Jim Gordon (Jon Hamm) para que sus acciones tengan un impacto real y legal.
+                            </p>
+                        </div>
+                        <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-4">
+                            <div class="text-red-400 font-mono text-xs uppercase mb-1"><i class="fa-solid fa-scale-unbalanced mr-1.5"></i>Pilar II</div>
+                            <h3 class="font-display font-bold text-base text-white mb-2">Corrupción Sistémica y Absoluta</h3>
+                            <p class="text-xs text-slate-300 leading-relaxed">
+                                Gotham es un organismo enfermo donde el sistema judicial, el GCPD y la infraestructura son los verdaderos antagonistas, financiados por figuras intocables de guante blanco como Oswald Cobblepot (Alfred Molina). El tono neo-noir se asienta en la asfixia de luchar contra una ciudad que protege a los criminales y persigue a los pocos justos.
+                            </p>
+                        </div>
+                        <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-4">
+                            <div class="text-sky-400 font-mono text-xs uppercase mb-1"><i class="fa-solid fa-globe mr-1.5"></i>Pilar III</div>
+                            <h3 class="font-display font-bold text-base text-white mb-2">El Amanecer de una Nueva Era</h3>
+                            <p class="text-xs text-slate-300 leading-relaxed">
+                                Para el ciudadano de a pie en 2012, los dioses y metahumanos son simples mitos. Sin embargo, titulares secundarios, transmisiones interceptadas y el salto final a 2014 revelan que Gotham es solo la zona cero antes de que un alienígena con capa en Metrópolis y una guerrera inmortal de 1944 cambien la historia.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Archivos Clasificados Interceptados por la Batcomputadora -->
+                    <h3 class="font-mono text-xs uppercase tracking-wider text-sky-400 mb-3">ARCHIVOS INTERCEPTADOS EN EL SERVIDOR DE WAYNE ENTERPRISES</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4" id="world-easter-eggs">
+                        <!-- Generado por JS -->
+                    </div>
+                </div>
+            </div>
+
+        </main>
+
+        <!-- PIE DE PÁGINA -->
+        <footer class="bat-panel bg-slate-950/80 border border-slate-800/80 rounded-xl px-4 py-2.5 flex flex-col sm:flex-row items-center justify-between text-[11px] font-mono text-slate-500 gap-2">
+            <div>WAYNETECH OS v4.12 • DIVISIÓN DE CIENCIAS APLICADAS (PROYECTO ENCUBIERTO)</div>
+            <div class="flex items-center gap-4">
+                <span id="save-indicator" class="text-emerald-400"><i class="fa-solid fa-floppy-disk mr-1"></i>Autoguardado Activo</span>
+                <span>BATMAN (2012) • DCU NV</span>
+            </div>
+        </footer>
+    </div>
+
+    <!-- MODAL DE FICHA DE PERSONAJE / MENSAJES DEL SISTEMA -->
+    <div id="custom-modal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-slate-950 border border-slate-700 rounded-2xl max-w-2xl w-full overflow-hidden shadow-2xl animate-scene">
+            <div class="bg-slate-900 px-5 py-3.5 border-b border-slate-800 flex items-center justify-between">
+                <span id="modal-subtitle" class="font-mono text-xs uppercase tracking-widest text-amber-400">EXPEDIENTE DE LA BATCOMPUTADORA</span>
+                <button onclick="app.closeModal()" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 flex items-center justify-center transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div id="modal-body" class="p-5 sm:p-6 max-h-[80vh] overflow-y-auto">
+                <!-- Contenido dinámico del modal -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /* ==========================================================================
+           1. MOTOR DE AUDIO PROCEDURAL (WEB AUDIO API) - LLUVIA, SINTETIZADOR Y SFX
+           ========================================================================== */
+        const soundEngine = {
+            ctx: null,
+            enabled: false,
+            rainGain: null,
+            droneOsc: null,
+            droneGain: null,
+
+            init() {
+                if (!this.ctx) {
+                    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+                    this.ctx = new AudioCtx();
+                }
+                if (this.ctx.state === 'suspended') {
+                    this.ctx.resume();
+                }
+            },
+
+            toggleAudio() {
+                this.init();
+                this.enabled = !this.enabled;
+                const iconDesktop = document.getElementById('audio-icon');
+                const labelDesktop = document.getElementById('audio-label');
+                const btnMobile = document.getElementById('audio-btn-mobile');
+
+                if (this.enabled) {
+                    this.startAmbience();
+                    if (iconDesktop) iconDesktop.className = 'fa-solid fa-volume-high text-amber-400';
+                    if (labelDesktop) labelDesktop.textContent = 'AUDIO ON';
+                    if (btnMobile) btnMobile.innerHTML = '<i class="fa-solid fa-volume-high text-amber-400"></i>';
+                    this.playClick(600, 0.06);
+                } else {
+                    this.stopAmbience();
+                    if (iconDesktop) iconDesktop.className = 'fa-solid fa-volume-xmark text-slate-400';
+                    if (labelDesktop) labelDesktop.textContent = 'AUDIO OFF';
+                    if (btnMobile) btnMobile.innerHTML = '<i class="fa-solid fa-volume-xmark"></i>';
+                }
+            },
+
+            startAmbience() {
+                if (!this.ctx || !this.enabled) return;
+                this.stopAmbience();
+
+                // Generador de ruido rosa/marrón para la lluvia de Gotham
+                const bufferSize = 2 * this.ctx.sampleRate;
+                const noiseBuffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+                const output = noiseBuffer.getChannelData(0);
+                let lastOut = 0.0;
+                for (let i = 0; i < bufferSize; i++) {
+                    const white = Math.random() * 2 - 1;
+                    output[i] = (lastOut + (0.02 * white)) / 1.02;
+                    lastOut = output[i];
+                    output[i] *= 1.8;
+                }
+
+                const whiteNoise = this.ctx.createBufferSource();
+                whiteNoise.buffer = noiseBuffer;
+                whiteNoise.loop = true;
+
+                const filter = this.ctx.createBiquadFilter();
+                filter.type = 'bandpass';
+                filter.frequency.value = 900;
+                filter.Q.value = 0.7;
+
+                this.rainGain = this.ctx.createGain();
+                this.rainGain.gain.value = 0.04;
+
+                whiteNoise.connect(filter);
+                filter.connect(this.rainGain);
+                this.rainGain.connect(this.ctx.destination);
+                whiteNoise.start(0);
+                this.rainSource = whiteNoise;
+
+                // Drone grave Neo-Noir
+                this.droneOsc = this.ctx.createOscillator();
+                this.droneGain = this.ctx.createGain();
+                this.droneOsc.type = 'sawtooth';
+                this.droneOsc.frequency.value = 55; // La grave (A1)
+
+                const droneFilter = this.ctx.createBiquadFilter();
+                droneFilter.type = 'lowpass';
+                droneFilter.frequency.value = 140;
+
+                this.droneGain.gain.value = 0.025;
+                this.droneOsc.connect(droneFilter);
+                droneFilter.connect(this.droneGain);
+                this.droneGain.connect(this.ctx.destination);
+                this.droneOsc.start();
+            },
+
+            stopAmbience() {
+                try {
+                    if (this.rainSource) { this.rainSource.stop(); this.rainSource = null; }
+                    if (this.droneOsc) { this.droneOsc.stop(); this.droneOsc = null; }
+                } catch (e) {}
+            },
+
+            playClick(freq = 520, duration = 0.04) {
+                if (!this.enabled || !this.ctx) return;
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+                gain.gain.setValueAtTime(0.08, this.ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + duration);
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                osc.start();
+                osc.stop(this.ctx.currentTime + duration);
+            },
+
+            playImpact(heavy = false) {
+                if (!this.enabled || !this.ctx) return;
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(heavy ? 110 : 180, this.ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(28, this.ctx.currentTime + (heavy ? 0.35 : 0.2));
+                gain.gain.setValueAtTime(heavy ? 0.25 : 0.15, this.ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + (heavy ? 0.35 : 0.2));
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                osc.start();
+                osc.stop(this.ctx.currentTime + (heavy ? 0.35 : 0.2));
+            },
+
+            playRiddlerGlitch() {
+                if (!this.enabled || !this.ctx) return;
+                const now = this.ctx.currentTime;
+                [660, 880, 540, 990].forEach((f, idx) => {
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    osc.type = 'square';
+                    osc.frequency.setValueAtTime(f, now + idx * 0.05);
+                    gain.gain.setValueAtTime(0.05, now + idx * 0.05);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + (idx + 1) * 0.05);
+                    osc.connect(gain);
+                    gain.connect(this.ctx.destination);
+                    osc.start(now + idx * 0.05);
+                    osc.stop(now + (idx + 1) * 0.05);
+                });
+            },
+
+            playSuccess() {
+                if (!this.enabled || !this.ctx) return;
+                const now = this.ctx.currentTime;
+                [440, 554.37, 659.25].forEach((f, idx) => {
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(f, now + idx * 0.08);
+                    gain.gain.setValueAtTime(0.08, now + idx * 0.08);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.08 + 0.25);
+                    osc.connect(gain);
+                    gain.connect(this.ctx.destination);
+                    osc.start(now + idx * 0.08);
+                    osc.stop(now + idx * 0.08 + 0.25);
+                });
+            }
+        };
+
+        /* ==========================================================================
+           2. BASE DE DATOS DE REPARTO Y DOSSIERS (FIEL AL DOCUMENTO FASE 1)
+           ========================================================================== */
+        const CAST_DB = {
+            bruce: {
+                id: 'bruce',
+                name: 'Bruce Wayne / Batman',
+                actor: 'Armie Hammer',
+                age: '30 años (en 2012)',
+                role: 'El Caballero Oscuro / Heredero de Empresas Wayne',
+                height: '1,96 metros',
+                color: 'amber',
+                quote: '"La fuerza bruta sin una red que la sostenga es solo un suicidio lento. Gotham necesita un depredador que sus criminales no puedan comprar."',
+                summary: 'Presencia física imponente de 1,96m que combina la elegancia aristocrática tradicional con la brutalidad contenida de una máquina de combate.',
+                fullBio: `Armie Hammer aporta a este Bruce Wayne de 30 años una presencia física imponente de 1,96 metros, combinando la elegancia aristocrática tradicional con la brutalidad contenida de una máquina de combate. En el contexto de 2012, su Bruce Wayne abandona la fachada del playboy fiestero para presentarse como un heredero corporativo distante y calculador, ocultando su trauma por el asesinato de Thomas y Martha Wayne a manos de Jack Napier bajo trajes a medida y una mirada inescrutable.\n\nBajo la capucha, este Batman opera como un depredador analítico. Prioriza el trabajo detectivesco puro y la guerra psicológica contra la corrupción sistémica de Gotham. Su enfoque táctico aprovecha la tecnología de 2012 para infiltrarse y vigilar, mientras que su estilo de combate cuerpo a cuerpo es directo, eficiente y devastador, diseñado para desarmar y aterrorizar al inframundo criminal mediante la intimidación física absoluta.`,
+                svgAvatar: `<svg viewBox="0 0 80 80" class="w-full h-full"><rect width="80" height="80" fill="#0f172a"/><path d="M18 75 C18 52 62 52 62 75" fill="#1e293b"/><path d="M26 22 L30 10 L35 22 L45 22 L50 10 L54 22 L56 44 C56 54 48 60 40 60 C32 60 24 54 24 44 Z" fill="#020617" stroke="#d4af37" stroke-width="1.5"/><path d="M30 34 L37 36 L32 39 Z M50 34 L43 36 L48 39 Z" fill="#38bdf8"/><path d="M34 50 Q40 53 46 50" stroke="#94a3b8" stroke-width="2" fill="none"/></svg>`
+            },
+            alfred: {
+                id: 'alfred',
+                name: 'Alfred Pennyworth',
+                actor: 'Anton Lesser',
+                age: '55 años',
+                role: 'Mayordomo y Estratega Logístico en la Batcueva',
+                height: 'Complexión delgada / Postura rígida',
+                color: 'sky',
+                quote: '"Coserle el hombro a las cuatro de la mañana mientras ignora mis advertencias tácticas se está convirtiendo en una tradición agotadora, señor Wayne."',
+                summary: 'La viva imagen del mayordomo clásico de la serie animada: elegancia británica inquebrantable, autoridad intelectual y sarcasmo quirúrgico.',
+                fullBio: `La versión de Alfred interpretada por Anton Lesser en este universo de 2012 es la viva imagen del mayordomo clásico de la serie animada: un hombre de complexión sumamente delgada, postura rígida, rostro afilado y una elegancia británica inquebrantable. Frente a la presencia física demoledora del Bruce Wayne de Armie Hammer, este Alfred impone respeto mediante una autoridad intelectual absoluta y un sarcasmo seco, casi quirúrgico.\n\nOpera desde la Batcueva como un estratega logístico impecable, coordinando la red de vigilancia de la ciudad, monitorizando las frecuencias policiales y cosiendo las heridas de Bruce sin que le tiemble el pulso ni perder su tono estrictamente formal.`,
+                svgAvatar: `<svg viewBox="0 0 80 80" class="w-full h-full"><rect width="80" height="80" fill="#0f172a"/><path d="M20 76 C22 56 58 56 60 76" fill="#090d16" stroke="#475569" stroke-width="1.5"/><ellipse cx="40" cy="36" rx="14" ry="18" fill="#cbd5e1"/><path d="M33 44 Q40 42 47 44" stroke="#334155" stroke-width="1.5" fill="none"/><circle cx="35" cy="34" r="2" fill="#0f172a"/><circle cx="45" cy="34" r="2" fill="#0f172a"/><path d="M34 48 L46 48" stroke="#475569" stroke-width="1.5"/></svg>`
+            },
+            gordon: {
+                id: 'gordon',
+                name: 'Comisario Jim Gordon',
+                actor: 'Jon Hamm',
+                age: '36 años',
+                role: 'Aliado Policial en el GCPD',
+                height: 'Complexión robusta y corpulenta',
+                color: 'blue',
+                quote: '"En esta comisaría la mitad de las placas están compradas por Cobblepot. Si vamos a limpiar Gotham, tendremos que ensuciarnos las manos."',
+                summary: 'Físicamente robusto, con gabardina, gafas y bigote. Un antiguo policía modelo molido por años de corrupción institucional que trata a Batman de igual a igual.',
+                fullBio: `La versión de Jim Gordon interpretada por Jon Hamm fusiona la imponente presencia física de la serie animada con el profundo desgaste psicológico de un detective de cine negro. Físicamente robusto, vistiendo la clásica gabardina, gafas y bigote, este Gordon proyecta la imagen de un antiguo policía modelo que ha sido molido por años de corrupción institucional. Aunque mantiene una fachada de autoridad inquebrantable, su actitud transmite el agotamiento crónico y la frustración nerviosa de un hombre que sostiene la moralidad de Gotham al borde del colapso.\n\nFrente al Batman de Armie Hammer, el Gordon de Hamm no se deja empequeñecer. Ambos comparten una complexión corpulenta y una seriedad letal, creando una dinámica de igual a igual entre dos hombres pragmáticos.`,
+                svgAvatar: `<svg viewBox="0 0 80 80" class="w-full h-full"><rect width="80" height="80" fill="#0f172a"/><path d="M14 76 C16 52 64 52 66 76" fill="#334155"/><rect x="25" y="18" width="30" height="36" rx="12" fill="#94a3b8"/><path d="M24 24 C24 14 56 14 56 24" fill="#1e293b"/><rect x="27" y="30" width="11" height="7" stroke="#0f172a" stroke-width="2" fill="none"/><rect x="42" y="30" width="11" height="7" stroke="#0f172a" stroke-width="2" fill="none"/><line x1="38" y1="33" x2="42" y2="33" stroke="#0f172a" stroke-width="2"/><path d="M31 44 L49 44" stroke="#1e293b" stroke-width="4"/></svg>`
+            },
+            lucius: {
+                id: 'lucius',
+                name: 'Lucius Fox',
+                actor: 'Giancarlo Esposito',
+                age: '54 años',
+                role: 'Director Ejecutivo y Estratega de I+D en Empresas Wayne',
+                height: 'Elegancia ejecutiva implacable',
+                color: 'purple',
+                quote: '"No me corresponde juzgar sus actividades nocturnas, señor Wayne. Mi trabajo es garantizar que ningún auditor federal encuentre jamás un tanque militar en nuestros libros contables."',
+                summary: 'Frialdad quirúrgica y elegancia implacable. Maestro de la contabilidad fantasma y la logística paramilitar encubierta de Empresas Wayne.',
+                fullBio: `La versión de Lucius Fox interpretada por Giancarlo Esposito a sus 54 años redefine el rol como un director ejecutivo de frialdad quirúrgica y elegancia implacable. Bajo su impecable traje a medida y su trato exquisitamente cordial ante la junta directiva de Empresas Wayne, este Lucius opera como un maestro de la contabilidad fantasma y la logística paramilitar encubierta.\n\nA diferencia de encarnaciones más paternales, el Fox de Esposito proyecta una inteligencia calculadora: desvía presupuestos multimillonarios hacia proyectos de blindaje balístico avanzado (Kevlar y fibra de carbono) y el Batmóvil de grado militar sin dejar rastro fiscal. Frente al furioso Bruce Wayne de Armie Hammer, Giancarlo aporta calma absoluta con advertencias estratégicas e inflexibles.`,
+                svgAvatar: `<svg viewBox="0 0 80 80" class="w-full h-full"><rect width="80" height="80" fill="#0f172a"/><path d="M16 76 C18 54 62 54 64 76" fill="#1e1b4b"/><polygon points="36,56 44,56 42,76 38,76" fill="#f59e0b"/><ellipse cx="40" cy="36" rx="14" ry="17" fill="#78350f"/><rect x="28" y="31" width="10" height="6" stroke="#d4af37" stroke-width="1.5" fill="none"/><rect x="42" y="31" width="10" height="6" stroke="#d4af37" stroke-width="1.5" fill="none"/><path d="M34 46 Q40 48 46 46" stroke="#d4af37" stroke-width="1.5" fill="none"/></svg>`
+            },
+            enygma: {
+                id: 'enygma',
+                name: 'Edward Nygma / El Acertijo',
+                actor: 'David Tennant',
+                age: '41 años',
+                role: 'Terrorista Intelectual / Antagonista Principal',
+                height: 'Esbelto y de movimientos frenéticos',
+                color: 'emerald',
+                quote: '"¡Mírame, Gotham! ¡Tus jueces, tus policías y tu murciélago blindado no son más que insectos arrastrándose bajo el peso de mi intelecto!"',
+                summary: 'Genio maníaco, teatral y consumido por un narcisismo absoluto. Pasa de la burla altiva a estallidos de ira erráticos y aterradores cuando resuelven sus enigmas.',
+                fullBio: `David Tennant encarna a sus 41 años a un Edward Nygma que se aleja del criminal tradicional para presentar a un genio maníaco, teatral y consumido por un narcisismo absoluto. Físicamente esbelto y de movimientos rápidos, su energía frenética contrasta radicalmente con la brutalidad física del Batman de Armie Hammer.\n\nEste Enygma opera como un terrorista intelectual, utilizando la tecnología de 2012 para hackear las pantallas de Gotham, detonar bombas y asaltar el museo. No busca dinero ni territorio, sino la validación obsesiva de que es la mente superior de la ciudad. Su rasgo más peligroso es la transición instantánea entre una actitud burlona y elegante hacia estallidos de ira aterradores cuando alguien resuelve sus juegos mentales.`,
+                svgAvatar: `<svg viewBox="0 0 80 80" class="w-full h-full"><rect width="80" height="80" fill="#022c22"/><path d="M18 76 C20 54 60 54 62 76" fill="#064e3b" stroke="#10b981" stroke-width="1.5"/><ellipse cx="40" cy="36" rx="13" ry="17" fill="#a7f3d0"/><path d="M27 22 Q40 12 53 22" stroke="#047857" stroke-width="4" fill="none"/><text x="35" y="45" fill="#065f46" font-family="monospace" font-weight="bold" font-size="22">?</text></svg>`
+            },
+            penguin: {
+                id: 'penguin',
+                name: 'Oswald Cobblepot / El Pingüino',
+                actor: 'Alfred Molina',
+                age: '59 años',
+                role: 'Aristócrata del Inframundo y Traficante de Armas',
+                height: 'Complexión ancha e imponente',
+                color: 'rose',
+                quote: '"¿Crees que un disfraz de kevlar intimida a quien paga la nómina de media comisaría? En estos muelles, la ley soy yo."',
+                summary: 'Mafioso exquisitamente refinado con esmoquin a medida, abrigo de piel, boquilla de marfil y paraguas trucado. Brutalidad gélida y temperamento explosivo.',
+                fullBio: `Interpretado por Alfred Molina a sus 59 años, este Oswald Cobblepot es la encarnación perfecta del aristócrata del inframundo. Con su complexión ancha, rostro severo y una presencia que llena cualquier habitación, abandona las deformidades de las alcantarillas para presentarse como un mafioso refinado de esmoquin a medida, abrigo con cuello de piel y boquilla de marfil.\n\nBajo sus modales cultos esconde una brutalidad gélida y un temperamento explosivo. No es un cobarde que huye: empuña su clásico paraguas trucado y mantiene la compostura frente a Batman en los muelles gracias al cinismo y la arrogancia de saberse protegido por el sistema policial corrupto que él mismo financia.`,
+                svgAvatar: `<svg viewBox="0 0 80 80" class="w-full h-full"><rect width="80" height="80" fill="#18181b"/><path d="M10 76 C12 48 68 48 70 76" fill="#27272a" stroke="#71717a" stroke-width="2"/><rect x="26" y="10" width="28" height="14" fill="#09090b"/><line x1="20" y1="24" x2="60" y2="24" stroke="#d4af37" stroke-width="2"/><ellipse cx="40" cy="39" rx="16" ry="15" fill="#d4d4d8"/><circle cx="46" cy="37" r="5" stroke="#d4af37" stroke-width="1.5" fill="none"/><line x1="48" y1="47" x2="64" y2="42" stroke="#f8fafc" stroke-width="2"/></svg>`
+            },
+            ducard: {
+                id: 'ducard',
+                name: "Henri Ducard / Ra's al Ghul",
+                actor: 'Alexander Siddig',
+                age: '47 años (Apariencia física)',
+                role: 'Líder Milenario de la Liga de las Sombras y Antiguo Maestro',
+                height: 'Demacrado, angular y letalmente veloz',
+                color: 'teal',
+                quote: '"El trauma que arrastras desde aquel callejón te hace predecible, Bruce. O te conviertes en algo más que un hombre, o Gotham te devorará."',
+                summary: 'Líder milenario cuyo cuerpo paga el precio de los Pozos de Lázaro: mirada gélida, agresividad feral espasmódica y velocidad sobrenatural con la espada.',
+                fullBio: `La versión de Henri Ducard y Ra's al Ghul interpretada por Alexander Siddig a sus 47 años proyecta el aura de un líder milenario cuyo cuerpo empieza a pagar el precio de la inmortalidad. Físicamente demacrado, con facciones muy angulares y una mirada gélida, captura la decadencia mística y letal.\n\nAunque mantiene la elegancia de un maestro táctico en meditación zen y artes marciales, sus movimientos desprenden una agresividad feral y espasmódica producto de su adicción a los Pozos de Lázaro. Frente a la fuerza bruta del Bruce Wayne de Armie Hammer, el Ra's de Siddig impone terror mediante una velocidad sobrenatural con la espada y un fanatismo sádico.`,
+                svgAvatar: `<svg viewBox="0 0 80 80" class="w-full h-full"><rect width="80" height="80" fill="#042f2e"/><path d="M16 76 C20 52 60 52 64 76" fill="#134e4a" stroke="#d4af37" stroke-width="1.5"/><polygon points="40,16 54,36 48,56 32,56 26,36" fill="#99f6e4" opacity="0.8"/><path d="M35 50 L40 58 L45 50" fill="#0f172a"/><circle cx="35" cy="36" r="2" fill="#10b981"/><circle cx="45" cy="36" r="2" fill="#10b981"/></svg>`
+            }
+        };
+
+        /* ==========================================================================
+           3. ESCÁNER DE RADIO Y ARCHIVOS DE PRENSA DEL DCU NV (EASTER EGGS)
+           ========================================================================== */
+        const RADIO_FEEDS = [
+            {
+                source: 'FRECUENCIA GCPD • CANAL 4',
+                date: 'OCTUBRE 2012',
+                title: 'Orden de No Intervención en el Muelle 14',
+                body: 'Despacho a todas las unidades del Distrito Este: Ignoren reportes de descarga de armamento militar en los almacenes de Cobblepot. Orden directa de la oficina del Comisario Adjunto.'
+            },
+            {
+                source: 'GOTHAM GAZETTE • ECONOMÍA',
+                date: 'OCTUBRE 2012',
+                title: 'El regreso de Bruce Wayne sacude la Torre Wayne',
+                body: 'A sus 30 años, el heredero de 1,96m reaparece lejos de los escándalos de la alta sociedad. Junto al director ejecutivo Lucius Fox, consolida el control absoluto de la junta directiva.'
+            },
+            {
+                source: 'ARCHIVO FERRIS AIRCRAFT (CLASIFICADO)',
+                date: 'EXPEDIENTE 2007 - 2012',
+                title: 'Cinco años sin rastro del piloto Hal Jordan',
+                body: 'El piloto de pruebas Hal Jordan desapareció en 2007 tras un incidente no esclarecido en el desierto. La humanidad ignora que actualmente patrulla el Sector 2814 en el espacio profundo tras la rebelión de Sinestro en Korugar y Oa.'
+            },
+            {
+                source: 'TELETIPO METRÓPOLIS • FINANZAS',
+                date: 'NOVIEMBRE 2012',
+                title: 'LexCorp promete revolucionar la red energética',
+                body: 'El carismático visionario Lex Luthor hipnotiza a Metrópolis con sus nuevos proyectos tecnológicos, mientras la periodista Lois Lane del Daily Planet investiga irregularidades éticas en los laboratorios del Dr. Emmett Vale.'
+            },
+            {
+                source: 'INTELIGENCIA MILITAR ALIADA • ARCHIVO 1944',
+                date: 'DESCLASIFICADO PARCIAL',
+                title: 'Anomalía fotográfica en el Frente Europeo (WWII)',
+                body: 'Un informe sellado tras la inmolación del capitán Steve Trevor en un bombardero cargado con gas letal menciona a una mujer no identificada con escudo y lazo en las trincheras de 1944. Todo rastro posterior fue borrado.'
+            }
+        ];
+
+        /* ==========================================================================
+           4. ILUSTRACIONES VECTORIALES CINEMATOGRÁFICAS POR ESCENA
+           ========================================================================== */
+        const SCENE_VISUALS = {
+            crime_alley: `
+                <svg viewBox="0 0 800 260" class="w-full h-full object-cover">
+                    <defs>
+                        <linearGradient id="alleyGrad" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stop-color="#020617"/>
+                            <stop offset="100%" stop-color="#0f172a"/>
+                        </linearGradient>
+                    </defs>
+                    <rect width="800" height="260" fill="url(#alleyGrad)"/>
+                    <rect x="40" y="0" width="160" height="260" fill="#050811"/>
+                    <rect x="600" y="0" width="170" height="260" fill="#050811"/>
+                    <!-- Farola Neo-Noir -->
+                    <line x1="250" y1="40" x2="250" y2="240" stroke="#334155" stroke-width="4"/>
+                    <polygon points="250,45 160,260 340,260" fill="#f59e0b" opacity="0.08"/>
+                    <circle cx="250" cy="45" r="8" fill="#fef3c7" class="glow-cyan"/>
+                    <!-- Silueta de Jack Napier y el collar de perlas cayendo -->
+                    <path d="M470 110 C485 110 495 130 495 170 L455 170 C455 130 460 110 470 110 Z" fill="#020617"/>
+                    <rect x="440" y="132" width="22" height="5" fill="#94a3b8"/>
+                    <!-- Perlas rotas en el aire y charco -->
+                    <circle cx="350" cy="180" r="3.5" fill="#f8fafc"/>
+                    <circle cx="362" cy="192" r="3" fill="#f8fafc"/>
+                    <circle cx="342" cy="204" r="3.5" fill="#f8fafc"/>
+                    <circle cx="378" cy="215" r="3" fill="#f8fafc"/>
+                    <circle cx="330" cy="222" r="4" fill="#f8fafc"/>
+                    <ellipse cx="360" cy="235" rx="90" ry="8" fill="#ef4444" opacity="0.28"/>
+                    <text x="400" y="34" text-anchor="middle" fill="#64748b" font-family="monospace" font-size="11" letter-spacing="3">ARCHIVO DE MEMORIA: CALLEJÓN DEL CRIMEN • JACK NAPIER</text>
+                </svg>`,
+
+            ducard_mountain: `
+                <svg viewBox="0 0 800 260" class="w-full h-full object-cover">
+                    <rect width="800" height="260" fill="#041f1e"/>
+                    <polygon points="0,260 180,70 360,260" fill="#062c2b"/>
+                    <polygon points="240,260 450,40 660,260" fill="#083836"/>
+                    <polygon points="520,260 700,85 800,260" fill="#062c2b"/>
+                    <!-- Brillo verde místico de los Pozos de Lázaro -->
+                    <ellipse cx="400" cy="250" rx="280" ry="35" fill="#10b981" opacity="0.18"/>
+                    <!-- Dos siluetas cruzando espadas -->
+                    <line x1="310" y1="185" x2="430" y2="125" stroke="#e2e8f0" stroke-width="3"/>
+                    <line x1="490" y1="185" x2="370" y2="125" stroke="#10b981" stroke-width="3"/>
+                    <circle cx="400" cy="145" r="9" fill="#34d399" class="glow-cyan"/>
+                    <text x="400" y="32" text-anchor="middle" fill="#6ee7b7" font-family="monospace" font-size="11" letter-spacing="3">FLASHBACK: ENTRENAMIENTO CON HENRI DUCard / RA'S AL GHUL</text>
+                </svg>`,
+
+            vigilante_bleed: `
+                <svg viewBox="0 0 800 260" class="w-full h-full object-cover">
+                    <rect width="800" height="260" fill="#090b10"/>
+                    <rect x="80" y="20" width="120" height="240" fill="#0f172a"/>
+                    <rect x="610" y="40" width="140" height="220" fill="#0f172a"/>
+                    <!-- Destello de disparo e impacto en el hombro -->
+                    <circle cx="510" cy="130" r="35" fill="#ef4444" opacity="0.22"/>
+                    <polygon points="510,130 420,115 420,145" fill="#f59e0b" opacity="0.4"/>
+                    <!-- Silueta de Bruce de 1,96m sin traje -->
+                    <rect x="290" y="95" width="46" height="145" rx="8" fill="#1e293b"/>
+                    <circle cx="313" cy="75" r="16" fill="#334155"/>
+                    <circle cx="328" cy="118" r="8" fill="#ef4444" class="animate-ping"/>
+                    <text x="400" y="32" text-anchor="middle" fill="#f87171" font-family="monospace" font-size="11" letter-spacing="3">GOTHAM 2012 • PRIMERA NOCHE SIN BLINDAJE • HERIDA DE BALA</text>
+                </svg>`,
+
+            wayne_tower: `
+                <svg viewBox="0 0 800 260" class="w-full h-full object-cover">
+                    <rect width="800" height="260" fill="#060c17"/>
+                    <!-- Esquema Blueprint del Batmóvil militar y Traje Kevlar -->
+                    <g stroke="#38bdf8" stroke-width="1" opacity="0.35" fill="none">
+                        <line x1="0" y1="60" x2="800" y2="60"/>
+                        <line x1="0" y1="130" x2="800" y2="130"/>
+                        <line x1="0" y1="200" x2="800" y2="200"/>
+                        <line x1="200" y1="0" x2="200" y2="260"/>
+                        <line x1="400" y1="0" x2="400" y2="260"/>
+                        <line x1="600" y1="0" x2="600" y2="260"/>
+                    </g>
+                    <!-- Silueta blindada del Batmóvil de grado militar -->
+                    <polygon points="220,185 270,135 470,130 560,160 590,185" fill="#0f172a" stroke="#38bdf8" stroke-width="2"/>
+                    <circle cx="290" cy="190" r="26" fill="#020617" stroke="#d4af37" stroke-width="2.5"/>
+                    <circle cx="515" cy="190" r="28" fill="#020617" stroke="#d4af37" stroke-width="2.5"/>
+                    <text x="400" y="34" text-anchor="middle" fill="#38bdf8" font-family="monospace" font-size="11" letter-spacing="3">TORRE WAYNE • I+D ENCUBIERTO • KEVLAR / FIBRA DE CARBONO & BATMÓVIL</text>
+                </svg>`,
+
+            docks_penguin: `
+                <svg viewBox="0 0 800 260" class="w-full h-full object-cover">
+                    <rect width="800" height="260" fill="#070a12"/>
+                    <!-- Grúas portuarias y contenedores de los muelles -->
+                    <rect x="40" y="130" width="190" height="90" fill="#1e293b" stroke="#334155"/>
+                    <text x="135" y="180" text-anchor="middle" fill="#475569" font-family="monospace" font-size="14" font-weight="bold">COBBLEPOT IMPORTS</text>
+                    <!-- Paraguas trucado disparando -->
+                    <path d="M520 90 Q570 135 520 180 Z" fill="#be123c" opacity="0.8"/>
+                    <line x1="440" y1="135" x2="565" y2="135" stroke="#d4af37" stroke-width="3.5"/>
+                    <!-- Silueta imponente de Batman en las alturas -->
+                    <polygon points="340,55 310,165 395,165" fill="#020617" stroke="#38bdf8" stroke-width="1.5"/>
+                    <text x="400" y="32" text-anchor="middle" fill="#f59e0b" font-family="monospace" font-size="11" letter-spacing="3">MUELLES DE GOTHAM • TRATO DE ARMAS DE OSWALD COBBLEPOT</text>
+                </svg>`,
+
+            rooftop_gordon: `
+                <svg viewBox="0 0 800 260" class="w-full h-full object-cover">
+                    <rect width="800" height="260" fill="#050811"/>
+                    <!-- Rascacielos de Gotham bajo la lluvia -->
+                    <rect x="60" y="50" width="90" height="210" fill="#0b111e"/>
+                    <rect x="170" y="80" width="110" height="180" fill="#090e1a"/>
+                    <rect x="540" y="40" width="120" height="220" fill="#0b111e"/>
+                    <!-- Azotea y dos siluetas corpulentas de igual a igual (Hammer & Hamm) -->
+                    <rect x="0" y="210" width="800" height="50" fill="#020617"/>
+                    <rect x="330" y="115" width="38" height="95" fill="#0f172a" stroke="#38bdf8" stroke-width="1"/>
+                    <rect x="430" y="122" width="36" height="88" fill="#334155" stroke="#d4af37" stroke-width="1"/>
+                    <text x="400" y="34" text-anchor="middle" fill="#94a3b8" font-family="monospace" font-size="11" letter-spacing="3">AZOTEA DEL DISTRITO CENTRAL • EL PACTO ENTRE BATMAN Y GORDON</text>
+                </svg>`,
+
+            riddler_museum: `
+                <svg viewBox="0 0 800 260" class="w-full h-full object-cover">
+                    <rect width="800" height="260" fill="#021810"/>
+                    <!-- Pantallas hackeadas por Edward Nygma -->
+                    <rect x="90" y="45" width="180" height="110" fill="#042f2e" stroke="#10b981" stroke-width="2"/>
+                    <rect x="310" y="35" width="180" height="125" fill="#042f2e" stroke="#10b981" stroke-width="2.5"/>
+                    <rect x="530" y="45" width="180" height="110" fill="#042f2e" stroke="#10b981" stroke-width="2"/>
+                    <text x="180" y="115" text-anchor="middle" fill="#10b981" font-family="monospace" font-size="52" font-weight="bold">?</text>
+                    <text x="400" y="115" text-anchor="middle" fill="#34d399" font-family="monospace" font-size="68" font-weight="bold">?</text>
+                    <text x="620" y="115" text-anchor="middle" fill="#10b981" font-family="monospace" font-size="52" font-weight="bold">?</text>
+                    <text x="400" y="220" text-anchor="middle" fill="#ef4444" font-family="monospace" font-size="13" font-weight="bold" letter-spacing="2">ALERTA DE DETONACIÓN • MUSEO DE GOTHAM • SEÑAL DE ENYGMA ACTIVA</text>
+                </svg>`,
+
+            gcpd_bunker: `
+                <svg viewBox="0 0 800 260" class="w-full h-full object-cover">
+                    <rect width="800" height="260" fill="#041014"/>
+                    <!-- Mapa de radar mostrando el subsuelo de la comisaría -->
+                    <circle cx="400" cy="135" r="95" stroke="#10b981" stroke-width="1.5" fill="none" stroke-dasharray="6 4"/>
+                    <circle cx="400" cy="135" r="55" stroke="#ef4444" stroke-width="1.5" fill="none"/>
+                    <line x1="260" y1="135" x2="540" y2="135" stroke="#10b981" stroke-width="1" opacity="0.5"/>
+                    <line x1="400" y1="20" x2="400" y2="250" stroke="#10b981" stroke-width="1" opacity="0.5"/>
+                    <circle cx="400" cy="135" r="8" fill="#ef4444" class="animate-ping"/>
+                    <text x="400" y="30" text-anchor="middle" fill="#34d399" font-family="monospace" font-size="11" letter-spacing="3">SUBSUELO DEL GCPD • GUARIDA SECRETA DE EDWARD NYGMA</text>
+                    <text x="400" y="242" text-anchor="middle" fill="#f87171" font-family="monospace" font-size="12" font-weight="bold">"SÉ QUIÉN ERES, BRUCE WAYNE"</text>
+                </svg>`,
+
+            ace_chemicals: `
+                <svg viewBox="0 0 800 260" class="w-full h-full object-cover">
+                    <rect width="800" height="260" fill="#090d16"/>
+                    <!-- Silos y tuberías de Ace Chemicals -->
+                    <rect x="120" y="70" width="95" height="190" fill="#1e293b" stroke="#10b981" stroke-width="1.5"/>
+                    <rect x="585" y="70" width="95" height="190" fill="#1e293b" stroke="#10b981" stroke-width="1.5"/>
+                    <path d="M215 110 L585 110" stroke="#334155" stroke-width="8"/>
+                    <ellipse cx="400" cy="225" rx="150" ry="22" fill="#10b981" opacity="0.35"/>
+                    <text x="400" y="65" text-anchor="middle" fill="#f59e0b" font-family="Cinzel" font-size="22" font-weight="bold" letter-spacing="6">ACE CHEMICALS</text>
+                    <text x="400" y="30" text-anchor="middle" fill="#94a3b8" font-family="monospace" font-size="11" letter-spacing="3">CLÍMAX • EL JUEGO FINAL DE ENYGMA</text>
+                </svg>`,
+
+            batcave_2014: `
+                <svg viewBox="0 0 800 260" class="w-full h-full object-cover">
+                    <rect width="800" height="260" fill="#030712"/>
+                    <!-- Monitores gigantes de la Batcueva en 2014 -->
+                    <rect x="70" y="45" width="200" height="130" fill="#0f172a" stroke="#38bdf8" stroke-width="2"/>
+                    <rect x="290" y="35" width="220" height="145" fill="#0f172a" stroke="#f59e0b" stroke-width="2.5"/>
+                    <rect x="530" y="45" width="200" height="130" fill="#0f172a" stroke="#94a3b8" stroke-width="2"/>
+                    <!-- Monitor 1: Periódico Daily Planet Superman -->
+                    <text x="170" y="75" text-anchor="middle" fill="#38bdf8" font-family="monospace" font-size="11" font-weight="bold">DAILY PLANET • 2014</text>
+                    <polygon points="170,92 195,112 170,148 145,112" fill="#ef4444" stroke="#facc15" stroke-width="2"/>
+                    <text x="170" y="126" text-anchor="middle" fill="#facc15" font-family="serif" font-size="20" font-weight="bold">S</text>
+                    <!-- Monitor Central: Silueta de Batman observando -->
+                    <text x="400" y="65" text-anchor="middle" fill="#f59e0b" font-family="monospace" font-size="11" font-weight="bold">ANOMALÍA METRÓPOLIS</text>
+                    <circle cx="400" cy="118" r="32" stroke="#38bdf8" stroke-width="1.5" fill="none"/>
+                    <text x="400" y="122" text-anchor="middle" fill="#e2e8f0" font-family="monospace" font-size="10">LEXCORP / METALLO</text>
+                    <!-- Monitor 3: Archivo clasificado 1944 Wonder Woman -->
+                    <text x="630" y="75" text-anchor="middle" fill="#cbd5e1" font-family="monospace" font-size="11" font-weight="bold">ARCHIVO 1944 (WWII)</text>
+                    <rect x="580" y="88" width="100" height="65" fill="#1e293b" stroke="#64748b"/>
+                    <text x="630" y="125" text-anchor="middle" fill="#f8fafc" font-family="monospace" font-size="10">COINCIDENCIA 100%</text>
+                    <text x="400" y="232" text-anchor="middle" fill="#38bdf8" font-family="monospace" font-size="12" letter-spacing="3">EPÍLOGO Y POST-CRÉDITOS (AÑO 2014) • EL AMANECER DE LA TRINIDAD</text>
+                </svg>`
+        };
+
+        /* ==========================================================================
+           5. GUION INTERACTIVO COMPLETO Y ESCENAS DE LOS 8 CAPÍTULOS
+           ========================================================================== */
+        const STORY_SCENES = {
+            // ----------------------------------------------------------------------
+            // CAPÍTULO 1: PRÓLOGO - EL ORIGEN DEL TRAUMA Y LA MONTAÑA
+            // ----------------------------------------------------------------------
+            ch1_alley: {
+                chapter: 1,
+                actTitle: 'PRÓLOGO: EL ORIGEN DEL TRAUMA',
+                location: 'Callejón del Crimen, Gotham • Lluvia Torrencial',
+                year: 'MEMORIA DE INFANCIA (8 AÑOS)',
+                visual: 'crime_alley',
+                speaker: 'bruce',
+                alfredNote: '"Aquel callejón nunca dejó de llover en su mente, señor Wayne. Jack Napier apretó el gatillo, pero fue usted quien decidió qué construir sobre las cenizas."',
+                paragraphs: [
+                    'La lluvia helada de Gotham golpea el asfalto sucio mientras el eco de dos disparos desgarra la noche. Tienes ocho años. Tus rodillas están hundidas en un charco teñido de carmesí junto a los cuerpos inmóviles de tus padres, <strong>Thomas y Martha Wayne</strong>.',
+                    'El collar de perlas de tu madre se rompe, rebotando lentamente contra las alcantarillas. Frente a ti, bajo el parpadeo mortecino de una farola, el asesino —<strong>Jack Napier</strong>— guarda el revólver humeante. Su mirada se cruza un instante con la tuya antes de perderse en la oscuridad de una ciudad podrida que jamás acudirá al rescate.',
+                    'Veintidós años después, cada vez que cierras los ojos, regresas a ese mismo charco. Pero ya no eres un niño indefenso: eres un hombre de <strong>1,96 metros</strong> que buscó en los confines más salvajes del mundo la respuesta para domeñar su propia furia.'
+                ],
+                choices: [
+                    {
+                        text: 'Cerrar el puño sobre las perlas rotas y canalizar la rabia hacia el entrenamiento con Henri Ducard.',
+                        stats: { fear: +5, intel: +5 },
+                        next: 'ch1_ducard_training'
+                    },
+                    {
+                        text: 'Fijar en la memoria fotográfica el rostro de Jack Napier y el hedor de la impunidad de Gotham.',
+                        stats: { intel: +10 },
+                        next: 'ch1_ducard_training'
+                    }
+                ]
+            },
+
+            ch1_ducard_training: {
+                chapter: 1,
+                actTitle: 'PRÓLOGO: EL REGRESO A GOTHAM (FLASHBACK)',
+                location: 'Santuario de Montaña • Entrenamiento de la Liga',
+                year: 'FLASHBACK PRE-2012',
+                visual: 'ducard_mountain',
+                speaker: 'ducard',
+                alfredNote: '"Henri Ducard —o Ra\'s al Ghul, como prefiera llamarlo— le enseñó a convertir el cuerpo en un arma, pero su fanatismo y su adicción a los Pozos de Lázaro lo volvieron un monstruo impredecible."',
+                paragraphs: [
+                    'El frío cortante de los picos asiáticos sustituye a la lluvia de Gotham. Frente a ti se alza <strong>Henri Ducard / Ra\'s al Ghul</strong> (interpretado por <em>Alexander Siddig</em>). Su rostro es demacrado, de facciones extremadamente angulares y una mirada gélida que delata siglos de existencia pagados a un precio antinatural.',
+                    '—<em>«Tienes una estatura imponente y una furia que podría derribar muros, Bruce»</em> —susurra Ducard mientras camina a tu alrededor con una elegancia sectaria que de pronto se quiebra en un tic espasmódico y feral, síntoma de su adicción a los <strong>Pozos de Lázaro</strong>—. <em>«Pero la fuerza bruta sin meditación zen es ruido. Y cuando mi espada se mueva, el ruido muere»</em>.',
+                    'Con una velocidad sobrenatural que desafía su aspecto cadavérico, Ducard desenvaina su hoja de acero y se lanza contra ti en un ataque sádico para poner a prueba tu mente y tus reflejos.'
+                ],
+                minigame: 'ducard_duel',
+                choices: [] // Se desbloquean al superar el minijuego
+            },
+
+            // ----------------------------------------------------------------------
+            // CAPÍTULO 2: ACTO I - EL COLAPSO DEL JUSTICIERO SOLITARIO (2012)
+            // ----------------------------------------------------------------------
+            ch2_first_night: {
+                chapter: 2,
+                actTitle: 'ACTO I: EL COLAPSO DEL JUSTICIERO SOLITARIO',
+                location: 'Distrito East End, Gotham • 01:15 HRS',
+                year: 'AÑO 2012',
+                visual: 'vigilante_bleed',
+                speaker: 'bruce',
+                alfredNote: '"Se lo advertí antes de salir, señor Wayne. Salir a las calles de Gotham con un simple pasamontañas confiando únicamente en su envergadura física es tentar a la morgue."',
+                paragraphs: [
+                    '<strong>Año 2012.</strong> A tus 30 años has regresado por fin a Gotham. Lejos de fingir ser un playboy fiestero, ante la prensa te muestras como un heredero corporativo distante, frío y calculador. Pero cuando cae la noche, la furia reprimida toma el mando.',
+                    'Es tu primera salida como justiciero. No llevas traje blindado ni gadgets; solo ropa oscura de calle, guantes tácticos y la convicción arrogante de que tu entrenamiento con Ducard y tus 1,96 metros de pura potencia bastarán para limpiar las calles.',
+                    'En un callejón húmedo sorprendes a tres atracadores armados acorralando a una pareja. Saltas desde la escalera de incendios. Tus primeros golpes son devastadores, pero en la penumbra uno de los criminales saca una pistola calibre .38 a quemarropa.'
+                ],
+                minigame: 'alley_brawl',
+                choices: []
+            },
+
+            ch2_batcave_stitch: {
+                chapter: 2,
+                actTitle: 'ACTO I: FORJANDO LA LEYENDA',
+                location: 'La Batcueva • Bajo la Mansión Wayne • 03:40 HRS',
+                year: 'AÑO 2012',
+                visual: 'vigilante_bleed',
+                speaker: 'alfred',
+                alfredNote: '"Dieciocho puntos de sutura y una hemorragia que casi le perfora la arteria subclavia. Espero que la lección haya calado más hondo que el plomo."',
+                paragraphs: [
+                    'El destello del disparo todavía retumba en tus oídos. Lograste neutralizar a los atracadores, pero la bala te atravesó el hombro izquierdo. De regreso en la húmeda penumbra de la Batcueva, <strong>Alfred Pennyworth</strong> (<em>Anton Lesser</em>, 55 años) limpia la sangre y cose tu herida sin que le tiemble el pulso.',
+                    'De complexión sumamente delgada, postura rígida y rostro afilado, Alfred tira del hilo quirúrgico con una elegancia británica inquebrantable.',
+                    '—<em>«Una actuación verdaderamente magistral en su debut, señor Wayne»</em> —comenta Alfred con su sarcasmo seco y quirúrgico mientras anuda la sutura—. <em>«Si su plan maestro para erradicar el crimen organizado de Gotham consiste en detener las balas con la clavícula, calculo que su cruzada durará hasta el próximo jueves. Necesita blindaje real. Y necesita ver al señor Fox»</em>.'
+                ],
+                choices: [
+                    {
+                        text: 'Aceptar la realidad del fracaso: "Tienes razón, Alfred. Un hombre de carne y hueso no basta. Cose rápido; mañana iré a la Torre Wayne."',
+                        stats: { intel: +10, health: +25 },
+                        next: 'ch3_wayne_tower'
+                    },
+                    {
+                        text: 'Apretar los dientes sin quejarse del dolor: "Los criminales son supersticiosos. Necesito algo que los aterrorice antes de que puedan apuntar."',
+                        stats: { fear: +10, health: +25 },
+                        next: 'ch3_wayne_tower'
+                    }
+                ]
+            },
+
+            // ----------------------------------------------------------------------
+            // CAPÍTULO 3: ACTO I (PARTE 2) - LUCIUS FOX Y LA TORRE WAYNE
+            // ----------------------------------------------------------------------
+            ch3_wayne_tower: {
+                chapter: 3,
+                actTitle: 'ACTO I: LOGÍSTICA PARAMILITAR ENCUBIERTA',
+                location: 'Torre Wayne • Subnivel de Ciencias Aplicadas • 11:00 HRS',
+                year: 'AÑO 2012',
+                visual: 'wayne_tower',
+                speaker: 'lucius',
+                alfredNote: '"El señor Fox es un director ejecutivo de frialdad quirúrgica. No espere sermones paternales de su parte; espere eficacia corporativa absoluta."',
+                paragraphs: [
+                    'Con un traje sastre impecable que oculta el vendaje de tu hombro y una mirada inescrutable, desciendes al subnivel restringido de la <strong>Torre Wayne</strong>. Allí te espera <strong>Lucius Fox</strong> (<em>Giancarlo Esposito</em>, 54 años).',
+                    'Bajo su trato exquisitamente cordial ante la junta directiva, este Lucius opera con la calma de un estratega implacable. Sin hacer preguntas morales innecesarias, te conduce ante dos prototipos militares descartados oficialmente por el ejército:',
+                    '—<em>«Biocompuesto de <strong>Kevlar de triple tejido y placas de fibra de carbono</strong> articuladas»</em> —explica Fox con voz suave pero inflexible—. <em>«Detendrá cuchillos y fuego de corto alcance sin restarle velocidad. Y al fondo, el vehículo de asalto urbano: un <strong>Batmóvil de grado militar</strong> con blindaje reactivo. Por supuesto, señor Wayne, para que estas piezas desaparezcan de los inventarios sin dejar un solo rastro fiscal ante la comisión federal, debemos ejecutar primero nuestra contabilidad fantasma»</em>.'
+                ],
+                minigame: 'ghost_accounting',
+                choices: []
+            },
+
+            // ----------------------------------------------------------------------
+            // CAPÍTULO 4: ACTO II - CORRUPCIÓN EN LOS MUELLES Y EL PACTO CON GORDON
+            // ----------------------------------------------------------------------
+            ch4_docks_penguin: {
+                chapter: 4,
+                actTitle: 'ACTO II: CORRUPCIÓN Y ALIADOS',
+                location: 'Muelles de Gotham • Almacén 14 • 23:50 HRS',
+                year: 'AÑO 2012',
+                visual: 'docks_penguin',
+                speaker: 'penguin',
+                alfredNote: '"Oswald Cobblepot se cree intocable porque financia los bolsillos de media comisaría. Cuidado con ese paraguas, señor; mis escáneres detectan mecanismos balísticos ocultos."',
+                paragraphs: [
+                    'Es tu primera misión oficial bajo el manto de <strong>Batman</strong>. El rugido del Batmóvil de grado militar se apaga a tres manzanas de los muelles oscuros. Desde las vigas de acero observas un cargamento ilegal de armamento pesado supervisado por <strong>Oswald Cobblepot / El Pingüino</strong> (<em>Alfred Molina</em>, 59 años).',
+                    'Lejos de ser un monstruo de alcantarilla, Cobblepot viste un esmoquin a medida, un pesado abrigo con cuello de piel y fuma plácidamente de una boquilla de marfil. Cuando desciendes como una sombra devastadora y desarmas a sus primeros escoltas con brutalidad quirúrgica, Cobblepot ni siquiera retrocede.',
+                    '—<em>«Vaya, vaya... así que los rumores del murciélago eran ciertos»</em> —dice el Pingüino de Molina con una sonrisa gélida que se transforma al instante en un temperamento explosivo—. <em>«¡Despellejen a este fenómeno! ¡Esta ciudad me pertenece!»</em> Acto seguido, alza su clásico <strong>paraguas trucado</strong>.'
+                ],
+                minigame: 'penguin_combat',
+                choices: []
+            },
+
+            ch4_rooftop_gordon: {
+                chapter: 4,
+                actTitle: 'ACTO II: EL PACTO EN LA AZOTEA',
+                location: 'Azotea frente a la Comisaría Central (GCPD) • 01:30 HRS',
+                year: 'AÑO 2012',
+                visual: 'rooftop_gordon',
+                speaker: 'gordon',
+                alfredNote: '"Ver a la propia policía desatar a Cobblepot confirma nuestra tesis: Gotham es un sistema diseñado para proteger al culpable. El comisario Gordon es nuestra única grieta limpia en ese muro."',
+                paragraphs: [
+                    'Dejaste a Oswald Cobblepot derrotado y maniatado junto a las cajas de armas. Sin embargo, desde las alturas presencias una escena que te hiela la sangre: las patrullas del GCPD llegan al muelle, pero en lugar de arrestarlo, <strong>los policías corruptos le quitan las esposas a Cobblepot</strong>, le devuelven su abrigo de piel y le piden disculpas antes de escoltarlo a su limusina.',
+                    'Comprendiendo que la intimidación física es inútil si el sistema legal está podrido, interceptas en una azotea lluviosa al único hombre íntegro del cuerpo: el <strong>Comisario Jim Gordon</strong> (<em>Jon Hamm</em>, 36 años). Robusto, con su gabardina empapada, gafas y bigote, Gordon no se deja empequeñecer por tus 1,96 metros.',
+                    '—<em>«Sé lo que viste en los muelles»</em> —dice Gordon con la voz grave de un antiguo policía modelo molido por años de frustración institucional—. <em>«Cobblepot tiene comprados a jueces y capitanes. Yo tengo la placa, pero tengo las manos atadas. Tú no existes para la ley. Si trabajamos juntos, de igual a igual, tal vez podamos limpiar esta cloaca»</em>.'
+                ],
+                choices: [
+                    {
+                        text: 'Sellar la alianza con Gordon: "Yo golpearé donde tus hombres no pueden llegar, Jim. Tú asegúrate de que cuando caigan, ninguna orden corrupta los libere."',
+                        stats: { intel: +10, fear: +5 },
+                        unlockItem: 'Alianza Encriptada con Jim Gordon',
+                        next: 'ch5_enygma_broadcast'
+                    },
+                    {
+                        text: 'Entregarle un comunicador encriptado de WayneTech: "No confíes en nadie dentro de tu comisaría. A partir de esta noche, operamos en nuestra propia frecuencia."',
+                        stats: { intel: +15 },
+                        unlockItem: 'Alianza Encriptada con Jim Gordon',
+                        next: 'ch5_enygma_broadcast'
+                    }
+                ]
+            },
+
+            // ----------------------------------------------------------------------
+            // CAPÍTULO 5: ACTO III - LA AMENAZA DE ENYGMA Y EL ASALTO AL MUSEO
+            // ----------------------------------------------------------------------
+            ch5_enygma_broadcast: {
+                chapter: 5,
+                actTitle: 'ACTO III: LA AMENAZA DE ENYGMA',
+                location: 'Museo de Gotham • Transmisión Hackeada • 20:15 HRS',
+                year: 'AÑO 2012',
+                visual: 'riddler_museum',
+                speaker: 'enygma',
+                enygmaHack: true,
+                alfredNote: '"¡Señor Wayne, está hackeando simultáneamente las pantallas de Times Square de Gotham y la red del Museo! Su perfil psicológico indica un narcisismo patológico extremo."',
+                paragraphs: [
+                    'De pronto, todas las pantallas gigantes de Gotham —y la interfaz táctica de tu propio visor— parpadean en un verde neón enfermizo. En los monitores aparece <strong>Edward Nygma / El Acertijo</strong> (<em>David Tennant</em>, 41 años). Esbelto, de movimientos rápidos y eléctricos, camina frente a la cámara con una teatralidad maníaca.',
+                    '—<em>«¡Buenas noches, rebaño de ciegos! Y buenas noches a ti, mi querido murciélago blindado»</em> —declama Nygma con una sonrisa burlona y altiva—. <em>«Cobblepot juega con plomo; yo juego con la verdad. He colocado cargas explosivas de alta precisión en el <strong>Museo de Gotham</strong>. ¿Quieres salvar sus reliquias y a los rehenes? Demuéstrame que bajo esa capucha hay un cerebro digno de medirse con el mío»</em>.',
+                    'Irrumpes en el vestíbulo del Museo de Gotham entre el humo verde. Tres terminales de detonación bloquean las salas principales. Con cada enigma que resuelvas, la máscara elegante de Nygma se irá resquebrajando en directo.'
+                ],
+                minigame: 'museum_riddles',
+                choices: []
+            },
+
+            // ----------------------------------------------------------------------
+            // CAPÍTULO 6: ACTO IV - EL GRAN GIRO BAJO LA COMISARÍA (GCPD)
+            // ----------------------------------------------------------------------
+            ch6_satellite_trace: {
+                chapter: 6,
+                actTitle: 'ACTO IV: RASTREO SATELITAL WAYNETECH',
+                location: 'Consola Central de la Batcueva • 00:10 HRS',
+                year: 'AÑO 2012',
+                visual: 'gcpd_bunker',
+                speaker: 'bruce',
+                enygmaHack: true,
+                alfredNote: '"Durante su estallido de ira en el museo, Nygma cometió un error de tres milisegundos al cerrar su portadora de vídeo. Si alineamos el satélite de Empresas Wayne, tendremos su guarida exacta."',
+                paragraphs: [
+                    'En el Museo de Gotham lograste desactivar las bombas y humillar públicamente el intelecto de Nygma, provocando que el villano de <em>David Tennant</em> perdiera los estribos con gritos furiosos y erráticos antes de cortar la transmisión.',
+                    'De vuelta ante los monitores de la Batcueva, conectas el enlace de <strong>satélites de grado militar de Empresas Wayne</strong>. Nygma ha estado emitiendo sus hackeos a través de un nodo subterráneo blindado de fibra óptica municipal.',
+                    'Ajusta los tres parámetros del barrido satelital para triangular el origen físico exacto de la señal de Enygma en el mapa de Gotham.'
+                ],
+                minigame: 'satellite_triangulation',
+                choices: []
+            },
+
+            ch6_gcpd_ambush: {
+                chapter: 6,
+                actTitle: 'ACTO IV: EL GRAN GIRO BAJO LA COMISARÍA',
+                location: 'Búnker Secreto Bajo el GCPD • Sala de Interrogatorios • 02:05 HRS',
+                year: 'AÑO 2012',
+                visual: 'gcpd_bunker',
+                speaker: 'enygma',
+                enygmaHack: true,
+                alfredNote: '"¡Es una trampa, señor Wayne! ¡Los sensores térmicos indican C4 en las columnas de carga y treinta agentes del GCPD bajando por las escaleras!"',
+                paragraphs: [
+                    'La revelación satelital es escalofriante: la guarida secreta de Enygma ha estado todo el tiempo <strong>exactamente debajo de la propia comisaría de policía de Gotham (GCPD)</strong>, parasitando su red eléctrica y sus servidores.',
+                    'Te infiltras por los conductos de drenaje hasta irrumpir en su sala de control llena de pantallas verdes. Edward Nygma (<em>David Tennant</em>) te espera de pie, aplaudiendo lentamente con una calma inquietante.',
+                    '—<em>«¡Bravo! Sabía que rastrearías el satélite»</em> —susurra Nygma acercándose al cristal blindado, con los ojos desorbitados de euforia narcisista—. <em>«Blindaje experimental de Kevlar y carbono... un vehículo militar fantasma... millones desviados en la Torre Wayne justo cuando el niño huérfano del callejón cumple treinta años. <strong>Hola, Bruce Wayne</strong>»</em>.',
+                    'Antes de que puedas derribar la puerta, Nygma activa un detonador remoto. <strong>¡BOOM!</strong> Una explosión brutal sacude los cimientos bajo la comisaría. El techo cede, golpeándote de lleno y dejándote inconsciente entre los escombros.'
+                ],
+                minigame: 'gcpd_escape_qte',
+                choices: []
+            },
+
+            // ----------------------------------------------------------------------
+            // CAPÍTULO 7: ACTO V - EL CLÍMAX EN ACE CHEMICALS
+            // ----------------------------------------------------------------------
+            ch7_detective_deduction: {
+                chapter: 7,
+                actTitle: 'ACTO V: DEDUCCIÓN FINAL',
+                location: 'Batmóvil en Marcha • Distrito Industrial • 03:20 HRS',
+                year: 'AÑO 2012',
+                visual: 'ace_chemicals',
+                speaker: 'bruce',
+                alfredNote: '"Gracias a la intervención del comisario Gordon y a ese puñetazo fingido, su identidad sigue a salvo. Ahora analice las muestras que recogió bajo la comisaría: Nygma prepara su golpe final."',
+                paragraphs: [
+                    'Tu golpe fingido contra la mandíbula de Jim Gordon (<em>Jon Hamm</em>) funcionó a la perfección: los agentes creyeron que habías reducido al comisario y lograste desaparecer entre el humo antes de que nadie tocara tu capucha.',
+                    'Ahora, mientras el Batmóvil ruge por las autopistas mojadas de Gotham con el hombro dolorido por la explosión, abres el <strong>Tablero Detectivesco</strong> en la consola táctica. Nygma abandonó el subsuelo del GCPD hacia su verdadera base final.',
+                    'Selecciona las <strong>3 pistas forenses correctas</strong> recolectadas durante la noche para deducir dónde se esconde Edward Nygma.'
+                ],
+                minigame: 'ace_deduction',
+                choices: []
+            },
+
+            ch7_ace_climax: {
+                chapter: 7,
+                actTitle: 'ACTO V: JAQUE MATE EN ACE CHEMICALS',
+                location: 'Planta Industrial Ace Chemicals • Pasarela Central • 03:55 HRS',
+                year: 'AÑO 2012',
+                visual: 'ace_chemicals',
+                speaker: 'enygma',
+                enygmaHack: true,
+                alfredNote: '"Recuerde quién es Nygma, señor Wayne: quiere un debate teatral que valide su genio. No le conceda ese privilegio. Sea rápido, quirúrgico y demoledor."',
+                paragraphs: [
+                    'Atraviesas las claraboyas de <strong>Ace Chemicals</strong> entre vapores tóxicos e iluminación verdosa. En la pasarela superior sobre los tanques químicos, Edward Nygma (<em>David Tennant</em>) sostiene un micrófono conectado a la red de emergencia de Gotham.',
+                    'Al verte emerger de las sombras, acorralado y sin salida, Nygma abre los brazos con una risa febril y desesperada:',
+                    '—<em>«¡Aquí estás, Bruce! ¿Lo entiendes ahora? ¡Las bombas, el museo, la comisaría... todo ha sido un juego! Un lienzo diseñado únicamente para demostrar ante esta ciudad mediocre que mi intelecto es superior al tuyo, al de tu padre y al de todos!»</em>',
+                    'Nygma espera un largo duelo dialéctico o una batalla grandilocuente. En cambio, el depredador de 1,96 metros avanza con frialdad absoluta.'
+                ],
+                choices: [
+                    {
+                        text: 'Ejecutar una neutralización rápida, silenciosa y devastadora sin dirigirle una sola palabra, arrebatándole el espectáculo que tanto ansiaba.',
+                        stats: { fear: +15, intel: +10 },
+                        unlockItem: 'Trofeo: El Enigma Silenciado (Ace Chemicals)',
+                        next: 'ch8_epilogue_2012'
+                    },
+                    {
+                        text: 'Desarmarlo de un solo impacto contundente y mirarlo a los ojos: "El juego terminó, Edward. Y nadie en Gotham recordará tu puntuación."',
+                        stats: { fear: +10, intel: +15 },
+                        unlockItem: 'Trofeo: El Enigma Silenciado (Ace Chemicals)',
+                        next: 'ch8_epilogue_2012'
+                    }
+                ]
+            },
+
+            // ----------------------------------------------------------------------
+            // CAPÍTULO 8: FINAL Y ESCENA POST-CRÉDITOS (SALTO A 2014)
+            // ----------------------------------------------------------------------
+            ch8_epilogue_2012: {
+                chapter: 8,
+                actTitle: 'EPÍLOGO: EL MAYOR ENIGMA',
+                location: 'Escalinata del GCPD / La Batcueva • Amanecer',
+                year: 'FINALES DE 2012',
+                visual: 'rooftop_gordon',
+                speaker: 'bruce',
+                enygmaHack: false,
+                alfredNote: '"Un diagnóstico psicológico brillante, señor Wayne. Un narcisista jamás regala la única carta que lo hace sentirse especial."',
+                paragraphs: [
+                    'Derrotado en cuestión de segundos, Edward Nygma es arrojado, atado y amordazado frente a las puertas principales de la comisaría de Gotham, donde Jim Gordon y sus hombres de confianza proceden a encerrarlo bajo máxima seguridad.',
+                    'De regreso en la calma de la Batcueva, mientras te quitas la capucha de Kevlar, Alfred (<em>Anton Lesser</em>) te observa con preocupación contenida:',
+                    '—<em>«Señor Wayne... Nygma sigue vivo y conoce su nombre. ¿No teme que grite su identidad desde su celda en Arkham?»</em>',
+                    'Miras las pantallas apagadas de la cueva con serenidad calculadora:',
+                    '—<em>«Nunca lo hará, Alfred. Para Edward Nygma, saber quién es Batman es la respuesta al mayor acertijo del mundo. Su propio ego jamás le permitirá compartir esa respuesta con nadie. Si lo contara, dejaría de ser el único genio que lo sabe»</em>.'
+                ],
+                choices: [
+                    {
+                        text: 'AVANZAR A LA ESCENA POST-CRÉDITOS (SALTO TEMPORAL AL AÑO 2014) →',
+                        stats: { intel: +10 },
+                        next: 'ch8_postcredits_2014'
+                    }
+                ]
+            },
+
+            ch8_postcredits_2014: {
+                chapter: 8,
+                actTitle: 'ESCENA POST-CRÉDITOS: EL MUNDO HA CAMBIADO (2014)',
+                location: 'La Batcueva • Monitores Globales de Vigilancia',
+                year: 'AÑO 2014 (DOS AÑOS DESPUÉS)',
+                visual: 'batcave_2014',
+                speaker: 'alfred',
+                alfredNote: '"El mundo entero ha cambiado hoy, señor Wayne. Parece que los dioses han decidido bajar de los cielos... y caminar entre nosotros."',
+                paragraphs: [
+                    '<strong>AÑO 2014.</strong> Han pasado dos años desde la caída de Enygma. La Batcueva está iluminada únicamente por el resplandor azulado de decenas de monitores gigantes. Estás de pie frente a la consola central, con la capucha a medio quitar, cuando Alfred Pennyworth (<em>Anton Lesser</em>) se acerca por detrás sosteniendo una bandeja de plata.',
+                    'Sobre la bandeja descansa la edición impresa de hoy del periódico <strong>Daily Planet</strong>. El titular a toda plana sacude los cimientos de la humanidad: tras el colapso catastrófico de una demostración tecnológica de <strong>LexCorp</strong> y el ataque de un cyborg impulsado por radiación verde (<strong>Metallo</strong>), un nuevo héroe vestido con colores brillantes y el escudo de una "S" ha surcado los cielos a plena luz del día en Metrópolis: <strong>SUPERMAN</strong> (<em>Matt Bomer</em>).',
+                    '—<em>«El mundo entero ha cambiado hoy, señor Wayne»</em> —dice Alfred observando el periódico y las grabaciones de teléfonos móviles en las pantallas—. <em>«Parece que los dioses han decidido bajar de los cielos»</em>.',
+                    '—<em>«No es un dios, Alfred. Es un alienígena»</em> —respondes con la voz grave de Armie Hammer, tecleando en la consola—. <em>«Y tiene el poder de borrar una ciudad entera si un día decide que ya no le gustamos... Además, parece que no es el único "dios" que camina entre nosotros»</em>.'
+                ],
+                minigame: 'trinity_files_2014',
+                choices: []
+            }
+        };
+
+        /* ==========================================================================
+           6. LÓGICA PRINCIPAL DE LA APLICACIÓN Y MINIJUEGOS INTERACTIVOS
+           ========================================================================== */
+        const app = {
+            currentSceneId: 'ch1_alley',
+            currentSpeakerId: 'bruce',
+            unlockedChapters: [1],
+            stats: {
+                health: 100,
+                fear: 65,
+                intel: 50
+            },
+            suitStatus: 'Civil / Sin Blindaje',
+            inventory: [
+                { name: 'Reloj y Perlas del Callejón (1990)', desc: 'Evidencia del asesinato de Thomas y Martha Wayne a manos de Jack Napier.' }
+            ],
+            radioIdx: 0,
+
+            init() {
+                this.loadProgress();
+                this.renderCastTab();
+                this.renderActsTab();
+                this.renderWorldTab();
+                this.renderInventory();
+                this.renderRadioFeed();
+                this.loadScene(this.currentSceneId, false);
+                initRainCanvas();
+            },
+
+            saveProgress() {
+                try {
+                    const data = {
+                        currentSceneId: this.currentSceneId,
+                        unlockedChapters: this.unlockedChapters,
+                        stats: this.stats,
+                        suitStatus: this.suitStatus,
+                        inventory: this.inventory
+                    };
+                    localStorage.setItem('batman_dcu_nv_2012_save', JSON.stringify(data));
+                    const ind = document.getElementById('save-indicator');
+                    if (ind) {
+                        ind.innerHTML = '<i class="fa-solid fa-check text-emerald-400 mr-1"></i>Progreso Guardado';
+                        setTimeout(() => {
+                            ind.innerHTML = '<i class="fa-solid fa-floppy-disk mr-1"></i>Autoguardado Activo';
+                        }, 1500);
+                    }
+                } catch (e) {}
+            },
+
+            loadProgress() {
+                try {
+                    const raw = localStorage.getItem('batman_dcu_nv_2012_save');
+                    if (raw) {
+                        const data = JSON.parse(raw);
+                        if (data.currentSceneId && STORY_SCENES[data.currentSceneId]) {
+                            this.currentSceneId = data.currentSceneId;
+                        }
+                        if (Array.isArray(data.unlockedChapters)) this.unlockedChapters = data.unlockedChapters;
+                        if (data.stats) this.stats = data.stats;
+                        if (data.suitStatus) this.suitStatus = data.suitStatus;
+                        if (Array.isArray(data.inventory)) this.inventory = data.inventory;
+                    }
+                } catch (e) {}
+            },
+
+            resetGamePrompt() {
+                soundEngine.playClick(350, 0.06);
+                const modal = document.getElementById('custom-modal');
+                document.getElementById('modal-subtitle').textContent = 'REINICIAR ARCHIVO DE CAMPAÑA';
+                document.getElementById('modal-body').innerHTML = `
+                    <div class="space-y-4 text-center py-2">
+                        <div class="w-14 h-14 rounded-full bg-red-500/15 border border-red-500/40 text-red-400 flex items-center justify-center mx-auto text-2xl">
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+                        </div>
+                        <h3 class="font-display text-xl font-bold text-white">¿Reiniciar la historia desde el Prólogo?</h3>
+                        <p class="text-sm text-slate-300 max-w-md mx-auto">
+                            Volverás a la noche del Callejón del Crimen y se restablecerán tus estadísticas e inventario de la Batcomputadora.
+                        </p>
+                        <div class="flex items-center justify-center gap-3 pt-3">
+                            <button onclick="app.closeModal()" class="px-4 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 font-mono text-xs">Cancelar</button>
+                            <button onclick="app.confirmReset()" class="px-4 py-2 rounded-lg bg-red-600 hover:bg-red-500 text-white font-mono text-xs font-bold">Sí, Reiniciar Historia</button>
+                        </div>
+                    </div>
+                `;
+                modal.classList.remove('hidden');
+            },
+
+            confirmReset() {
+                localStorage.removeItem('batman_dcu_nv_2012_save');
+                this.currentSceneId = 'ch1_alley';
+                this.unlockedChapters = [1];
+                this.stats = { health: 100, fear: 65, intel: 50 };
+                this.suitStatus = 'Civil / Sin Blindaje';
+                this.inventory = [
+                    { name: 'Reloj y Perlas del Callejón (1990)', desc: 'Evidencia del asesinato de Thomas y Martha Wayne a manos de Jack Napier.' }
+                ];
+                this.closeModal();
+                this.switchTab('story');
+                this.loadScene('ch1_alley');
+            },
+
+            switchTab(tabName) {
+                soundEngine.playClick(580, 0.04);
+                ['story', 'cast', 'acts', 'world'].forEach(t => {
+                    const view = document.getElementById(`view-${t}`);
+                    const btn = document.getElementById(`tab-${t}`);
+                    if (t === tabName) {
+                        view.classList.remove('hidden');
+                        btn.className = 'tab-btn px-3 py-2 rounded-lg font-mono text-xs sm:text-sm flex items-center gap-2 bg-amber-500/20 text-amber-300 border border-amber-500/50 transition';
+                    } else {
+                        view.classList.add('hidden');
+                        btn.className = 'tab-btn px-3 py-2 rounded-lg font-mono text-xs sm:text-sm flex items-center gap-2 bg-slate-900/80 text-slate-400 border border-slate-800 hover:text-slate-200 transition';
+                    }
+                });
+                if (tabName === 'acts') this.renderActsTab();
+            },
+
+            updateStatsUI() {
+                this.stats.health = Math.max(15, Math.min(100, this.stats.health));
+                this.stats.fear = Math.max(10, Math.min(100, this.stats.fear));
+                this.stats.intel = Math.max(10, Math.min(100, this.stats.intel));
+
+                document.getElementById('stat-health-val').textContent = `${this.stats.health}%`;
+                document.getElementById('stat-health-bar').style.width = `${this.stats.health}%`;
+
+                document.getElementById('stat-fear-val').textContent = `${this.stats.fear}%`;
+                document.getElementById('stat-fear-bar').style.width = `${this.stats.fear}%`;
+
+                document.getElementById('stat-intel-val').textContent = `${this.stats.intel}%`;
+                document.getElementById('stat-intel-bar').style.width = `${this.stats.intel}%`;
+
+                document.getElementById('current-suit-status').textContent = this.suitStatus;
+            },
+
+            addInventoryItem(name, desc) {
+                if (!this.inventory.some(i => i.name === name)) {
+                    this.inventory.unshift({ name, desc });
+                    this.renderInventory();
+                }
+            },
+
+            renderInventory() {
+                const container = document.getElementById('inventory-list');
+                document.getElementById('inventory-count').textContent = `${this.inventory.length} ITEMS`;
+                container.innerHTML = this.inventory.map(item => `
+                    <div class="bg-slate-900/90 border border-slate-800 rounded-lg p-2.5 flex items-start gap-2.5">
+                        <i class="fa-solid fa-microchip text-amber-400 mt-1 text-xs"></i>
+                        <div>
+                            <div class="text-xs font-mono font-bold text-slate-200">${item.name}</div>
+                            <div class="text-[11px] text-slate-400 leading-snug">${item.desc}</div>
+                        </div>
+                    </div>
+                `).join('');
+            },
+
+            nextRadioFeed() {
+                soundEngine.playClick(720, 0.04);
+                this.radioIdx = (this.radioIdx + 1) % RADIO_FEEDS.length;
+                this.renderRadioFeed();
+            },
+
+            renderRadioFeed() {
+                const feed = RADIO_FEEDS[this.radioIdx];
+                const box = document.getElementById('radio-feed-box');
+                box.innerHTML = `
+                    <div class="flex items-center justify-between text-[10px] text-amber-400">
+                        <span>${feed.source}</span>
+                        <span>${feed.date}</span>
+                    </div>
+                    <div class="font-bold text-slate-100 text-xs">${feed.title}</div>
+                    <p class="text-[11px] text-slate-400 leading-relaxed">${feed.body}</p>
+                `;
+            },
+
+            renderChapterPills(activeChapter) {
+                const container = document.getElementById('chapter-pills');
+                let html = '';
+                for (let i = 1; i <= 8; i++) {
+                    const isUnlocked = this.unlockedChapters.includes(i);
+                    const isCurrent = i === activeChapter;
+                    let cls = 'bg-slate-900 text-slate-600 border-slate-800';
+                    if (isCurrent) {
+                        cls = 'bg-amber-500/25 text-amber-300 border-amber-500/60 font-bold';
+                    } else if (isUnlocked) {
+                        cls = 'bg-slate-800/90 text-sky-300 border-slate-700 hover:border-sky-400 cursor-pointer';
+                    }
+                    const clickAttr = isUnlocked ? `onclick="app.jumpToChapter(${i})"` : '';
+                    html += `<div ${clickAttr} class="text-center py-1 rounded border text-[10px] font-mono transition ${cls}" title="Capítulo ${i}">CAP ${i}</div>`;
+                }
+                container.innerHTML = html;
+            },
+
+            loadScene(sceneId, playSfx = true) {
+                const scene = STORY_SCENES[sceneId];
+                if (!scene) return;
+
+                if (playSfx) soundEngine.playClick(500, 0.05);
+                this.currentSceneId = sceneId;
+
+                if (!this.unlockedChapters.includes(scene.chapter)) {
+                    this.unlockedChapters.push(scene.chapter);
+                }
+
+                // Efecto visual de hackeo de Enygma
+                if (scene.enygmaHack) {
+                    document.body.classList.add('enygma-hack');
+                    window.rainColorMode = 'enygma';
+                    if (playSfx) soundEngine.playRiddlerGlitch();
+                } else {
+                    document.body.classList.remove('enygma-hack');
+                    window.rainColorMode = 'noir';
+                }
+
+                // Actualizar textos de cabecera
+                document.getElementById('scene-act-title').textContent = scene.actTitle;
+                document.getElementById('scene-location').innerHTML = `<i class="fa-solid fa-location-crosshairs text-sky-400"></i><span>${scene.location}</span>`;
+                document.getElementById('header-year-badge').textContent = scene.year;
+
+                // Ilustración SVG
+                document.getElementById('scene-visual-container').innerHTML = SCENE_VISUALS[scene.visual] || SCENE_VISUALS.crime_alley;
+
+                // Datos del personaje hablante
+                const char = CAST_DB[scene.speaker] || CAST_DB.bruce;
+                this.currentSpeakerId = char.id;
+                document.getElementById('speaker-avatar').innerHTML = char.svgAvatar;
+                document.getElementById('speaker-name').textContent = char.name.toUpperCase();
+                document.getElementById('speaker-actor').textContent = `${char.actor} (${char.age})`;
+                document.getElementById('speaker-desc').textContent = char.summary;
+
+                // Comentario de Alfred
+                document.getElementById('alfred-commentary').textContent = scene.alfredNote;
+
+                // Párrafos narrativos
+                const narrativeEl = document.getElementById('scene-narrative');
+                narrativeEl.className = 'space-y-3.5 text-slate-200 leading-relaxed text-sm sm:text-base font-normal animate-scene';
+                narrativeEl.innerHTML = scene.paragraphs.map(p => `<p>${p}</p>`).join('');
+
+                // Minijuego o Elecciones
+                const mgContainer = document.getElementById('minigame-container');
+                const choicesContainer = document.getElementById('choices-container');
+
+                if (scene.minigame) {
+                    mgContainer.classList.remove('hidden');
+                    choicesContainer.innerHTML = '';
+                    this.launchMinigame(scene.minigame);
+                } else {
+                    mgContainer.classList.add('hidden');
+                    mgContainer.innerHTML = '';
+                    this.renderChoices(scene.choices);
+                }
+
+                this.updateStatsUI();
+                this.renderChapterPills(scene.chapter);
+                this.saveProgress();
+            },
+
+            renderChoices(choices) {
+                const choicesContainer = document.getElementById('choices-container');
+                choicesContainer.innerHTML = choices.map((c, idx) => `
+                    <button onclick="app.selectChoice(${idx})" class="choice-btn w-full text-left p-3.5 rounded-xl bg-slate-900/90 border border-slate-800 hover:border-amber-500/50 flex items-center justify-between gap-3 group">
+                        <div class="flex items-start gap-3">
+                            <span class="font-mono text-xs px-2 py-0.5 rounded bg-slate-800 text-amber-400 border border-slate-700 mt-0.5">0${idx + 1}</span>
+                            <span class="text-xs sm:text-sm text-slate-200 group-hover:text-white font-medium leading-relaxed">${c.text}</span>
+                        </div>
+                        <i class="fa-solid fa-chevron-right text-slate-500 group-hover:text-amber-400 transition shrink-0"></i>
+                    </button>
+                `).join('');
+            },
+
+            selectChoice(choiceIdx) {
+                const scene = STORY_SCENES[this.currentSceneId];
+                if (!scene || !scene.choices[choiceIdx]) return;
+                const choice = scene.choices[choiceIdx];
+
+                if (choice.stats) {
+                    if (choice.stats.health) this.stats.health += choice.stats.health;
+                    if (choice.stats.fear) this.stats.fear += choice.stats.fear;
+                    if (choice.stats.intel) this.stats.intel += choice.stats.intel;
+                }
+                if (choice.unlockItem) {
+                    this.addInventoryItem(choice.unlockItem, 'Registrado en la base de datos de la Batcueva durante la campaña.');
+                }
+
+                this.loadScene(choice.next);
+            },
+
+            /* ======================================================================
+               7. MINIJUEGOS INTERACTIVOS INTEGRADOS EN CADA ACTO DE LA HISTORIA
+               ====================================================================== */
+            launchMinigame(type) {
+                const container = document.getElementById('minigame-container');
+
+                // ------------------------------------------------------------------
+                // MINIJUEGO 1: ENTRENAMIENTO CON DUCARD (ZEN + ESPADA DE LÁZARO)
+                // ------------------------------------------------------------------
+                if (type === 'ducard_duel') {
+                    this.ducardStage = 0;
+                    this.ducardPos = 10;
+                    this.ducardDir = 2.6;
+                    if (this.ducardLoop) cancelAnimationFrame(this.ducardLoop);
+
+                    container.innerHTML = `
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="font-mono text-xs uppercase text-emerald-400 font-bold"><i class="fa-solid fa-khanda mr-1.5"></i>PRUEBA MARCIAL: VELOCIDAD DE RA'S AL GHUL</span>
+                                <span id="ducard-score" class="font-mono text-xs text-slate-300">PARADAS: 0 / 3</span>
+                            </div>
+                            <p class="text-xs text-slate-300">
+                                Alexander Siddig ataca con una velocidad sobrenatural y espasmódica producto de los Pozos de Lázaro. Pulsa <strong>BLOQUEAR ESTOCADA</strong> cuando el indicador entre en la <strong>Zona Zen Dorada</strong>.
+                            </p>
+                            <div class="relative w-full h-7 bg-slate-950 rounded-lg border border-slate-700 overflow-hidden">
+                                <!-- Zona objetivo Zen -->
+                                <div class="absolute top-0 bottom-0 left-[38%] w-[24%] bg-amber-500/25 border-x-2 border-amber-400"></div>
+                                <!-- Cursor de la espada de Ducard -->
+                                <div id="ducard-cursor" class="absolute top-0 bottom-0 w-2.5 bg-emerald-400 shadow-[0_0_12px_#10b981]" style="left: 10%"></div>
+                            </div>
+                            <div class="flex items-center justify-between gap-3 pt-1">
+                                <span id="ducard-feedback" class="font-mono text-xs text-amber-300">Concentra tu respiración Zen...</span>
+                                <button onclick="app.handleDucardStrike()" class="px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-mono text-xs font-bold transition shadow-lg">
+                                    <i class="fa-solid fa-shield mr-1.5"></i>BLOQUEAR ESTOCADA
+                                </button>
+                            </div>
+                        </div>
+                    `;
+
+                    const animateBar = () => {
+                        const cursor = document.getElementById('ducard-cursor');
+                        if (!cursor) return;
+                        this.ducardPos += this.ducardDir;
+                        if (this.ducardPos >= 96 || this.ducardPos <= 2) {
+                            this.ducardDir *= -1;
+                        }
+                        cursor.style.left = `${this.ducardPos}%`;
+                        this.ducardLoop = requestAnimationFrame(animateBar);
+                    };
+                    this.ducardLoop = requestAnimationFrame(animateBar);
+                }
+
+                // ------------------------------------------------------------------
+                // MINIJUEGO 2: PRIMERA NOCHE SIN TRAJE (COMBATE Y DISPARO EN EL HOMBRO)
+                // ------------------------------------------------------------------
+                else if (type === 'alley_brawl') {
+                    this.brawlTurn = 0;
+                    container.innerHTML = `
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="font-mono text-xs uppercase text-red-400 font-bold"><i class="fa-solid fa-hand-fist mr-1.5"></i>COMBATE SIN BLINDAJE: PRIMERA SALIDA (2012)</span>
+                                <span id="brawl-status" class="font-mono text-xs text-amber-300">ATRACADORES ACTIVOS: 3</span>
+                            </div>
+                            <p id="brawl-log" class="text-xs text-slate-300 bg-slate-950 p-3 rounded-lg border border-slate-800">
+                                El primer atracador lanza un corte con navaja mientras el tercero desenfunda un revólver en la oscuridad. No llevas Kevlar. ¿Cómo ejecutas el ataque?
+                            </p>
+                            <div id="brawl-buttons" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                                <button onclick="app.stepAlleyBrawl(1)" class="p-3 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-600 text-left text-xs font-mono text-slate-200 transition">
+                                    <strong class="text-amber-400 block mb-0.5">1. Fractura Directa de Brazo</strong>
+                                    Usar tus 1,96m para quebrar al líder contra el ladrillo.
+                                </button>
+                                <button onclick="app.stepAlleyBrawl(2)" class="p-3 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-600 text-left text-xs font-mono text-slate-200 transition">
+                                    <strong class="text-sky-400 block mb-0.5">2. Barrido Táctico en Sombra</strong>
+                                    Derribar a los dos primeros antes de que apunten.
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                // ------------------------------------------------------------------
+                // MINIJUEGO 3: CONTABILIDAD FANTASMA CON LUCIUS FOX (TORRE WAYNE)
+                // ------------------------------------------------------------------
+                else if (type === 'ghost_accounting') {
+                    this.foxNodes = [false, false, false];
+                    container.innerHTML = `
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="font-mono text-xs uppercase text-sky-400 font-bold"><i class="fa-solid fa-network-wired mr-1.5"></i>TERMINAL WAYNE ENTERPRISES: CONTABILIDAD FANTASMA</span>
+                                <span id="fox-progress" class="font-mono text-xs text-amber-400">FONDOS ENMASCARADOS: 0 / 3</span>
+                            </div>
+                            <p class="text-xs text-slate-300">
+                                Giancarlo Esposito te observa con calma absoluta. Desvía las 3 partidas presupuestarias hacia cuentas fantasma de I+D para ensamblar el <strong>Traje de Kevlar/Fibra de Carbono</strong> y el <strong>Batmóvil Militar</strong> sin dejar rastro fiscal.
+                            </p>
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                                <button id="fox-btn-0" onclick="app.toggleFoxNode(0)" class="p-3 rounded-lg bg-slate-950 border border-slate-700 hover:border-sky-400 text-left font-mono text-xs transition">
+                                    <div class="text-slate-400 text-[10px]">PARTIDA #409-A</div>
+                                    <div class="text-slate-100 font-bold mt-0.5">Biocompuesto Kevlar & Carbono</div>
+                                    <div class="text-amber-400 text-[11px] mt-1">$14.2M • [DESVIAR]</div>
+                                </button>
+                                <button id="fox-btn-1" onclick="app.toggleFoxNode(1)" class="p-3 rounded-lg bg-slate-950 border border-slate-700 hover:border-sky-400 text-left font-mono text-xs transition">
+                                    <div class="text-slate-400 text-[10px]">PARTIDA #882-B</div>
+                                    <div class="text-slate-100 font-bold mt-0.5">Chasis Militar & Turbina</div>
+                                    <div class="text-amber-400 text-[11px] mt-1">$48.0M • [DESVIAR]</div>
+                                </button>
+                                <button id="fox-btn-2" onclick="app.toggleFoxNode(2)" class="p-3 rounded-lg bg-slate-950 border border-slate-700 hover:border-sky-400 text-left font-mono text-xs transition">
+                                    <div class="text-slate-400 text-[10px]">PARTIDA #910-C</div>
+                                    <div class="text-slate-100 font-bold mt-0.5">Enlace Satelital & Cifrado</div>
+                                    <div class="text-amber-400 text-[11px] mt-1">$21.5M • [DESVIAR]</div>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                // ------------------------------------------------------------------
+                // MINIJUEGO 4: DUELO EN LOS MUELLES CONTRA OSWALD COBBLEPOT (ALFRED MOLINA)
+                // ------------------------------------------------------------------
+                else if (type === 'penguin_combat') {
+                    this.penguinHp = 100;
+                    container.innerHTML = `
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="font-mono text-xs uppercase text-amber-400 font-bold"><i class="fa-solid fa-umbrella mr-1.5"></i>ASALTO TÁCTICO: OSWALD COBBLEPOT (EL PINGÜINO)</span>
+                                <span id="penguin-hp-label" class="font-mono text-xs text-red-400 font-bold">DEFENSA COBBLEPOT: 100%</span>
+                            </div>
+                            <div class="w-full h-2.5 bg-slate-950 rounded-full overflow-hidden border border-slate-800">
+                                <div id="penguin-hp-bar" class="h-full bg-gradient-to-r from-red-600 to-rose-400 transition-all duration-300" style="width: 100%"></div>
+                            </div>
+                            <p id="penguin-combat-log" class="text-xs text-slate-300 bg-slate-950 p-3 rounded-lg border border-slate-800">
+                                Cobblepot (Alfred Molina) apunta su paraguas trucado de cañón oculto mientras sus matones abren fuego en el muelle. ¡Tu nuevo traje de Kevlar absorbe los impactos ligeros!
+                            </p>
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                                <button onclick="app.attackPenguin('smoke')" class="p-2.5 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-600 font-mono text-xs text-sky-300 transition">
+                                    <i class="fa-solid fa-cloud mr-1"></i>1. Guerra Psicológica
+                                </button>
+                                <button onclick="app.attackPenguin('disarm')" class="p-2.5 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-600 font-mono text-xs text-amber-300 transition">
+                                    <i class="fa-solid fa-bolt mr-1"></i>2. Quebrar Paraguas
+                                </button>
+                                <button onclick="app.attackPenguin('strike')" class="p-2.5 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-600 font-mono text-xs text-red-300 transition">
+                                    <i class="fa-solid fa-hand-fist mr-1"></i>3. Impacto Devastador
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                // ------------------------------------------------------------------
+                // MINIJUEGO 5: LOS ACERTIJOS DE EDWARD NYGMA EN EL MUSEO DE GOTHAM
+                // ------------------------------------------------------------------
+                else if (type === 'museum_riddles') {
+                    this.riddleIndex = 0;
+                    this.renderMuseumRiddle();
+                }
+
+                // ------------------------------------------------------------------
+                // MINIJUEGO 6: TRIANGULACIÓN SATELITAL (SUBSUELO DEL GCPD)
+                // ------------------------------------------------------------------
+                else if (type === 'satellite_triangulation') {
+                    container.innerHTML = `
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="font-mono text-xs uppercase text-emerald-400 font-bold"><i class="fa-solid fa-satellite mr-1.5"></i>SATÉLITE WAYNETECH: RASTREO DE SEÑAL DE ENYGMA</span>
+                                <span id="sat-sync-val" class="font-mono text-xs text-sky-400 font-bold">SINCRONIZACIÓN: 32%</span>
+                            </div>
+                            <p class="text-xs text-slate-300">
+                                Alinea la Frecuencia Portadora y la Profundidad del Escáner Térmico hasta alcanzar el <strong>100% de coincidencia</strong> sobre el distrito central de Gotham.
+                            </p>
+                            <div class="space-y-3 bg-slate-950 p-3.5 rounded-lg border border-slate-800 font-mono text-xs">
+                                <div>
+                                    <div class="flex justify-between text-slate-400 mb-1">
+                                        <span>FRECUENCIA PORTADORA (OBJETIVO: 80 MHz)</span>
+                                        <span id="sat-f1-label" class="text-emerald-400">40 MHz</span>
+                                    </div>
+                                    <input id="sat-slider-1" type="range" min="10" max="100" step="10" value="40" oninput="app.updateSatelliteTrace()" class="w-full accent-emerald-400 cursor-pointer">
+                                </div>
+                                <div>
+                                    <div class="flex justify-between text-slate-400 mb-1">
+                                        <span>SECTOR SUBTERRÁNEO (OBJETIVO: SECTOR 50 - GCPD)</span>
+                                        <span id="sat-f2-label" class="text-sky-400">SECTOR 20</span>
+                                    </div>
+                                    <input id="sat-slider-2" type="range" min="10" max="100" step="10" value="20" oninput="app.updateSatelliteTrace()" class="w-full accent-sky-400 cursor-pointer">
+                                </div>
+                            </div>
+                            <div id="sat-result-box" class="text-xs font-mono text-slate-400">
+                                Ajusta ambos controles para fijar la guarida secreta de Edward Nygma...
+                            </div>
+                        </div>
+                    `;
+                }
+
+                // ------------------------------------------------------------------
+                // MINIJUEGO 7: ESCAPE DE LA COMISARÍA CON JIM GORDON (GOLPE FINGIDO)
+                // ------------------------------------------------------------------
+                else if (type === 'gcpd_escape_qte') {
+                    this.gcpdStep = 0;
+                    container.innerHTML = `
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="font-mono text-xs uppercase text-red-400 font-bold animate-pulse"><i class="fa-solid fa-mask mr-1.5"></i>ALERTA CRÍTICA: RIESGO DE DESENMASCARAMIENTO</span>
+                                <span class="font-mono text-xs text-amber-400">ESTADO: ATURDIDO POR EXPLOSIÓN</span>
+                            </div>
+                            <p id="gcpd-qte-text" class="text-xs sm:text-sm text-slate-200 bg-slate-950 p-3.5 rounded-lg border border-red-500/40 leading-relaxed">
+                                Recobras el conocimiento entre el humo. Tres agentes del GCPD te sujetan contra el suelo. Uno de ellos estira los dedos hacia los cierres de tu capucha: <em>«¡Veamos quién demonios es este payaso!»</em>
+                            </p>
+                            <div id="gcpd-qte-actions">
+                                <button onclick="app.advanceGcpdEscape(1)" class="w-full py-3 px-4 rounded-lg bg-amber-600 hover:bg-amber-500 text-slate-950 font-mono text-xs font-bold uppercase tracking-wider transition">
+                                    1. Contener la respiración y esperar la entrada del Comisario Gordon
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                // ------------------------------------------------------------------
+                // MINIJUEGO 8: TABLERO DETECTIVESCO (ACE CHEMICALS)
+                // ------------------------------------------------------------------
+                else if (type === 'ace_deduction') {
+                    this.selectedClues = [];
+                    const clues = [
+                        { id: 'c1', title: 'Sulfato Industrial en las Bombas', desc: 'Compuesto sintetizado únicamente en los tanques del Puerto Químico.', correct: true },
+                        { id: 'c2', title: 'Cuentas Bancarias de Cobblepot', desc: 'Sobornos rutinarios a jueces municipales del Distrito Sur.', correct: false },
+                        { id: 'c3', title: 'Red de Fibra Óptica Abandonada', desc: 'Línea directa desde el subsuelo del GCPD hasta la planta de Ace Chemicals.', correct: true },
+                        { id: 'c4', title: 'Patrón Narcisista de Nygma', desc: 'Necesita un escenario elevado con transmisores de radio de alta potencia.', correct: true }
+                    ];
+                    container.innerHTML = `
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="font-mono text-xs uppercase text-sky-400 font-bold"><i class="fa-solid fa-magnifying-glass-chart mr-1.5"></i>RECONSTRUCCIÓN FORENSE: GUARIDA FINAL</span>
+                                <span id="clue-counter" class="font-mono text-xs text-amber-400">SELECCIONADAS: 0 / 3</span>
+                            </div>
+                            <p class="text-xs text-slate-300">
+                                Marca las <strong>3 evidencias verdaderas</strong> vinculadas a Edward Nygma para triangular su refugio final en Gotham:
+                            </p>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                                ${clues.map(c => `
+                                    <button id="clue-btn-${c.id}" onclick="app.toggleClue('${c.id}', ${c.correct})" class="p-3 rounded-lg bg-slate-950 border border-slate-700 hover:border-sky-400 text-left transition">
+                                        <div class="font-mono text-xs font-bold text-slate-100">${c.title}</div>
+                                        <div class="text-[11px] text-slate-400 mt-1">${c.desc}</div>
+                                    </button>
+                                `).join('')}
+                            </div>
+                            <div id="clue-feedback" class="text-xs font-mono text-slate-400 pt-1"></div>
+                        </div>
+                    `;
+                }
+
+                // ------------------------------------------------------------------
+                // MINIJUEGO 9: CONSOLA DE LA BATCUEVA 2014 (SUPERMAN & WONDER WOMAN 1944)
+                // ------------------------------------------------------------------
+                else if (type === 'trinity_files_2014') {
+                    this.files2014Inspected = { supes: false, diana: false };
+                    container.innerHTML = `
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="font-mono text-xs uppercase text-sky-400 font-bold"><i class="fa-solid fa-eye mr-1.5"></i>BATCOMPUTADORA 2014: PROTOCOLO DE RECONOCIMIENTO FACIAL</span>
+                                <span id="trinity-status" class="font-mono text-xs text-amber-400">EXPEDIENTES ANALIZADOS: 0 / 2</span>
+                            </div>
+                            <p class="text-xs text-slate-300">
+                                Examina ambos archivos en la consola de la Batcueva junto a Alfred para completar el cierre de <strong>BATMAN (2012-2014)</strong> y sembrar el futuro encuentro de la Trinidad:
+                            </p>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                <button id="btn-2014-supes" onclick="app.inspect2014File('supes')" class="p-3.5 rounded-xl bg-slate-950 border border-sky-500/40 hover:border-sky-400 text-left transition">
+                                    <div class="text-[10px] font-mono text-sky-400 uppercase">ARCHIVO METRÓPOLIS • 2014</div>
+                                    <div class="font-display font-bold text-sm text-white mt-0.5">El Hombre de Acero vs. Metallo</div>
+                                    <p class="text-[11px] text-slate-400 mt-1">Analizar el titular del Daily Planet y las cámaras de seguridad tras el desastre de LexCorp.</p>
+                                </button>
+                                <button id="btn-2014-diana" onclick="app.inspect2014File('diana')" class="p-3.5 rounded-xl bg-slate-950 border border-amber-500/40 hover:border-amber-400 text-left transition">
+                                    <div class="text-[10px] font-mono text-amber-400 uppercase">RECONOCIMIENTO FACIAL • 1944 / 2014</div>
+                                    <div class="font-display font-bold text-sm text-white mt-0.5">La Mujer de la Fotografía de 1944</div>
+                                    <p class="text-[11px] text-slate-400 mt-1">Cruzar los rostros de la multitud en Metrópolis con el archivo militar clasificado de la Segunda Guerra Mundial.</p>
+                                </button>
+                            </div>
+                            <div id="trinity-detail-box" class="hidden bg-slate-950 border border-slate-800 rounded-lg p-3.5 text-xs text-slate-200 space-y-2 leading-relaxed"></div>
+                        </div>
+                    `;
+                }
+            },
+
+            // --- Manejadores del Minijuego 1 (Ducard) ---
+            handleDucardStrike() {
+                const feedback = document.getElementById('ducard-feedback');
+                const scoreEl = document.getElementById('ducard-score');
+                if (this.ducardPos >= 35 && this.ducardPos <= 65) {
+                    soundEngine.playImpact(false);
+                    this.ducardStage++;
+                    this.ducardDir *= 1.22; // Más rápido cada vez
+                    scoreEl.textContent = `PARADAS: ${this.ducardStage} / 3`;
+                    feedback.className = 'font-mono text-xs text-emerald-400 font-bold';
+                    feedback.textContent = `¡Bloqueo Zen perfecto! Neutralizas la acometida feral de Ducard (${this.ducardStage}/3).`;
+
+                    if (this.ducardStage >= 3) {
+                        cancelAnimationFrame(this.ducardLoop);
+                        soundEngine.playSuccess();
+                        this.addInventoryItem('Disciplina Zen y Marcial de Ducard', 'Entrenamiento táctico adquirido bajo la tutela de Henri Ducard / Ra\'s al Ghul.');
+                        document.getElementById('minigame-container').innerHTML = `
+                            <div class="p-3 bg-emerald-950/40 border border-emerald-500/40 rounded-lg text-xs text-emerald-200 font-mono">
+                                <i class="fa-solid fa-circle-check mr-1.5"></i>ENTRENAMIENTO COMPLETADO: Has dominado la técnica de combate y el control del pulso frente a la espada de Ra's al Ghul.
+                            </div>
+                        `;
+                        this.renderChoices([
+                            {
+                                text: 'Dejar atrás las montañas y regresar a Gotham en el año 2012 para iniciar tu cruzada →',
+                                stats: { fear: +10, intel: +5 },
+                                next: 'ch2_first_night'
+                            }
+                        ]);
+                    }
+                } else {
+                    soundEngine.playClick(220, 0.1);
+                    feedback.className = 'font-mono text-xs text-red-400';
+                    feedback.textContent = 'Estocada demasiado rápida. Concéntrate en el centro dorado...';
+                }
+            },
+
+            // --- Manejadores del Minijuego 2 (Primera Noche / Disparo en el hombro) ---
+            stepAlleyBrawl(option) {
+                soundEngine.playImpact(true);
+                const log = document.getElementById('brawl-log');
+                const status = document.getElementById('brawl-status');
+                const btns = document.getElementById('brawl-buttons');
+
+                if (this.brawlTurn === 0) {
+                    this.brawlTurn = 1;
+                    status.textContent = 'ATRACADORES ACTIVOS: 1 (ARMADO)';
+                    log.innerHTML = option === 1
+                        ? 'Tus 1,96 metros de pura potencia estrellan al primer atracador contra el contenedor y desarman al segundo. Pero al girar, el tercer criminal dispara su calibre .38 a quemarropa. <strong>¡IMPACTO DIRECTO EN TU HOMBRO IZQUIERDO!</strong>'
+                        : 'Derribas a dos atracadores con precisión marcial, pero sin traje balístico ni capa para ocultar tu silueta, el tercer delincuente dispara en la penumbra. <strong>¡LA BALA ATRAVIESA TU HOMBRO!</strong>';
+                    this.stats.health = 55;
+                    this.updateStatsUI();
+
+                    btns.innerHTML = `
+                        <button onclick="app.stepAlleyBrawl(3)" class="col-span-2 p-3 rounded-lg bg-red-900/70 hover:bg-red-800 border border-red-500/50 text-center text-xs font-mono text-white font-bold transition">
+                            <i class="fa-solid fa-Gavel mr-1.5"></i>IGNORAR EL DOLOR DEL DISPARO Y NOQUEAR AL TIRADOR
+                        </button>
+                    `;
+                } else {
+                    soundEngine.playImpact(true);
+                    document.getElementById('minigame-container').innerHTML = `
+                        <div class="p-3 bg-red-950/50 border border-red-500/40 rounded-lg text-xs text-red-200 font-mono">
+                            <i class="fa-solid fa-droplet mr-1.5"></i>ALERTA MÉDICA: Atracadores neutralizados, pero sufres hemorragia en el hombro izquierdo (Integridad al 55%). Necesitas regresar a la Batcueva.
+                        </div>
+                    `;
+                    this.renderChoices([
+                        {
+                            text: 'Retirarse sangrando hacia la Batcueva antes de que lleguen las patrullas policiales →',
+                            stats: { intel: +5 },
+                            next: 'ch2_batcave_stitch'
+                        }
+                    ]);
+                }
+            },
+
+            // --- Manejadores del Minijuego 3 (Contabilidad Fantasma con Lucius Fox) ---
+            toggleFoxNode(idx) {
+                if (this.foxNodes[idx]) return;
+                this.foxNodes[idx] = true;
+                soundEngine.playClick(680, 0.06);
+
+                const btn = document.getElementById(`fox-btn-${idx}`);
+                btn.className = 'p-3 rounded-lg bg-emerald-950/50 border border-emerald-500/60 text-left font-mono text-xs transition';
+                btn.innerHTML += `<div class="text-emerald-400 font-bold mt-1"><i class="fa-solid fa-check mr-1"></i>RUTA FANTASMA ACTIVA</div>`;
+
+                const count = this.foxNodes.filter(Boolean).length;
+                document.getElementById('fox-progress').textContent = `FONDOS ENMASCARADOS: ${count} / 3`;
+
+                if (count === 3) {
+                    soundEngine.playSuccess();
+                    this.suitStatus = 'Kevlar + Fibra de Carbono & Batmóvil';
+                    this.stats.health = 100;
+                    this.stats.fear = Math.min(100, this.stats.fear + 15);
+                    this.addInventoryItem('Traje Blindado (Kevlar y Fibra de Carbono)', 'Proporcionado por Lucius Fox en la Torre Wayne.');
+                    this.addInventoryItem('Batmóvil de Grado Militar', 'Vehículo táctico pesado desviado mediante contabilidad fantasma.');
+                    this.updateStatsUI();
+
+                    document.getElementById('minigame-container').innerHTML = `
+                        <div class="p-3 bg-sky-950/50 border border-sky-500/50 rounded-lg text-xs text-sky-200 font-mono">
+                            <i class="fa-solid fa-shield-halved mr-1.5"></i>EQUIPO DESBLOQUEADO: Lucius Fox ha cerrado los libros contables sin rastro fiscal. El traje de Kevlar/fibra de carbono y el Batmóvil militar están operativos.
+                        </div>
+                    `;
+                    this.renderChoices([
+                        {
+                            text: 'Equipar el traje blindado y dirigir el Batmóvil hacia los muelles para interceptar a Oswald Cobblepot →',
+                            stats: { fear: +10 },
+                            next: 'ch4_docks_penguin'
+                        }
+                    ]);
+                }
+            },
+
+            // --- Manejadores del Minijuego 4 (Combate contra el Pingüino en los Muelles) ---
+            attackPenguin(move) {
+                soundEngine.playImpact(true);
+                const log = document.getElementById('penguin-combat-log');
+                if (move === 'smoke') {
+                    this.penguinHp -= 35;
+                    log.innerHTML = 'Apagas los focos del muelle de un Batarang. Los matones de Cobblepot disparan a ciegas mientras el Kevlar desvía una bala perdida.';
+                } else if (move === 'disarm') {
+                    this.penguinHp -= 40;
+                    log.innerHTML = 'Atrapaste el cañón del paraguas trucado de Oswald Cobblepot (Alfred Molina) y lo quebraste con una torsión brutal de antebrazo.';
+                } else {
+                    this.penguinHp -= 45;
+                    log.innerHTML = 'Descargas un golpe directo demoledor que derriba a Cobblepot sobre sus propias cajas de armamento ilegal.';
+                }
+
+                this.penguinHp = Math.max(0, this.penguinHp);
+                document.getElementById('penguin-hp-label').textContent = `DEFENSA COBBLEPOT: ${this.penguinHp}%`;
+                document.getElementById('penguin-hp-bar').style.width = `${this.penguinHp}%`;
+
+                if (this.penguinHp <= 0) {
+                    soundEngine.playSuccess();
+                    this.addInventoryItem('Registro Balístico de los Muelles', 'Pruebas del tráfico de armas de Oswald Cobblepot y la complicidad del GCPD.');
+                    document.getElementById('minigame-container').innerHTML = `
+                        <div class="p-3 bg-amber-950/50 border border-amber-500/50 rounded-lg text-xs text-amber-200 font-mono">
+                            <i class="fa-solid fa-handcuffs mr-1.5"></i>COBBLEPOT NEUTRALIZADO: El Pingüino cae de rodillas escupiendo insultos, aún convencido de que sus policías comprados lo sacarán libre en cinco minutos.
+                        </div>
+                    `;
+                    this.renderChoices([
+                        {
+                            text: 'Observar desde las sombras cómo actúa la policía al llegar y buscar a Jim Gordon en la azotea →',
+                            stats: { fear: +10, intel: +5 },
+                            next: 'ch4_rooftop_gordon'
+                        }
+                    ]);
+                }
+            },
+
+            // --- Manejadores del Minijuego 5 (Acertijos de Edward Nygma en el Museo) ---
+            renderMuseumRiddle() {
+                const riddles = [
+                    {
+                        title: 'BOMBA #1 • GALERÍA DE ANTIGÜEDADES',
+                        riddle: '«Me compran los hombres de abrigo de piel como Cobblepot, me visten los jueces y me esconden bajo una placa dorada. Si me nombras, el sistema se derrumba. ¿Qué soy?»',
+                        taunt: 'Edward Nygma (David Tennant) sonríe con altivez en las pantallas: "¿Demasiado complejo para un hombre que resuelve todo a puñetazos?"',
+                        options: ['La Corrupción / Impunidad', 'La Sombra', 'El Tiempo'],
+                        correct: 0
+                    },
+                    {
+                        title: 'BOMBA #2 • BÓVEDA CENTRAL DEL MUSEO',
+                        riddle: '«Nací en un callejón lluvioso entre perlas rotas, crecí en silencio y hoy llevo una máscara para ocultar mi verdadero apellido. Cuanto más golpeo en la oscuridad, más me parezco a lo que cazo. ¿Qué soy?»',
+                        taunt: 'La sonrisa de Nygma se tensa; su voz tiembla de rabia contenida: "¡Dejaste desactivada la primera carga! ¡Pero esta te obligará a mirarte al espejo!"',
+                        options: ['Un Relámpago', 'La Venganza / El Murciélago', 'Un Reloj sin Agujas'],
+                        correct: 1
+                    },
+                    {
+                        title: 'BOMBA #3 • NÚCLEO DE TRANSMISIÓN DE ENYGMA',
+                        riddle: '«Solo existe un trono que ningún billonario puede comprar ni ningún músculo puede derribar: está dentro de mi cráneo y exige que el mundo entero se arrodille ante él. ¿Cuál es el motor de mi juego?»',
+                        taunt: '¡Nygma estalla en un ataque de ira errático y golpea la cámara!: "¡¡DEJA DE DESACTIVAR MIS BOMBAS!! ¡¡SE SUPONÍA QUE DEBÍAS FALLAR ANTE TODA LA CIUDAD!!"',
+                        options: ['El Dinero de Gotham', 'El Intelecto Superior / El Ego', 'El Caos Azaroso'],
+                        correct: 1
+                    }
+                ];
+
+                const current = riddles[this.riddleIndex];
+                const container = document.getElementById('minigame-container');
+                container.innerHTML = `
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between">
+                            <span class="font-mono text-xs uppercase text-emerald-400 font-bold"><i class="fa-solid fa-stopwatch mr-1.5"></i>${current.title} (${this.riddleIndex + 1}/3)</span>
+                            <span class="font-mono text-xs text-red-400 animate-pulse">DETONADOR ACTIVO</span>
+                        </div>
+                        <p class="text-xs italic text-emerald-300 bg-emerald-950/40 p-2.5 rounded border border-emerald-500/30">
+                            ${current.taunt}
+                        </p>
+                        <div class="p-3.5 rounded-lg bg-slate-950 border border-slate-800 text-xs sm:text-sm text-white font-medium leading-relaxed">
+                            ${current.riddle}
+                        </div>
+                        <div id="riddle-feedback" class="text-xs font-mono text-amber-400"></div>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                            ${current.options.map((opt, idx) => `
+                                <button onclick="app.answerMuseumRiddle(${idx}, ${current.correct})" class="p-2.5 rounded-lg bg-slate-900 hover:bg-emerald-950/60 border border-slate-700 hover:border-emerald-400 font-mono text-xs text-slate-200 transition">
+                                    ${opt}
+                                </button>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            },
+
+            answerMuseumRiddle(choiceIdx, correctIdx) {
+                if (choiceIdx === correctIdx) {
+                    soundEngine.playSuccess();
+                    this.riddleIndex++;
+                    if (this.riddleIndex < 3) {
+                        this.renderMuseumRiddle();
+                    } else {
+                        this.addInventoryItem('Muestra de Explosivo y Señal de Enygma', 'Obtenida tras frustrar el atentado en el Museo de Gotham.');
+                        document.getElementById('minigame-container').innerHTML = `
+                            <div class="p-3 bg-emerald-950/50 border border-emerald-500/50 rounded-lg text-xs text-emerald-200 font-mono">
+                                <i class="fa-solid fa-bomb mr-1.5"></i>MUSEO ASEGURADO: Has desactivado las 3 bombas. En las pantallas, el Enygma de David Tennant grita fuera de sí antes de cortar abruptamente la señal.
+                            </div>
+                        `;
+                        this.renderChoices([
+                            {
+                                text: 'Usar los satélites de Empresas Wayne para rastrear el origen exacto de la transmisión de Nygma →',
+                                stats: { intel: +15 },
+                                next: 'ch6_satellite_trace'
+                            }
+                        ]);
+                    }
+                } else {
+                    soundEngine.playRiddlerGlitch();
+                    const fb = document.getElementById('riddle-feedback');
+                    if (fb) fb.textContent = 'Respuesta incorrecta. Analiza la psicología narcisista de Nygma e inténtalo de nuevo.';
+                }
+            },
+
+            // --- Manejadores del Minijuego 6 (Triangulación Satelital) ---
+            updateSatelliteTrace() {
+                soundEngine.playClick(640, 0.03);
+                const v1 = parseInt(document.getElementById('sat-slider-1').value, 10);
+                const v2 = parseInt(document.getElementById('sat-slider-2').value, 10);
+
+                document.getElementById('sat-f1-label').textContent = `${v1} MHz`;
+                document.getElementById('sat-f2-label').textContent = `SECTOR ${v2}`;
+
+                const diff1 = Math.abs(80 - v1);
+                const diff2 = Math.abs(50 - v2);
+                const sync = Math.max(0, 100 - (diff1 + diff2));
+
+                document.getElementById('sat-sync-val').textContent = `SINCRONIZACIÓN: ${sync}%`;
+
+                if (sync === 100) {
+                    soundEngine.playSuccess();
+                    document.getElementById('minigame-container').innerHTML = `
+                        <div class="p-3 bg-emerald-950/50 border border-emerald-500/50 rounded-lg text-xs text-emerald-200 font-mono">
+                            <i class="fa-solid fa-location-dot mr-1.5"></i>SEÑAL TRIANGULADA AL 100%: Coordenadas fijadas. La guarida secreta de Enygma está ubicada exactamente <strong>debajo de la comisaría de policía de Gotham (GCPD)</strong>.
+                        </div>
+                    `;
+                    this.renderChoices([
+                        {
+                            text: 'Infiltrarse en los túneles bajo la comisaría del GCPD para confrontar a Edward Nygma →',
+                            stats: { intel: +10 },
+                            next: 'ch6_gcpd_ambush'
+                        }
+                    ]);
+                }
+            },
+
+            // --- Manejadores del Minijuego 7 (Escape bajo la Comisaría con Gordon) ---
+            advanceGcpdEscape(step) {
+                const textEl = document.getElementById('gcpd-qte-text');
+                const actionsEl = document.getElementById('gcpd-qte-actions');
+
+                if (step === 1) {
+                    soundEngine.playClick(480, 0.05);
+                    textEl.innerHTML = `
+                        Justo cuando los dedos de los policías rozan tu mentón, el <strong>Comisario Jim Gordon</strong> (<em>Jon Hamm</em>) irrumpe en la sala con el arma desenfundada y voz atronadora:<br><br>
+                        —<em>«¡¡ATRÁS TODO EL MUNDO!! ¡La estructura está minada con explosivos secundarios, despejen el subsuelo ahora mismo! ¡Yo me encargo de interrogarlo!»</em><br><br>
+                        Los agentes dudan, pero obedecen y salen al pasillo mirando por la ventanilla. Gordon te levanta del suelo y te susurra entre dientes: <em>«Golpéame en la mandíbula. Fuerte y que parezca real, o nos descubrirán a los dos»</em>.
+                    `;
+                    actionsEl.innerHTML = `
+                        <button onclick="app.advanceGcpdEscape(2)" class="w-full py-3 px-4 rounded-lg bg-red-600 hover:bg-red-500 text-white font-mono text-xs font-bold uppercase tracking-wider transition shadow-lg">
+                            <i class="fa-solid fa-hand-fist mr-1.5"></i>2. FINGIR QUE GOLPEAS A GORDON Y DETONAR CÁPSULA DE HUMO PARA ESCAPAR
+                        </button>
+                    `;
+                } else if (step === 2) {
+                    soundEngine.playImpact(true);
+                    document.getElementById('minigame-container').innerHTML = `
+                        <div class="p-3 bg-sky-950/50 border border-sky-500/50 rounded-lg text-xs text-sky-200 font-mono">
+                            <i class="fa-solid fa-user-shield mr-1.5"></i>ESCAPE EXITOSO: El impacto teatral lanza a Gordon contra la mesa ante los ojos de la policía. Desapareces por el hueco del ascensor manteniendo intacto el secreto de Bruce Wayne.
+                        </div>
+                    `;
+                    this.renderChoices([
+                        {
+                            text: 'Subir al Batmóvil y deducir cuál es la verdadera base final de Enygma →',
+                            stats: { intel: +10, fear: +10 },
+                            next: 'ch7_detective_deduction'
+                        }
+                    ]);
+                }
+            },
+
+            // --- Manejadores del Minijuego 8 (Tablero Detectivesco Ace Chemicals) ---
+            toggleClue(id, isCorrect) {
+                const btn = document.getElementById(`clue-btn-${id}`);
+                const fb = document.getElementById('clue-feedback');
+
+                if (!isCorrect) {
+                    soundEngine.playClick(220, 0.1);
+                    fb.className = 'text-xs font-mono text-red-400 pt-1';
+                    fb.textContent = 'Esa pista pertenece al caso de Cobblepot, no a la base de Enygma.';
+                    return;
+                }
+
+                if (!this.selectedClues.includes(id)) {
+                    soundEngine.playClick(700, 0.05);
+                    this.selectedClues.push(id);
+                    btn.className = 'p-3 rounded-lg bg-emerald-950/60 border border-emerald-400 text-left transition';
+                }
+
+                document.getElementById('clue-counter').textContent = `SELECCIONADAS: ${this.selectedClues.length} / 3`;
+
+                if (this.selectedClues.length === 3) {
+                    soundEngine.playSuccess();
+                    document.getElementById('minigame-container').innerHTML = `
+                        <div class="p-3 bg-emerald-950/50 border border-emerald-500/50 rounded-lg text-xs text-emerald-200 font-mono">
+                            <i class="fa-solid fa-flask mr-1.5"></i>DEDUCCIÓN COMPLETADA: La verdadera base final de Edward Nygma es la planta industrial <strong>ACE CHEMICALS</strong>.
+                        </div>
+                    `;
+                    this.renderChoices([
+                        {
+                            text: 'Irrumpir en Ace Chemicals y poner fin al juego de Enygma de una vez por todas →',
+                            stats: { intel: +15 },
+                            next: 'ch7_ace_climax'
+                        }
+                    ]);
+                }
+            },
+
+            // --- Manejadores del Minijuego 9 (Consola Post-Créditos 2014) ---
+            inspect2014File(fileKey) {
+                soundEngine.playClick(660, 0.05);
+                this.files2014Inspected[fileKey] = true;
+                const detailBox = document.getElementById('trinity-detail-box');
+                detailBox.classList.remove('hidden');
+
+                if (fileKey === 'supes') {
+                    document.getElementById('btn-2014-supes').classList.add('ring-2', 'ring-sky-400');
+                    detailBox.innerHTML = `
+                        <div class="font-mono text-xs text-sky-400 font-bold uppercase">REPORTE METRÓPOLIS (2014) • EL HOMBRE DE ACERO</div>
+                        <p>Las cámaras de Metrópolis muestran a <strong>Clark Kent / Superman (Matt Bomer, 27 años)</strong> salvando a miles de personas —incluida la reportera <strong>Lois Lane (Mary Elizabeth Winstead)</strong>— durante el colapso del evento de <strong>Lex Luthor (Michael Fassbender)</strong>, y derrotando después a <strong>John Corben / Metallo (Joel Kinnaman)</strong> a pesar de la radiación de Kryptonita verde.</p>
+                    `;
+                } else {
+                    document.getElementById('btn-2014-diana').classList.add('ring-2', 'ring-amber-400');
+                    detailBox.innerHTML = `
+                        <div class="font-mono text-xs text-amber-400 font-bold uppercase">COINCIDENCIA FACIAL: ARCHIVO CLASIFICADO 1944 (WONDER WOMAN)</div>
+                        <p>El software de reconocimiento facial de grado militar aísla a una mujer entre la multitud que huía en Metrópolis: <strong>Diana (Gal Gadot)</strong>. Estaba quieta, evaluando a Superman sin intervenir. Al lado, el ordenador traza una coincidencia del 100% con una fotografía en blanco y negro fechada en <strong>1944</strong> en una trinchera aliada junto a <strong>Steve Trevor (Charlie Hunnam)</strong>. No ha envejecido un solo día en setenta años.</p>
+                        <p class="italic text-amber-300 mt-1">—«La pregunta es, señor... ¿Qué se necesita para obligar a alguien así a salir de las sombras?» —murmura Alfred.</p>
+                    `;
+                }
+
+                const total = (this.files2014Inspected.supes ? 1 : 0) + (this.files2014Inspected.diana ? 1 : 0);
+                document.getElementById('trinity-status').textContent = `EXPEDIENTES ANALIZADOS: ${total} / 2`;
+
+                if (total === 2) {
+                    soundEngine.playSuccess();
+                    this.addInventoryItem('Dossier Trinidad (2014)', 'Periódico de Superman en Metrópolis y fotografía clasificada de Diana en 1944.');
+                    this.renderChoices([
+                        {
+                            text: 'FINALIZAR CAMPAÑA: Ver resumen de BATMAN (2012) o explorar libremente los Dossiers y Capítulos',
+                            stats: { intel: +10 },
+                            next: 'ch1_alley'
+                        }
+                    ]);
+                    // Reemplazar la acción del botón final para mostrar pantalla de victoria
+                    const choicesContainer = document.getElementById('choices-container');
+                    choicesContainer.innerHTML = `
+                        <button onclick="app.showVictoryModal()" class="w-full p-4 rounded-xl bg-gradient-to-r from-amber-500/30 to-sky-500/30 hover:from-amber-500/40 hover:to-sky-500/40 border border-amber-400/60 text-center font-display font-bold text-sm sm:text-base text-white tracking-wider transition shadow-xl">
+                            <i class="fa-solid fa-award text-amber-400 mr-2"></i>COMPLETAR ARCHIVO: BATMAN (2012) • VER INFORME FINAL DEL DCU NV
+                        </button>
+                    `;
+                }
+            },
+
+            /* ======================================================================
+               8. RENDERIZADO DE PESTAÑAS SECUNDARIAS Y MODALES
+               ====================================================================== */
+            renderCastTab() {
+                const grid = document.getElementById('cast-grid');
+                grid.innerHTML = Object.values(CAST_DB).map(c => `
+                    <div class="bg-slate-900/90 border border-slate-800 hover:border-amber-500/50 rounded-xl p-4 flex flex-col justify-between transition group">
+                        <div>
+                            <div class="flex items-center gap-3 mb-3">
+                                <div class="w-14 h-14 rounded-xl bg-slate-950 border border-slate-700 overflow-hidden shrink-0">
+                                    ${c.svgAvatar}
+                                </div>
+                                <div>
+                                    <span class="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-amber-500/15 text-amber-300 border border-amber-500/30">${c.actor}</span>
+                                    <h3 class="font-display font-bold text-base text-white mt-1">${c.name}</h3>
+                                    <div class="text-xs font-mono text-slate-400">${c.age} • ${c.height}</div>
+                                </div>
+                            </div>
+                            <p class="text-xs text-slate-300 leading-relaxed mb-3">${c.summary}</p>
+                            <blockquote class="text-[11px] italic text-amber-200/90 bg-slate-950/80 p-2.5 rounded-lg border-l-2 border-amber-400 mb-3">
+                                ${c.quote}
+                            </blockquote>
+                        </div>
+                        <button onclick="app.openCharacterModal('${c.id}')" class="w-full py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-mono text-sky-300 border border-slate-700 transition">
+                            <i class="fa-solid fa-file-lines mr-1.5"></i>Leer Dossier Completo
+                        </button>
+                    </div>
+                `).join('');
+            },
+
+            openCharacterModal(charId) {
+                soundEngine.playClick(600, 0.04);
+                const c = CAST_DB[charId] || CAST_DB.bruce;
+                const modal = document.getElementById('custom-modal');
+                document.getElementById('modal-subtitle').textContent = `DOSSIER DE REPARTO • BATMAN (2012)`;
+                document.getElementById('modal-body').innerHTML = `
+                    <div class="space-y-4">
+                        <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 pb-4 border-b border-slate-800">
+                            <div class="w-20 h-20 rounded-xl bg-slate-900 border border-amber-500/50 overflow-hidden shrink-0">
+                                ${c.svgAvatar}
+                            </div>
+                            <div>
+                                <div class="flex flex-wrap items-center gap-2">
+                                    <span class="text-xs font-mono px-2.5 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/40 font-bold">Actor: ${c.actor}</span>
+                                    <span class="text-xs font-mono px-2.5 py-0.5 rounded bg-sky-500/15 text-sky-300 border border-sky-500/30">${c.age}</span>
+                                </div>
+                                <h3 class="font-display text-2xl font-bold text-white mt-1.5">${c.name}</h3>
+                                <p class="text-xs font-mono text-slate-400">${c.role} • ${c.height}</p>
+                            </div>
+                        </div>
+                        <blockquote class="text-xs sm:text-sm italic text-amber-300 bg-slate-900 p-3.5 rounded-xl border-l-4 border-amber-400">
+                            ${c.quote}
+                        </blockquote>
+                        <div class="space-y-3 text-xs sm:text-sm text-slate-200 leading-relaxed whitespace-pre-line">
+                            ${c.fullBio}
+                        </div>
+                    </div>
+                `;
+                modal.classList.remove('hidden');
+            },
+
+            renderActsTab() {
+                const chaptersList = [
+                    { num: 1, scene: 'ch1_alley', title: 'Prólogo: El Callejón y la Montaña', desc: 'El asesinato de Thomas y Martha Wayne a manos de Jack Napier y el entrenamiento marcial y zen de Bruce con Henri Ducard / Ra\'s al Ghul (Alexander Siddig).' },
+                    { num: 2, scene: 'ch2_first_night', title: 'Acto I (Parte 1): El Colapso del Justiciero Solitario', desc: 'Regreso a Gotham en 2012 con 30 años. Primera noche sin traje deteniendo atracadores, el disparo en el hombro y la sutura de Alfred (Anton Lesser).' },
+                    { num: 3, scene: 'ch3_wayne_tower', title: 'Acto I (Parte 2): Contabilidad Fantasma en la Torre Wayne', desc: 'Reunión con Lucius Fox (Giancarlo Esposito) para desviar fondos hacia el traje de Kevlar/fibra de carbono y el Batmóvil de grado militar.' },
+                    { num: 4, scene: 'ch4_docks_penguin', title: 'Acto II: Corrupción en los Muelles y el Pacto con Gordon', desc: 'Primera misión oficial contra Oswald Cobblepot / El Pingüino (Alfred Molina), su liberación por la policía corrupta y la alianza en la azotea con Jim Gordon (Jon Hamm).' },
+                    { num: 5, scene: 'ch5_enygma_broadcast', title: 'Acto III: La Amenaza de Enygma y el Asalto al Museo', desc: 'Edward Nygma (David Tennant) hackea las pantallas de Gotham y coloca bombas en el museo. Duelo intelectual contrarreloj.' },
+                    { num: 6, scene: 'ch6_satellite_trace', title: 'Acto IV: El Gran Giro Bajo la Comisaría (GCPD)', desc: 'Rastreo satelital hasta el subsuelo del GCPD, la revelación de que Nygma conoce la identidad de Bruce Wayne, la explosión y el escape fingiendo golpear a Gordon.' },
+                    { num: 7, scene: 'ch7_detective_deduction', title: 'Acto V: Clímax en Ace Chemicals', desc: 'Deducción detectivesca de la base final de Nygma, confesión narcisista y derrota fulminante para entregarlo en las puertas de la comisaría.' },
+                    { num: 8, scene: 'ch8_epilogue_2012', title: 'Epílogo y Post-Créditos (Salto a 2014)', desc: 'El silencio garantizado por el ego de Nygma y el salto a 2014 con la aparición de Superman en Metrópolis y el archivo de Wonder Woman de 1944.' }
+                ];
+
+                const grid = document.getElementById('acts-grid');
+                grid.innerHTML = chaptersList.map(ch => {
+                    const unlocked = this.unlockedChapters.includes(ch.num);
+                    return `
+                        <div class="bg-slate-900/90 border ${unlocked ? 'border-slate-700 hover:border-amber-500/50' : 'border-slate-800/60 opacity-60'} rounded-xl p-4 flex flex-col justify-between gap-3 transition">
+                            <div>
+                                <div class="flex items-center justify-between mb-1.5">
+                                    <span class="font-mono text-xs uppercase px-2 py-0.5 rounded ${unlocked ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40' : 'bg-slate-800 text-slate-500'}">CAPÍTULO 0${ch.num}</span>
+                                    <span class="font-mono text-xs ${unlocked ? 'text-emerald-400' : 'text-slate-500'}">
+                                        <i class="fa-solid ${unlocked ? 'fa-lock-open' : 'fa-lock'} mr-1"></i>${unlocked ? 'DESBLOQUEADO' : 'BLOQUEADO'}
+                                    </span>
+                                </div>
+                                <h3 class="font-display font-bold text-base text-white">${ch.title}</h3>
+                                <p class="text-xs text-slate-300 mt-1 leading-relaxed">${ch.desc}</p>
+                            </div>
+                            ${unlocked ? `
+                                <button onclick="app.jumpToChapter(${ch.num})" class="w-full py-2 rounded-lg bg-slate-800 hover:bg-amber-500/20 hover:text-amber-300 text-xs font-mono text-sky-300 border border-slate-700 transition">
+                                    <i class="fa-solid fa-play mr-1.5"></i>Jugar este Capítulo
+                                </button>
+                            ` : `
+                                <div class="text-[11px] font-mono text-slate-500 text-center py-1.5 bg-slate-950 rounded-lg border border-slate-800">
+                                    Avanza en la historia o usa el botón superior para desbloquear
+                                </div>
+                            `}
+                        </div>
+                    `;
+                }).join('');
+            },
+
+            jumpToChapter(chapterNum) {
+                const map = {
+                    1: 'ch1_alley',
+                    2: 'ch2_first_night',
+                    3: 'ch3_wayne_tower',
+                    4: 'ch4_docks_penguin',
+                    5: 'ch5_enygma_broadcast',
+                    6: 'ch6_satellite_trace',
+                    7: 'ch7_detective_deduction',
+                    8: 'ch8_epilogue_2012'
+                };
+                if (map[chapterNum]) {
+                    this.switchTab('story');
+                    this.loadScene(map[chapterNum]);
+                }
+            },
+
+            unlockAllChapters() {
+                soundEngine.playSuccess();
+                this.unlockedChapters = [1, 2, 3, 4, 5, 6, 7, 8];
+                this.saveProgress();
+                this.renderActsTab();
+                this.renderChapterPills(STORY_SCENES[this.currentSceneId].chapter);
+            },
+
+            renderWorldTab() {
+                const eggs = [
+                    {
+                        year: '2007 - 2012 • SECTOR 2814',
+                        title: 'El Protector Ausente (Green Lantern)',
+                        desc: 'La humanidad vive creyendo estar sola en el cosmos. Hal Jordan (Chris Pine, 32 años) fue elegido por el anillo de Abin Sur en 2007, pero opera exclusivamente en el espacio profundo tras descubrir la dictadura de Sinestro (Mark Strong) en Korugar y el asesinato de un Guardián en Oa.'
+                    },
+                    {
+                        year: '1944 - 2013 • ARCHIVO MILITAR',
+                        title: 'El Fantasma Entre Nosotros (Wonder Woman)',
+                        desc: 'Tras enfrentar las trincheras de la Segunda Guerra Mundial en 1944, descubrir la manipulación de Ares/Hades (Mads Mikkelsen) y sufrir el sacrificio de Steve Trevor (Charlie Hunnam), Diana (Gal Gadot) borró todo rastro de su existencia militar y ha vivido setenta años en el anonimato.'
+                    },
+                    {
+                        year: '2014 • METRÓPOLIS',
+                        title: 'El Faro a Plena Luz del Día (Superman)',
+                        desc: 'A diferencia de Batman en las sombras de Gotham, Clark Kent (Matt Bomer, 27 años) honra el mensaje de Jonathan y Martha Kent: viste colores brillantes y detiene el desastre de LexCorp y la furia de Metallo frente a miles de cámaras, rompiendo el silencio global.'
+                    }
+                ];
+
+                document.getElementById('world-easter-eggs').innerHTML = eggs.map(e => `
+                    <div class="bg-slate-950 border border-slate-800 rounded-xl p-4 space-y-2">
+                        <div class="text-[10px] font-mono text-amber-400 uppercase tracking-wider">${e.year}</div>
+                        <h4 class="font-display font-bold text-sm text-white">${e.title}</h4>
+                        <p class="text-xs text-slate-300 leading-relaxed">${e.desc}</p>
+                    </div>
+                `).join('');
+            },
+
+            showTitleModal() {
+                soundEngine.playClick(520, 0.05);
+                const modal = document.getElementById('custom-modal');
+                document.getElementById('modal-subtitle').textContent = 'DCU NV • FASE 1 • ARCHIVO MAESTRO';
+                document.getElementById('modal-body').innerHTML = `
+                    <div class="space-y-4">
+                        <h3 class="font-display text-2xl font-bold text-amber-400">BATMAN (2012) - EXPERIENCIA NARRATIVA</h3>
+                        <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                            Bienvenido a la adaptación interactiva oficial de <strong>BATMAN (2012)</strong>, la piedra angular de tu Universo Cinematográfico de DC Comics. Cada acto, diálogo, rasgo psicológico y giro argumental respeta fielmente el guion y el reparto de tu Fase 1:
+                        </p>
+                        <ul class="text-xs text-slate-300 space-y-1.5 font-mono bg-slate-900 p-3.5 rounded-xl border border-slate-800">
+                            <li>• <strong class="text-white">Bruce Wayne / Batman:</strong> Armie Hammer (30 años, 1,96m)</li>
+                            <li>• <strong class="text-white">Alfred Pennyworth:</strong> Anton Lesser (55 años)</li>
+                            <li>• <strong class="text-white">Comisario Jim Gordon:</strong> Jon Hamm (36 años)</li>
+                            <li>• <strong class="text-white">Lucius Fox:</strong> Giancarlo Esposito (54 años)</li>
+                            <li>• <strong class="text-white">Edward Nygma / El Acertijo:</strong> David Tennant (41 años)</li>
+                            <li>• <strong class="text-white">Oswald Cobblepot / El Pingüino:</strong> Alfred Molina (59 años)</li>
+                            <li>• <strong class="text-white">Henri Ducard / Ra's al Ghul:</strong> Alexander Siddig (47 años)</li>
+                        </ul>
+                        <div class="flex justify-end pt-2">
+                            <button onclick="app.closeModal()" class="px-4 py-2 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 font-mono text-xs font-bold">Continuar en la Batcomputadora</button>
+                        </div>
+                    </div>
+                `;
+                modal.classList.remove('hidden');
+            },
+
+            showVictoryModal() {
+                soundEngine.playSuccess();
+                const modal = document.getElementById('custom-modal');
+                document.getElementById('modal-subtitle').textContent = 'CAMPAÑA COMPLETADA • FASE 1 DCU NV';
+                document.getElementById('modal-body').innerHTML = `
+                    <div class="space-y-4 text-center py-2">
+                        <div class="w-16 h-16 rounded-2xl bg-amber-500/20 border border-amber-400 text-amber-400 flex items-center justify-center mx-auto text-3xl shadow-lg">
+                            <i class="fa-solid fa-crown"></i>
+                        </div>
+                        <h3 class="font-display text-2xl font-bold text-white">EL CABALLERO OSCURO DE GOTHAM</h3>
+                        <p class="text-xs sm:text-sm text-slate-300 max-w-lg mx-auto leading-relaxed">
+                            Has vivido la historia completa de <strong>BATMAN (2012)</strong>: desde el callejón con Jack Napier y el acero de Ducard, hasta el pacto con Gordon, la caída de Enygma en Ace Chemicals y el amanecer de Superman y Wonder Woman en 2014.
+                        </p>
+                        <div class="grid grid-cols-3 gap-2 max-w-md mx-auto bg-slate-900 p-3 rounded-xl border border-slate-800 font-mono text-xs">
+                            <div>
+                                <div class="text-slate-400 text-[10px]">BLINDAJE</div>
+                                <div class="text-sky-400 font-bold">${this.stats.health}%</div>
+                            </div>
+                            <div>
+                                <div class="text-slate-400 text-[10px]">INTIMIDACIÓN</div>
+                                <div class="text-amber-400 font-bold">${this.stats.fear}%</div>
+                            </div>
+                            <div>
+                                <div class="text-slate-400 text-[10px]">INTELECTO</div>
+                                <div class="text-emerald-400 font-bold">${this.stats.intel}%</div>
+                            </div>
+                        </div>
+                        <div class="flex flex-wrap items-center justify-center gap-3 pt-3">
+                            <button onclick="app.closeModal(); app.switchTab('acts');" class="px-4 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-sky-300 font-mono text-xs border border-slate-700">
+                                <i class="fa-solid fa-folder-tree mr-1.5"></i>Rejugar Cualquier Capítulo
+                            </button>
+                            <button onclick="app.closeModal(); app.switchTab('cast');" class="px-4 py-2 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 font-mono text-xs font-bold">
+                                <i class="fa-solid fa-id-badge mr-1.5"></i>Explorar Dossiers del Reparto
+                            </button>
+                        </div>
+                    </div>
+                `;
+                modal.classList.remove('hidden');
+            },
+
+            closeModal() {
+                document.getElementById('custom-modal').classList.add('hidden');
+            }
+        };
+
+        /* ==========================================================================
+           9. MOTOR DE LLUVIA NEO-NOIR EN CANVAS (GOTHAM 2012)
+           ========================================================================== */
+        window.rainColorMode = 'noir';
+        function initRainCanvas() {
+            const canvas = document.getElementById('rain-canvas');
+            const ctx = canvas.getContext('2d');
+            let width = canvas.width = window.innerWidth;
+            let height = canvas.height = window.innerHeight;
+
+            window.addEventListener('resize', () => {
+                width = canvas.width = window.innerWidth;
+                height = canvas.height = window.innerHeight;
+            });
+
+            const drops = Array.from({ length: 110 }, () => ({
+                x: Math.random() * width,
+                y: Math.random() * height,
+                length: Math.random() * 18 + 10,
+                speed: Math.random() * 7 + 8,
+                opacity: Math.random() * 0.35 + 0.1
+            }));
+
+            function renderRain() {
+                ctx.clearRect(0, 0, width, height);
+                const isHack = window.rainColorMode === 'enygma';
+
+                for (let d of drops) {
+                    ctx.beginPath();
+                    ctx.moveTo(d.x, d.y);
+                    ctx.lineTo(d.x - 1.5, d.y + d.length);
+                    ctx.strokeStyle = isHack
+                        ? `rgba(16, 185, 129, ${d.opacity})`
+                        : `rgba(148, 163, 184, ${d.opacity})`;
+                    ctx.lineWidth = 1.1;
+                    ctx.stroke();
+
+                    d.y += d.speed;
+                    d.x -= 0.4;
+                    if (d.y > height) {
+                        d.y = -20;
+                        d.x = Math.random() * width;
+                    }
+                }
+                requestAnimationFrame(renderRain);
+            }
+            requestAnimationFrame(renderRain);
+        }
+
+        window.onload = function () {
+            app.init();
+        };
+    </script>
+</body>
+</html>

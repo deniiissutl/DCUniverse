@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BATMAN: GOTHAM 2012 | DCU NV</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        gothamDark: '#090d16',
+                        gothamPanel: '#111827',
+                        gothamCard: '#1f2937',
+                        batYellow: '#f59e0b',
+                        batYellowHover: '#d97706',
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Inter:wght@300;400;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #090d16;
+            color: #f3f4f6;
+        }
+        .mono-font {
+            font-family: 'Share Tech Mono', monospace;
+        }
+        .glow-gold {
+            text-shadow: 0 0 10px rgba(245, 158, 11, 0.5);
+        }
+        .glow-box {
+            box-shadow: 0 0 20px rgba(245, 158, 11, 0.15);
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #090d16;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #374151;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #4b5563;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-batYellow selection:text-black">
+
+    <!-- TOP HEADER -->
+    <header class="bg-gothamPanel border-b border-gray-800 sticky top-0 z-50 px-4 py-3 shadow-md">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+            <!-- Logo & Title -->
+            <div class="flex items-center gap-3">
+                <div class="bg-batYellow text-black p-2 rounded font-bold text-xl flex items-center justify-center glow-box">
+                    <i class="fa-solid fa-bat"></i>
+                </div>
+                <div>
+                    <div class="text-xs mono-font text-batYellow tracking-widest">DCU NV • FASE 1</div>
+                    <h1 class="text-lg sm:text-xl font-bold tracking-wide uppercase">BATMAN: GOTHAM 2012</h1>
+                </div>
+            </div>
+
+            <!-- Navigation Tabs -->
+            <nav class="flex flex-wrap items-center gap-2">
+                <button onclick="app.switchTab('story')" id="tab-story" class="px-3 py-1.5 rounded text-xs sm:text-sm font-semibold transition bg-batYellow text-black shadow">
+                    <i class="fa-solid fa-book-open mr-1.5"></i> HISTORIA
+                </button>
+                <button onclick="app.switchTab('cast')" id="tab-cast" class="px-3 py-1.5 rounded text-xs sm:text-sm font-semibold transition bg-gray-800 text-gray-300 hover:bg-gray-700">
+                    <i class="fa-solid fa-users mr-1.5"></i> REPARTO (7)
+                </button>
+                <button onclick="app.switchTab('chapters')" id="tab-chapters" class="px-3 py-1.5 rounded text-xs sm:text-sm font-semibold transition bg-gray-800 text-gray-300 hover:bg-gray-700">
+                    <i class="fa-solid fa-list-ul mr-1.5"></i> CAPÍTULOS
+                </button>
+                <button onclick="app.switchTab('intel')" id="tab-intel" class="px-3 py-1.5 rounded text-xs sm:text-sm font-semibold transition bg-gray-800 text-gray-300 hover:bg-gray-700">
+                    <i class="fa-solid fa-satellite-dish mr-1.5"></i> RED GOTHAM / DCU
+                </button>
+                <button onclick="app.toggleAudio()" id="tab-audio" class="px-3 py-1.5 rounded text-xs sm:text-sm font-semibold transition bg-gray-800 text-gray-300 hover:bg-gray-700 border border-gray-700">
+                    <i class="fa-solid fa-volume-high mr-1.5" id="audio-icon"></i> <span id="audio-text">AUDIO ON</span>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- MAIN GAME CONTAINER -->
+    <main class="flex-grow max-w-7xl w-full mx-auto p-4 sm:p-6 grid grid-cols-1 lg:grid-cols-4 gap-6">
+
+        <!-- LEFT/MAIN CONTENT AREA (3 Cols on Desktop) -->
+        <div class="lg:col-span-3 flex flex-col gap-6">
+
+            <!-- STATS BAR -->
+            <div class="bg-gothamPanel border border-gray-800 rounded-lg p-3 grid grid-cols-1 sm:grid-cols-3 gap-4 glow-box">
+                <div>
+                    <div class="flex justify-between text-xs mono-font mb-1 text-gray-400">
+                        <span>INTEGRIDAD FÍSICA</span>
+                        <span id="stat-hp" class="text-green-400 font-bold">100%</span>
+                    </div>
+                    <div class="w-full bg-gray-800 h-2 rounded-full overflow-hidden">
+                        <div id="bar-hp" class="bg-green-500 h-full transition-all duration-300" style="width: 100%"></div>
+                    </div>
+                </div>
+                <div>
+                    <div class="flex justify-between text-xs mono-font mb-1 text-gray-400">
+                        <span>INTIMIDACIÓN</span>
+                        <span id="stat-intimidation" class="text-batYellow font-bold">70%</span>
+                    </div>
+                    <div class="w-full bg-gray-800 h-2 rounded-full overflow-hidden">
+                        <div id="bar-intimidation" class="bg-batYellow h-full transition-all duration-300" style="width: 70%"></div>
+                    </div>
+                </div>
+                <div>
+                    <div class="flex justify-between text-xs mono-font mb-1 text-gray-400">
+                        <span>ANÁLISIS / PISTAS</span>
+                        <span id="stat-intel" class="text-blue-400 font-bold">55%</span>
+                    </div>
+                    <div class="w-full bg-gray-800 h-2 rounded-full overflow-hidden">
+                        <div id="bar-intel" class="bg-blue-500 h-full transition-all duration-300" style="width: 55%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VIEW: STORY / CHAPTERS CONTENT -->
+            <div id="view-story" class="flex flex-col gap-6">
+                <!-- DYNAMIC CHAPTER CONTAINER -->
+                <div id="chapter-container" class="bg-gothamPanel border border-gray-800 rounded-lg p-5 sm:p-8 relative glow-box">
+                    <!-- Inject dynamically by app.js -->
+                </div>
+            </div>
+
+            <!-- VIEW: CAST DATABASE -->
+            <div id="view-cast" class="hidden flex flex-col gap-6">
+                <div class="bg-gothamPanel border border-gray-800 rounded-lg p-6 glow-box">
+                    <h2 class="text-2xl font-bold mb-2 text-batYellow"><i class="fa-solid fa-users mr-2"></i> REPARTO OFICIAL • DCU NV 2012</h2>
+                    <p class="text-gray-400 text-sm mb-6">Selecciona un personaje para consultar su perfil psicológico, físico y rol dentro del universo cinematográfico.</p>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" id="cast-grid">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- VIEW: CHAPTER SELECTOR -->
+            <div id="view-chapters" class="hidden flex flex-col gap-6">
+                <div class="bg-gothamPanel border border-gray-800 rounded-lg p-6 glow-box">
+                    <h2 class="text-2xl font-bold mb-2 text-batYellow"><i class="fa-solid fa-list-ul mr-2"></i> SELECCIÓN DE CAPÍTULOS</h2>
+                    <p class="text-gray-400 text-sm mb-6">Accede directamente a cualquier punto de la campaña de Batman (2012).</p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4" id="chapter-list-grid">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- VIEW: INTEL / RED GOTHAM -->
+            <div id="view-intel" class="hidden flex flex-col gap-6">
+                <div class="bg-gothamPanel border border-gray-800 rounded-lg p-6 glow-box">
+                    <h2 class="text-2xl font-bold mb-2 text-batYellow"><i class="fa-solid fa-satellite-dish mr-2"></i> ARCHIVOS CLASIFICADOS Y FRECUENCIAS</h2>
+                    <p class="text-gray-400 text-sm mb-6">Escáner de transmisiones interceptadas y notas de inteligencia global del DCU.</p>
+                    <div class="space-y-4" id="intel-list">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- RIGHT SIDEBAR (1 Col on Desktop) -->
+        <div class="flex flex-col gap-6">
+
+            <!-- CURRENT STATUS & GEAR -->
+            <div class="bg-gothamPanel border border-gray-800 rounded-lg p-4 glow-box">
+                <div class="flex items-center justify-between mb-3 border-b border-gray-800 pb-2">
+                    <span class="text-xs mono-font text-batYellow tracking-widest">EQUIPO ACTIVO</span>
+                    <button onclick="app.resetGame()" class="text-gray-400 hover:text-white text-xs" title="Reiniciar Partida"><i class="fa-solid fa-rotate-right"></i></button>
+                </div>
+                <div class="flex items-center gap-3">
+                    <div class="w-12 h-12 bg-gray-800 rounded flex items-center justify-center text-batYellow text-xl border border-gray-700" id="gear-icon">
+                        <i class="fa-solid fa-shirt"></i>
+                    </div>
+                    <div>
+                        <div class="font-bold text-sm" id="gear-name">Civil / Sin Blindaje</div>
+                        <div class="text-xs text-gray-400" id="gear-desc">Vulnerable en las calles de Gotham</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ALFRED / LOGISTICS CHAT BOX -->
+            <div class="bg-gothamPanel border border-gray-800 rounded-lg p-4 flex flex-col glow-box h-80">
+                <div class="flex items-center justify-between mb-2 border-b border-gray-800 pb-2">
+                    <div class="flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                        <span class="text-xs mono-font text-batYellow font-bold">ENLACE BATCUEVA • ALFRED</span>
+                    </div>
+                    <span class="text-[10px] bg-gray-800 px-1.5 py-0.5 rounded text-gray-400 mono-font">ENCRYPTED</span>
+                </div>
+                <div class="flex-grow overflow-y-auto text-xs space-y-2 pr-1 text-gray-300" id="alfred-log">
+                    <p class="italic text-gray-400">"Sistema en línea. Monitoreando frecuencias de Gotham y constantes vitales del señor Wayne..."</p>
+                </div>
+                <div class="mt-2 pt-2 border-t border-gray-800">
+                    <button onclick="app.askAlfred()" class="w-full bg-gray-800 hover:bg-gray-700 text-xs py-1.5 px-3 rounded text-batYellow transition font-semibold">
+                        <i class="fa-solid fa-headset mr-1"></i> Consultar estado a Alfred
+                    </button>
+                </div>
+            </div>
+
+            <!-- ARSENAL & EVIDENCES -->
+            <div class="bg-gothamPanel border border-gray-800 rounded-lg p-4 glow-box">
+                <div class="flex items-center justify-between mb-3 border-b border-gray-800 pb-2">
+                    <span class="text-xs mono-font text-batYellow tracking-widest">ARSENAL & EVIDENCIAS</span>
+                    <span class="text-xs bg-gray-800 px-2 py-0.5 rounded text-gray-400 mono-font" id="evidence-count">0 ITEMS</span>
+                </div>
+                <div class="space-y-2 max-h-48 overflow-y-auto" id="inventory-list">
+                    <p class="text-xs text-gray-500 italic">Inventario vacío. Progresa en la historia para desbloquear objetos.</p>
+                </div>
+            </div>
+
+            <!-- GCPD / NEWS SCANNER -->
+            <div class="bg-gothamPanel border border-gray-800 rounded-lg p-4 glow-box">
+                <div class="flex items-center justify-between mb-3 border-b border-gray-800 pb-2">
+                    <span class="text-xs mono-font text-batYellow tracking-widest">ESCÁNER GCPD / PRENSA</span>
+                    <button onclick="app.cycleNews()" class="text-xs text-batYellow hover:underline">Cambiar Frecuencia</button>
+                </div>
+                <div class="bg-gray-900 p-3 rounded border border-gray-800 text-xs" id="news-ticker">
+                    <div class="text-batYellow font-bold mb-1" id="news-title">FRECUENCIA GCPD • CANAL 4</div>
+                    <p class="text-gray-300" id="news-content">Despacho a todas las unidades del Distrito Este: Ignoren reportes de descarga de armamento militar en los almacenes de Cobblepot. Orden directa de la oficina del Comisario Adjunto.</p>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-gothamPanel border-t border-gray-800 text-center py-3 text-xs text-gray-500 mono-font px-4">
+        WAYNETECH OS v4.12 • DIVISIÓN DE CIENCIAS APLICADAS (PROYECTO ENCUBIERTO)
+    </footer>
+
+    <!-- GAME ENGINE SCRIPT -->
+    <script>
+        // Game State & Data
+        const gameState = {
+            currentTab: 'story',
+            currentChapter: 0,
+            hp: 100,
+            intimidation: 70,
+            intel: 55,
+            gear: 'Civil / Sin Blindaje',
+            gearDesc: 'Vulnerable en las calles de Gotham',
+            inventory: [],
+            audioActive: true,
+            minigameCompleted: false
+        };
+
+        const chapters = [
+            {
+                id: 0,
+                title: "PRÓLOGO: EL REGRESO A GOTHAM (FLASHBACK)",
+                subtitle: "Santuario de Montaña • Entrenamiento de la Liga",
+                content: `
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between border-b border-gray-800 pb-3">
+                            <span class="text-xs mono-font text-batYellow">FLASHBACK: ENTRENAMIENTO CON HENRI DUCARD / RA'S AL GHUL</span>
+                            <span class="text-xs bg-red-950 text-red-400 px-2 py-0.5 rounded border border-red-900">1998 - 2012</span>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
+                            <div class="md:col-span-1">
+                                <img src="https://images.unsplash.com/photo-1550684848-fac1c5b4e853?w=500&auto=format&fit=crop&q=60" alt="Montaña" class="rounded border border-gray-700 w-full h-40 object-cover">
+                            </div>
+                            <div class="md:col-span-2 space-y-3">
+                                <p class="text-gray-300 text-sm leading-relaxed">
+                                    El frío cortante de los picos asiáticos sustituye a la lluvia de Gotham. Frente a ti se alza <strong>Henri Ducard / Ra's al Ghul</strong> (interpretado por <em>Alexander Siddig</em>). Su rostro es demacrado, de facciones extremadamente angulares y una mirada gélida que delata siglos de existencia pagados a un precio antinatural.
+                                </p>
+                                <blockquote class="border-l-2 border-batYellow pl-3 text-xs italic text-gray-400">
+                                    «—¿Tienes una estatura imponente y una furia que podría derribar muros, Bruce —susurra Ducard mientras camina a tu alrededor con una elegancia sectaria que de pronto se quiebra en un tic espasmódico y feral, síntoma de su adicción a los <strong>Pozos de Lázaro</strong>—. Pero la fuerza bruta sin meditación zen es ruido. Y cuando mi espada se mueva, el ruido muere».
+                                </blockquote>
+                            </div>
+                        </div>
+
+                        <!-- MINIGAME: BLOQUEAR ESTOCADA -->
+                        <div class="bg-gray-900 border border-gray-800 rounded p-4 mt-4" id="minigame-box">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-xs mono-font text-batYellow font-bold"><i class="fa-solid fa-shield-halved mr-1"></i> ENTRENAMIENTO DE REFLEJOS: BLOQUEAR ESTOCADA</span>
+                                <span class="text-xs text-gray-400" id="minigame-status">Estado: Pendiente</span>
+                            </div>
+                            <p class="text-xs text-gray-300 mb-3">Ra's al Ghul desenvaina su hoja de acero con velocidad sobrenatural. Pulsa el botón de parada en el momento exacto para interceptar el ataque.</p>
+                            
+                            <div id="minigame-arena" class="bg-black/60 h-24 rounded border border-gray-800 flex flex-col items-center justify-center p-3 relative overflow-hidden">
+                                <div id="parry-prompt" class="text-sm font-bold text-batYellow mb-2">¡Ra's al Ghul ataca con su espada!</div>
+                                <button onclick="app.executeParry()" id="parry-btn" class="bg-batYellow hover:bg-batYellowHover text-black font-bold px-4 py-2 rounded text-xs transition shadow-lg transform active:scale-95">
+                                    ¡BLOQUEAR ESTOCADA!
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="pt-4 flex justify-between items-center border-t border-gray-800">
+                            <span class="text-xs text-gray-400" id="prologue-hint">Completa el entrenamiento para continuar.</span>
+                            <button onclick="app.goToChapter(1)" id="next-btn-0" class="bg-gray-800 text-gray-500 cursor-not-allowed px-4 py-2 rounded text-xs font-semibold transition" disabled>
+                                Dejar atrás las montañas y regresar a Gotham en el año 2012 →
+                            </button>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                id: 1,
+                title: "ACTO I: EL COLAPSO DEL JUSTICIERO SOLITARIO",
+                subtitle: "Gotham City • Octubre de 2012",
+                content: `
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between border-b border-gray-800 pb-3">
+                            <span class="text-xs mono-font text-batYellow">PRIMERA NOCHE EN LAS CALLES</span>
+                            <span class="text-xs bg-yellow-950 text-yellow-400 px-2 py-0.5 rounded border border-yellow-900">GOTHAM 2012</span>
+                        </div>
+                        <p class="text-gray-300 text-sm leading-relaxed">
+                            La trama salta al año 2012. Un Bruce Wayne de 30 años (<em>Armie Hammer</em>) regresa a su ciudad natal. En su primera noche como justiciero sin traje, patrullando callejones oscuros, interviene para detener a unos atracadores comunes. Sin embargo, confiado en su fuerza física, recibe un disparo directo en el hombro.
+                        </p>
+                        <div class="bg-gray-900 p-4 rounded border border-gray-800">
+                            <h4 class="text-xs mono-font text-batYellow font-bold mb-2">DECISIÓN TÁCTICA EN LA TORRE WAYNE</h4>
+                            <p class="text-xs text-gray-300 mb-3">Tras ser suturado por Alfred, comprendes que la fuerza bruta y la ropa de calle son insuficientes. Acudes a Lucius Fox (<em>Giancarlo Esposito</em>) en Empresas Wayne.</p>
+                            <div class="flex gap-3">
+                                <button onclick="app.unlockGear('kevlar')" class="bg-gray-800 hover:bg-gray-700 text-xs px-3 py-2 rounded border border-gray-700 text-batYellow font-semibold flex-grow text-left">
+                                    <i class="fa-solid fa-shield mr-2"></i> Solicitar Traje de Kevlar y Fibra de Carbono + Batmóvil militar
+                                </button>
+                            </div>
+                        </div>
+                        <div class="pt-4 flex justify-end border-t border-gray-800">
+                            <button onclick="app.goToChapter(2)" class="bg-batYellow hover:bg-batYellowHover text-black px-4 py-2 rounded text-xs font-bold transition">
+                                Continuar al Acto II: Los Muelles y el Pacto →
+                            </button>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                id: 2,
+                title: "ACTO II: SANGRE AZUL EN LOS MUELLES Y EL PACTO EN LA AZOTEA",
+                subtitle: "Distrito Portuario de Gotham",
+                content: `
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between border-b border-gray-800 pb-3">
+                            <span class="text-xs mono-font text-batYellow">INFILTRACIÓN OFICIAL COMO BATMAN</span>
+                            <span class="text-xs bg-blue-950 text-blue-400 px-2 py-0.5 rounded border border-blue-900">MUELLES 14</span>
+                        </div>
+                        <p class="text-gray-300 text-sm leading-relaxed">
+                            Equipado con el nuevo blindaje, te infiltras en los almacenes portuarios donde Oswald Cobblepot / El Pingüino (<em>Alfred Molina</em>), vestido con esmoquin y abrigo de piel, encabeza un masivo trato de armas. Al ser descubierto, el Pingüino emplea su paraguas trucado con elegancia cínica.
+                        </p>
+                        <p class="text-gray-300 text-sm leading-relaxed">
+                            Tras derrotar a sus matones, la policía corrupta se presenta y libera a Cobblepot en el acto. Comprendiendo que la ley está comprada, Batman escala hasta la azotea bajo la lluvia torrencial y contacta con el Comisario Jim Gordon (<em>Jon Hamm</em>), forjando una alianza inquebrantable de igual a igual.
+                        </p>
+                        <div class="pt-4 flex justify-between border-t border-gray-800">
+                            <button onclick="app.goToChapter(1)" class="bg-gray-800 text-gray-300 px-3 py-2 rounded text-xs">← Acto I</button>
+                            <button onclick="app.goToChapter(3)" class="bg-batYellow hover:bg-batYellowHover text-black px-4 py-2 rounded text-xs font-bold transition">
+                                Continuar al Acto III: La Amenaza de Enygma →
+                            </button>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                id: 3,
+                title: "ACTO III: EL TERROR INTELECTUAL DE ENYGMA",
+                subtitle: "Museo de Historia de Gotham",
+                content: `
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between border-b border-gray-800 pb-3">
+                            <span class="text-xs mono-font text-batYellow">ACERTIJOS Y BOMBAS EN DIRECTO</span>
+                            <span class="text-xs bg-purple-950 text-purple-400 px-2 py-0.5 rounded border border-purple-900">ENYGMA (DAVID TENNANT)</span>
+                        </div>
+                        <p class="text-gray-300 text-sm leading-relaxed">
+                            Edward Nygma (<em>David Tennant</em>) hackea todas las pantallas y dispositivos de Gotham, exigiendo que la ciudad resuelva sus acertijos mientras detona cargas explosivas. El clímax de esta fase ocurre en el Museo de Gotham.
+                        </p>
+                        <div class="bg-gray-900 p-4 rounded border border-gray-800 space-y-3">
+                            <h4 class="text-xs mono-font text-batYellow font-bold"><i class="fa-solid fa-puzzle-piece mr-1"></i> ACERTIJO DE ENYGMA EN EL MUSEO</h4>
+                            <p class="text-xs text-gray-300">«Tengo ciudades pero no casas, montañas pero no árboles, y agua pero no peces. ¿Qué soy?»</p>
+                            <div class="grid grid-cols-2 gap-2">
+                                <button onclick="app.solveRiddle(false)" class="bg-gray-800 hover:bg-gray-700 text-xs p-2 rounded text-left text-gray-300">A) Un mapa</button>
+                                <button onclick="app.solveRiddle(true)" class="bg-gray-800 hover:bg-gray-700 text-xs p-2 rounded text-left text-batYellow font-bold">B) Un globo terráqueo / mapa</button>
+                            </div>
+                            <div id="riddle-feedback" class="text-xs text-green-400 font-semibold hidden">¡Correcto! Desactivada la bomba secundaria del museo.</div>
+                        </div>
+                        <div class="pt-4 flex justify-between border-t border-gray-800">
+                            <button onclick="app.goToChapter(2)" class="bg-gray-800 text-gray-300 px-3 py-2 rounded text-xs">← Acto II</button>
+                            <button onclick="app.goToChapter(4)" id="next-btn-3" class="bg-gray-800 text-gray-500 cursor-not-allowed px-4 py-2 rounded text-xs font-semibold transition" disabled>
+                                Continuar al Acto IV: La Guarida Bajo la GCPD →
+                            </button>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                id: 4,
+                title: "ACTO IV: EL ABISMO BAJO LA COMISARÍA",
+                subtitle: "Subsuelo de la GCPD",
+                content: `
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between border-b border-gray-800 pb-3">
+                            <span class="text-xs mono-font text-batYellow">EL GRAN GIRO: LA IDENTIDAD DESCUBIERTA</span>
+                            <span class="text-xs bg-red-950 text-red-400 px-2 py-0.5 rounded border border-red-900">GCPD SUBTERRÁNEO</span>
+                        </div>
+                        <p class="text-gray-300 text-sm leading-relaxed">
+                            Mediante triangulación satelital desde la Batcueva, descubres que la señal de Enygma proviene de un búnker secreto situado exactamente debajo de la comisaría central de la GCPD. Al irrumpir, Nygma te espera y revela con una sonrisa maníaca que ha deducido tu verdadera identidad como Bruce Wayne.
+                        </p>
+                        <p class="text-gray-300 text-sm leading-relaxed">
+                            Una explosión te deja inconsciente. Cuando la policía corrupta acude a desmascararte, Jim Gordon despeja la sala a tiempo y te permite escapar tras fingir un golpe contra él.
+                        </p>
+                        <div class="pt-4 flex justify-between border-t border-gray-800">
+                            <button onclick="app.goToChapter(3)" class="bg-gray-800 text-gray-300 px-3 py-2 rounded text-xs">← Acto III</button>
+                            <button onclick="app.goToChapter(5)" class="bg-batYellow hover:bg-batYellowHover text-black px-4 py-2 rounded text-xs font-bold transition">
+                                Continuar al Acto V: Ace Chemicals y 2014 →
+                            </button>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                id: 5,
+                title: "ACTO V & EPÍLOGO: ACE CHEMICALS Y EL AMANECER DE 2014",
+                subtitle: "Planta Química y Batcueva",
+                content: `
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between border-b border-gray-800 pb-3">
+                            <span class="text-xs mono-font text-batYellow">CLÍMAX Y ESCENA POST-CRÉDITOS</span>
+                            <span class="text-xs bg-batYellow text-black px-2 py-0.5 rounded font-bold">2012 - 2014</span>
+                        </div>
+                        <p class="text-gray-300 text-sm leading-relaxed">
+                            Acorralado en la fábrica <strong>Ace Chemicals</strong>, Enygma confiesa que todo ha sido un juego para demostrar su intelecto superior. Batman lo derrota con rapidez quirúrgica y lo deja atado en la puerta de la comisaría, sabiendo que su inmenso ego le impedirá revelar jamás que Bruce Wayne es el murciélago.
+                        </p>
+                        <div class="bg-gray-900 p-4 rounded border border-gray-800 space-y-3">
+                            <h4 class="text-xs mono-font text-batYellow font-bold"><i class="fa-solid fa-film mr-1"></i> ESCENA POST-CRÉDITOS: LA LLEGADA DE SUPERMAN (2014)</h4>
+                            <p class="text-xs text-gray-300">
+                                Dos años después (2014), Alfred se acerca a Bruce en la Batcueva con un periódico de Metrópolis. En las pantallas gigantes se analiza el combate entre Superman y Metallo. Al ejecutar reconocimiento facial, Batman descubre en la multitud una fotografía clasificada de 1944 de una mujer que no ha envejecido un solo día: <strong>Diana / Wonder Woman</strong>.
+                            </p>
+                        </div>
+                        <div class="pt-4 flex justify-between border-t border-gray-800">
+                            <button onclick="app.goToChapter(4)" class="bg-gray-800 text-gray-300 px-3 py-2 rounded text-xs">← Acto IV</button>
+                            <button onclick="app.resetGame()" class="bg-batYellow hover:bg-batYellowHover text-black px-4 py-2 rounded text-xs font-bold transition">
+                                <i class="fa-solid fa-rotate-right mr-1"></i> Reiniciar Campaña DCU NV
+                            </button>
+                        </div>
+                    </div>
+                `
+            }
+        ];
+
+        const castData = [
+            { name: "Bruce Wayne / Batman", actor: "Armie Hammer", age: "30 años", desc: "Estatura imponente de 1,96m, elegancia aristocrática y brutalidad contenida. Opera como depredador analítico." },
+            { name: "Alfred", actor: "Anton Lesser", age: "55 años", desc: "Complexión delgada, postura rígida, sarcasmo quirúrgico y estratega logitudinal impecable en la Batcueva." },
+            { name: "Jim Gordon", actor: "Jon Hamm", age: "36 años", desc: "Robusto, gabardina y bigote. Detectivesco desgastado por la corrupción sistémica de Gotham." },
+            { name: "Lucius Fox", actor: "Giancarlo Esposito", age: "54 años", desc: "Director ejecutivo de frialdad quirúrgica, maestro de la contabilidad fantasma y logística paramilitar." },
+            { name: "Edward Nygma / Enygma", actor: "David Tennant", age: "41 años", desc: "Genio maníaco, teatral y narcisista obsesionado con la validación intelectual mediante hackeos y bombas." },
+            { name: "Oswald Cobblepot / Pingüino", actor: "Alfred Molina", age: "59 años", desc: "Aristócrata del inframundo, refinado en esmoquin y abrigos de piel, con temperamento gélido y letal." },
+            { name: "Henri Ducard / Ra's al Ghul", actor: "Alexander Siddig", age: "Milenario", desc: "Líder demacrado de la Liga, velocidad sobrenatural con la espada y adicción a los Pozos de Lázaro." }
+        ];
+
+        const intelData = [
+            { title: "Frecuencia GCPD • Canal 4", date: "Octubre 2012", text: "Orden directa de la jefatura: Ignorar reportes de descarga de armamento militar en los almacenes del Distrito Portuario de Cobblepot." },
+            { title: "Archivo Clasificado: Oa & Sector 2814", date: "2007 - 2012", text: "Hal Jordan (Chris Pine) opera como Linterna Verde en el espacio profundo tras la muerte de Abin Sur. Sinestro se ha alzado en contra de los Guardianes." },
+            { title: "Fotografía Histórica • Europa 1944", date: "Segunda Guerra Mundial", text: "Imagen recuperada de los archivos de trincheras aliadas. Se confirma la presencia de Diana de Themyscira (Gal Gadot) combatiendo junto a Steve Trevor." },
+            { title: "Reporte Daily Planet • Metrópolis", date: "2014", text: "Lex Luthor inaugura la nueva torre LexCorp, mientras testigos reportan la aparición en los cielos de un ser con capa capaz de detener catástrofes." }
+        ];
+
+        const newsList = [
+            { title: "FRECUENCIA GCPD • CANAL 4", text: "Despacho a unidades del Distrito Este: Ignoren reportes de armamento en los muelles de Cobblepot." },
+            { title: "BULLETIN FINANCIERO • TORRE WAYNE", text: "Acciones de Empresas Wayne experimentan fluctuaciones tras las millonarias inversiones en I+D encubierto de Lucius Fox." },
+            { title: "URGENTE • METRÓPOLIS", text: "LexCorp anuncia demostración tecnológica masiva en el centro de la ciudad bajo la supervisión de Lex Luthor." }
+        ];
+
+        let currentNewsIndex = 0;
+
+        // App Controller
+        const app = {
+            init() {
+                this.renderChapter();
+                this.renderCast();
+                this.renderChapterList();
+                this.renderIntel();
+                this.updateStats();
+            },
+
+            switchTab(tabId) {
+                ['story', 'cast', 'chapters', 'intel'].forEach(t => {
+                    document.getElementById(`view-${t}`).classList.add('hidden');
+                    document.getElementById(`tab-${t}`).classList.remove('bg-batYellow', 'text-black', 'shadow');
+                    document.getElementById(`tab-${t}`).classList.add('bg-gray-800', 'text-gray-300');
+                });
+                document.getElementById(`view-${tabId}`).classList.remove('hidden');
+                document.getElementById(`tab-${tabId}`).classList.remove('bg-gray-800', 'text-gray-300');
+                document.getElementById(`tab-${tabId}`).classList.add('bg-batYellow', 'text-black', 'shadow');
+                gameState.currentTab = tabId;
+            },
+
+            goToChapter(index) {
+                gameState.currentChapter = index;
+                this.switchTab('story');
+                this.renderChapter();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            },
+
+            renderChapter() {
+                const ch = chapters[gameState.currentChapter];
+                const container = document.getElementById('chapter-container');
+                container.innerHTML = `
+                    <div class="mb-4">
+                        <span class="text-xs mono-font text-batYellow">${ch.subtitle}</span>
+                        <h2 class="text-xl sm:text-2xl font-bold uppercase tracking-wide text-white">${ch.title}</h2>
+                    </div>
+                    ${ch.content}
+                `;
+            },
+
+            renderCast() {
+                const grid = document.getElementById('cast-grid');
+                grid.innerHTML = castData.map(c => `
+                    <div class="bg-gray-900 border border-gray-800 rounded p-4 flex flex-col justify-between">
+                        <div>
+                            <div class="text-xs mono-font text-batYellow mb-1">${c.age}</div>
+                            <h3 class="font-bold text-base mb-1">${c.name}</h3>
+                            <div class="text-xs text-gray-400 font-semibold mb-2">Actor: ${c.actor}</div>
+                            <p class="text-xs text-gray-300 leading-relaxed">${c.desc}</p>
+                        </div>
+                    </div>
+                `).join('');
+            },
+
+            renderChapterList() {
+                const grid = document.getElementById('chapter-list-grid');
+                grid.innerHTML = chapters.map(c => `
+                    <div onclick="app.goToChapter(${c.id})" class="bg-gray-900 border border-gray-800 hover:border-batYellow p-4 rounded cursor-pointer transition flex flex-col justify-between">
+                        <div>
+                            <span class="text-[10px] mono-font text-batYellow">CAPÍTULO ${c.id}</span>
+                            <h3 class="font-bold text-sm mt-1 text-white">${c.title}</h3>
+                        </div>
+                        <span class="text-xs text-gray-400 mt-3 flex items-center"><i class="fa-solid fa-play mr-1 text-batYellow"></i> Jugar sección</span>
+                    </div>
+                `).join('');
+            },
+
+            renderIntel() {
+                const list = document.getElementById('intel-list');
+                list.innerHTML = intelData.map(i => `
+                    <div class="bg-gray-900 border border-gray-800 p-4 rounded">
+                        <div class="flex justify-between items-center mb-1">
+                            <h3 class="font-bold text-sm text-batYellow">${i.title}</h3>
+                            <span class="text-xs text-gray-500 mono-font">${i.date}</span>
+                        </div>
+                        <p class="text-xs text-gray-300">${i.text}</p>
+                    </div>
+                `).join('');
+            },
+
+            executeParry() {
+                gameState.minigameCompleted = true;
+                const status = document.getElementById('minigame-status');
+                const prompt = document.getElementById('parry-prompt');
+                const btn = document.getElementById('parry-btn');
+                const nextBtn = document.getElementById('next-btn-0');
+
+                status.innerText = "Estado: ¡Bloqueo Exitoso!";
+                status.className = "text-xs text-green-400 font-bold";
+                prompt.innerText = "¡Has interceptado la espada de Ra's al Ghul con precisión milimétrica!";
+                btn.className = "bg-green-600 text-white font-bold px-4 py-2 rounded text-xs shadow-lg cursor-default";
+                btn.innerText = "¡ESTOCADA BLOQUEADA!";
+                btn.onclick = null;
+
+                if(nextBtn) {
+                    nextBtn.disabled = false;
+                    nextBtn.className = "bg-batYellow hover:bg-batYellowHover text-black px-4 py-2 rounded text-xs font-bold transition shadow";
+                    document.getElementById('prologue-hint').innerText = "¡Entrenamiento superado con éxito! Ya puedes regresar a Gotham.";
+                    document.getElementById('prologue-hint').className = "text-xs text-green-400 font-semibold";
+                }
+                this.logAlfred("Entrenamiento de combate superado. Reflejos óptimos frente a las técnicas de la Liga.");
+            },
+
+            unlockGear(type) {
+                if(type === 'kevlar') {
+                    gameState.gear = 'Traje Kevlar & Fibra de Carbono';
+                    gameState.gearDesc = 'Protección balística avanzada + Batmóvil';
+                    gameState.intimidation = 95;
+                    gameState.hp = 100;
+                    document.getElementById('gear-icon').innerHTML = '<i class="fa-solid fa-shield-halved text-batYellow"></i>';
+                    document.getElementById('gear-name').innerText = gameState.gear;
+                    document.getElementById('gear-desc').innerText = gameState.gearDesc;
+                    this.updateStats();
+                    this.addInventory("Traje Blindado Kevlar");
+                    this.addInventory("Llaves del Batmóvil");
+                    this.logAlfred("Lucius Fox ha desviado los fondos con éxito. Blindaje y Batmóvil operativos.");
+                    alert("¡Equipamiento táctico desbloqueado con éxito!");
+                }
+            },
+
+            solveRiddle(isCorrect) {
+                const feedback = document.getElementById('riddle-feedback');
+                const nextBtn = document.getElementById('next-btn-3');
+                if(isCorrect) {
+                    feedback.classList.remove('hidden');
+                    gameState.intel = 85;
+                    this.updateStats();
+                    this.addInventory("Código de Desactivación de Nygma");
+                    if(nextBtn) {
+                        nextBtn.disabled = false;
+                        nextBtn.className = "bg-batYellow hover:bg-batYellowHover text-black px-4 py-2 rounded text-xs font-bold transition shadow";
+                    }
+                    this.logAlfred("Acertijo resuelto. La bomba del museo ha sido neutralizada.");
+                } else {
+                    alert("Respuesta incorrecta. El acertijo sigue activo.");
+                }
+            },
+
+            addInventory(item) {
+                if(!gameState.inventory.includes(item)) {
+                    gameState.inventory.push(item);
+                    const list = document.getElementById('inventory-list');
+                    if(gameState.inventory.length === 1) list.innerHTML = '';
+                    list.innerHTML += `<div class="bg-gray-900 border border-gray-800 p-2 rounded text-xs flex items-center justify-between text-gray-300">
+                        <span><i class="fa-solid fa-box-archive mr-2 text-batYellow"></i>${item}</span>
+                        <span class="text-[10px] text-green-400">OBTENIDO</span>
+                    </div>`;
+                    document.getElementById('evidence-count').innerText = `${gameState.inventory.length} ITEMS`;
+                }
+            },
+
+            updateStats() {
+                document.getElementById('stat-hp').innerText = gameState.hp + '%';
+                document.getElementById('bar-hp').style.width = gameState.hp + '%';
+                document.getElementById('stat-intimidation').innerText = gameState.intimidation + '%';
+                document.getElementById('bar-intimidation').style.width = gameState.intimidation + '%';
+                document.getElementById('stat-intel').innerText = gameState.intel + '%';
+                document.getElementById('bar-intel').style.width = gameState.intel + '%';
+            },
+
+            logAlfred(msg) {
+                const log = document.getElementById('alfred-log');
+                log.innerHTML += `<p class="border-l border-batYellow pl-2 text-gray-300"><strong>Alfred:</strong> ${msg}</p>`;
+                log.scrollTop = log.scrollHeight;
+            },
+
+            askAlfred() {
+                const messages = [
+                    "Recuerde, señor Wayne, que la paciencia es la mejor armadura en las calles de Gotham.",
+                    "Las frecuencias de la GCPD siguen encriptadas en el sector oeste, le sugiero discreción.",
+                    "Las constantes vitales son estables, aunque el hombro derecho requerirá atención tras la patrulla.",
+                    "El señor Fox confirma que la contabilidad fantasma de la Torre Wayne permanece indetectable."
+                ];
+                const randomMsg = messages[Math.floor(Math.random() * messages.length)];
+                this.logAlfred(randomMsg);
+            },
+
+            cycleNews() {
+                currentNewsIndex = (currentNewsIndex + 1) % newsList.length;
+                const news = newsList[currentNewsIndex];
+                document.getElementById('news-title').innerText = news.title;
+                document.getElementById('news-content').innerText = news.text;
+            },
+
+            toggleAudio() {
+                gameState.audioActive = !gameState.audioActive;
+                const icon = document.getElementById('audio-icon');
+                const text = document.getElementById('audio-text');
+                if(gameState.audioActive) {
+                    icon.className = "fa-solid fa-volume-high mr-1.5";
+                    text.innerText = "AUDIO ON";
+                } else {
+                    icon.className = "fa-solid fa-volume-xmark mr-1.5";
+                    text.innerText = "AUDIO OFF";
+                }
+            },
+
+            resetGame() {
+                if(confirm("¿Deseas reiniciar la campaña desde el Prólogo?")) {
+                    gameState.hp = 100;
+                    gameState.intimidation = 70;
+                    gameState.intel = 55;
+                    gameState.inventory = [];
+                    gameState.minigameCompleted = false;
+                    document.getElementById('inventory-list').innerHTML = '<p class="text-xs text-gray-500 italic">Inventario vacío. Progresa en la historia para desbloquear objetos.</p>';
+                    document.getElementById('evidence-count').innerText = '0 ITEMS';
+                    this.goToChapter(0);
+                }
+            }
+        };
+
+        // Initialize app on load
+        window.onload = () => app.init();
+    </script>
+</body>
+</html>

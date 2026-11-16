@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DC UNIVERSE | Hub Central & Cronología (DCU NV - Fase 1)</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Cinzel, Inter & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                        display: ['Cinzel', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* ==========================================================================
+           ESTÉTICA CINEMATOGRÁFICA DC UNIVERSE HUB (DCU NV 2026)
+           ========================================================================== */
+        body {
+            background-color: #05070b;
+            background-image:
+                radial-gradient(circle at 18% 18%, rgba(245, 158, 11, 0.07) 0%, transparent 42%),
+                radial-gradient(circle at 82% 22%, rgba(16, 185, 129, 0.06) 0%, transparent 40%),
+                radial-gradient(circle at 50% 85%, rgba(56, 189, 248, 0.08) 0%, transparent 50%);
+            color: #f1f5f9;
+            overflow-x: hidden;
+            user-select: none;
+        }
+
+        /* Lienzo de Partículas / Atmósfera de Fondo */
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 1;
+            opacity: 0.65;
+        }
+
+        /* Marco Principal (Fiel al contenedor rectangular del boceto) */
+        .hub-outer-frame {
+            background: rgba(10, 15, 25, 0.88);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 2px solid rgba(71, 85, 105, 0.75);
+            box-shadow:
+                0 25px 60px -15px rgba(0, 0, 0, 0.85),
+                inset 0 1px 0 0 rgba(255, 255, 255, 0.08);
+        }
+
+        /* Botón enmarcado "CRONOLOGÍA" (Fiel al recuadro superior izquierdo del boceto) */
+        .cronologia-box-btn {
+            border: 2px solid #f8fafc;
+            background: rgba(15, 23, 42, 0.92);
+            box-shadow: 0 0 20px rgba(248, 250, 252, 0.12);
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .cronologia-box-btn:hover,
+        .cronologia-box-btn.active-crono {
+            border-color: #f59e0b;
+            background: rgba(245, 158, 11, 0.18);
+            color: #fde68a;
+            box-shadow: 0 0 25px rgba(245, 158, 11, 0.35);
+            transform: translateY(-1px);
+        }
+
+        /* Tarjetas Verticales de Proyecto (Fieles a los 3 rectángulos verticales del boceto) */
+        .project-tall-card {
+            background: linear-gradient(180deg, rgba(15, 23, 42, 0.94) 0%, rgba(9, 13, 22, 0.98) 100%);
+            border: 2px solid rgba(71, 85, 105, 0.7);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .project-tall-card:hover {
+            transform: translateY(-6px);
+        }
+        .project-tall-card.card-playable {
+            border-color: rgba(245, 158, 11, 0.85);
+            box-shadow: 0 12px 35px -8px rgba(245, 158, 11, 0.25);
+        }
+        .project-tall-card.card-playable:hover {
+            border-color: #fbbf24;
+            box-shadow: 0 18px 45px -8px rgba(245, 158, 11, 0.4);
+        }
+        .project-tall-card.card-upcoming:hover {
+            border-color: rgba(56, 189, 248, 0.75);
+            box-shadow: 0 16px 40px -10px rgba(56, 189, 248, 0.22);
+        }
+
+        /* IMÁGENES EN BLANCO PURO (#FFFFFF) PARA PÓSTERS Y REPARTO */
+        .blank-white-slot {
+            background-color: #ffffff !important;
+            object-fit: cover;
+            object-position: center top;
+            display: block;
+            transition: transform 0.35s ease;
+        }
+        .project-tall-card:hover .blank-white-slot {
+            transform: scale(1.02);
+        }
+
+        /* Animación de entrada */
+        @keyframes fadeSlideUp {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-view {
+            animation: fadeSlideUp 0.32s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #05070b; }
+        ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #f59e0b; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between p-3 sm:p-6 lg:p-8">
+
+    <!-- Lienzo Animado de Fondo -->
+    <canvas id="bg-canvas"></canvas>
+
+    <!-- ==========================================================================
+         MARCO PRINCIPAL DEL LAUNCHER (DISEÑO FIEL AL BOCETO DEL USUARIO)
+         ========================================================================== -->
+    <div class="relative z-10 max-w-7xl w-full mx-auto my-auto">
+
+        <!-- Barra Superior de Utilidades (Fuera del Marco) -->
+        <div class="flex flex-wrap items-center justify-between gap-2 mb-2.5 px-1 text-xs font-mono text-slate-400">
+            <div class="flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                <span>DCU NV 2026 • SISTEMA CENTRAL DE PROYECTOS</span>
+            </div>
+            <div class="flex flex-wrap items-center gap-2">
+                <!-- Selector 3 Tarjetas (Boceto exacto) vs 4 Tarjetas (Fase 1 Completa) -->
+                <button type="button" id="btn-grid-mode" onclick="hubApp.toggleGridColumns()" class="px-3 py-1 rounded-lg bg-slate-900/90 hover:bg-slate-800 text-slate-300 border border-slate-700 transition flex items-center gap-1.5" title="Cambiar entre 3 columnas (como tu boceto) o las 4 películas a la vez">
+                    <i class="fa-solid fa-table-columns text-amber-400"></i>
+                    <span id="grid-mode-label">Vista: 3 Tarjetas (Boceto)</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- CONTENEDOR RECTANGULAR PRINCIPAL (EL CUADRO GRANDE DE TU BOCETO) -->
+        <main class="hub-outer-frame rounded-2xl p-5 sm:p-8 lg:p-10 transition-all">
+
+            <!-- CABECERA DEL MARCO: [ CRONOLOGÍA ] A LA IZQUIERDA + "DC UNIVERSE" -->
+            <header class="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 pb-6 mb-7 border-b border-slate-800/90">
+                <div class="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-7">
+                    <!-- RECUADRO [ CRONOLOGÍA ] EXACTO AL BOCETO -->
+                    <button type="button" id="btn-cronologia" onclick="hubApp.toggleCronologiaView()" class="cronologia-box-btn px-5 py-3 rounded-lg font-display font-extrabold text-sm sm:text-base tracking-widest uppercase text-white flex items-center justify-center gap-2.5 shrink-0">
+                        <i class="fa-solid fa-clock-rotate-left text-amber-400"></i>
+                        <span>CRONOLOGÍA</span>
+                    </button>
+
+                    <!-- TÍTULO "DC UNIVERSE" -->
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="text-[10px] font-mono uppercase tracking-widest px-2 py-0.5 rounded bg-amber-500/15 text-amber-400 border border-amber-500/30 font-semibold">FASE 1 • 2012 – 2014</span>
+                            <span id="view-badge" class="text-[10px] font-mono uppercase tracking-widest px-2 py-0.5 rounded bg-sky-500/15 text-sky-300 border border-sky-500/30 font-semibold">SELECCIÓN DE PROYECTO</span>
+                        </div>
+                        <h1 class="font-display text-2xl sm:text-4xl lg:text-5xl font-black tracking-wider text-white mt-1">
+                            DC UNIVERSE
+                        </h1>
+                    </div>
+                </div>
+
+                <!-- Botón Rápido para Volver a Pósters (visible cuando estás en Cronología) -->
+                <div class="flex items-center gap-2 self-end md:self-center">
+                    <button type="button" id="btn-back-posters" onclick="hubApp.showPostersView()" class="hidden px-4 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-mono font-bold text-xs uppercase tracking-wider transition shadow-lg">
+                        <i class="fa-solid fa-grip-vertical mr-1.5"></i>Volver a Proyectos
+                    </button>
+                    <div class="bg-slate-950/90 border border-slate-800 rounded-xl px-3.5 py-2 text-right hidden lg:block">
+                        <div class="text-[10px] font-mono text-slate-400 uppercase">ESTADO DE LA FASE 1</div>
+                        <div class="text-xs font-mono text-emerald-400 font-bold">1 JUGABLE • 3 EN DESARROLLO</div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- ==================================================================
+                 VISTA A: TARJETAS VERTICALES DE PROYECTOS (POR DEFECTO - BOCETO)
+                 ================================================================== -->
+            <section id="section-posters" class="animate-view">
+                <!-- Selector de la 3ª tarjeta cuando está en modo 3 columnas (Boceto) -->
+                <div id="third-slot-switcher" class="flex flex-wrap items-center justify-between gap-2 mb-4 bg-slate-950/80 border border-slate-800/90 rounded-xl px-4 py-2.5">
+                    <span class="text-xs font-mono text-slate-300">
+                        <i class="fa-solid fa-layer-group text-amber-400 mr-1.5"></i>Diseño de <strong>3 paneles verticales</strong> (fiel a tu boceto). Puedes alternar qué proyecto "Próximamente" ver en el 3.er panel o mostrar los 4:
+                    </span>
+                    <div class="flex items-center gap-1.5">
+                        <button type="button" onclick="hubApp.setThirdCardProject('wonder_woman')" id="slot3-ww" class="px-2.5 py-1 rounded-lg font-mono text-xs bg-amber-500/20 text-amber-300 border border-amber-500/50 font-semibold transition">
+                            3.er Panel: Wonder Woman (2013)
+                        </button>
+                        <button type="button" onclick="hubApp.setThirdCardProject('superman')" id="slot3-sup" class="px-2.5 py-1 rounded-lg font-mono text-xs bg-slate-900 text-slate-400 border border-slate-700 hover:text-white transition">
+                            3.er Panel: Superman (2014)
+                        </button>
+                        <button type="button" onclick="hubApp.toggleGridColumns()" class="px-2.5 py-1 rounded-lg font-mono text-xs bg-sky-500/20 text-sky-300 border border-sky-500/40 hover:bg-sky-500/30 transition">
+                            Ver los 4 juntos
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Contenedor Grid de Tarjetas Verticales -->
+                <div id="projects-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+                    <!-- Inyectado dinámicamente desde CONFIG_PROYECTOS -->
+                </div>
+            </section>
+
+            <!-- ==================================================================
+                 VISTA B: CRONOLOGÍA INTERACTIVA DEL DCU NV (AL PULSAR [CRONOLOGÍA])
+                 ================================================================== -->
+            <section id="section-cronologia" class="hidden animate-view space-y-6">
+                <div class="bg-slate-950/90 border border-amber-500/40 rounded-2xl p-4 sm:p-6">
+                    <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-slate-800 pb-4 mb-5">
+                        <div>
+                            <span class="text-xs font-mono text-amber-400 uppercase tracking-widest font-bold">ARCHIVO MAESTRO TEMPORAL • DCU NV 2026</span>
+                            <h2 class="font-display text-xl sm:text-2xl font-bold text-white mt-1">CRONOLOGÍA OFICIAL DEL UNIVERSO (FASE 1)</h2>
+                            <p class="text-xs sm:text-sm text-slate-400 mt-1">
+                                Explora tanto el <strong>Orden de Películas de la Fase 1</strong> como la <strong>Línea Temporal Histórica</strong> desde la Segunda Guerra Mundial (1944) hasta el amanecer de Superman en Metrópolis (2014).
+                            </p>
+                        </div>
+
+                        <!-- Pestañas de modo de Cronología -->
+                        <div class="flex items-center gap-2 shrink-0">
+                            <button type="button" id="tab-crono-historica" onclick="hubApp.switchCronoMode('historica')" class="px-3.5 py-2 rounded-xl font-mono text-xs bg-amber-500/20 text-amber-300 border border-amber-500/50 font-bold transition">
+                                1. Línea Histórica (1944 → 2014)
+                            </button>
+                            <button type="button" id="tab-crono-estreno" onclick="hubApp.switchCronoMode('estreno')" class="px-3.5 py-2 rounded-xl font-mono text-xs bg-slate-900 text-slate-400 border border-slate-700 hover:text-white transition">
+                                2. Orden de Fase 1 (4 Películas)
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Contenedor Dinámico de la Línea Temporal -->
+                    <div id="crono-content" class="space-y-4">
+                        <!-- Inyectado por JS -->
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- Pie de página inferior -->
+        <footer class="mt-3 px-2 flex flex-col sm:flex-row items-center justify-between text-[11px] font-mono text-slate-500 gap-2">
+            <div>DC UNIVERSE LAUNCHER v1.0 • BASADO EN FASE 1 (DCU NV 2026)</div>
+            <div>HAZ CLIC EN "BATMAN" PARA JUGAR O EN "PRÓXIMAMENTE" PARA VER EL REPARTO Y SINOPSIS</div>
+        </footer>
+    </div>
+
+    <!-- ==========================================================================
+         MODAL DE DOSSIER DE PELÍCULA / REPARTO / GUÍA DE CONFIGURACIÓN
+         ========================================================================== -->
+    <div id="hub-modal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
+        <div class="bg-slate-950 border border-slate-700 rounded-2xl max-w-3xl w-full overflow-hidden shadow-2xl animate-view">
+            <div class="bg-slate-900 px-5 py-3.5 border-b border-slate-800 flex items-center justify-between">
+                <span id="hub-modal-subtitle" class="font-mono text-xs uppercase tracking-widest text-amber-400 font-bold">DOSSIER DE PRODUCCIÓN • FASE 1</span>
+                <button type="button" onclick="hubApp.closeModal()" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 flex items-center justify-center transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div id="hub-modal-body" class="p-5 sm:p-6 max-h-[82vh] overflow-y-auto">
+                <!-- Contenido dinámico -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /* ==========================================================================
+           CONFIGURACIÓN DE PROYECTOS Y RUTAS (EDITABLE POR EL USUARIO)
+           ==========================================================================
+           - Para cambiar el archivo al que redirige cada tarjeta, edita "urlArchivo".
+           - Para poner el póster de cada película, pega la ruta en "imagenPoster".
+           - Para poner las fotos de los actores, pega la ruta en "imagen" dentro de "reparto".
+           - Si dejas "" (vacío), se mostrará automáticamente un recuadro en blanco (#FFFFFF).
+           ========================================================================== */
+        const CONFIG_PROYECTOS = [
+            {
+                id: 'batman',
+                tituloCorto: 'batman',
+                tituloOficial: 'BATMAN (2012)',
+                subtitulo: 'El Caballero Oscuro de Gotham',
+                estado: 'DISPONIBLE', // 'DISPONIBLE' o 'PRÓXIMAMENTE'
+                etiquetaSuperior: 'PROYECTO 01 • JUGABLE',
+                urlArchivo: 'batman_gotham_2012_dcu_nv_v04.html', // <-- Ruta a tu videojuego de Batman
+                imagenPoster: 'Imagenes/poster_batman.jpg', // <-- Pon aquí la imagen vertical del póster de Batman (vacío = blanco #FFFFFF)
+                colorAcento: 'amber',
+                icono: 'fa-bat',
+                resumenCorto: 'Bruce Wayne (Armie Hammer) regresa a Gotham en 2012. Junto a Alfred, Lucius Fox y Jim Gordon, se enfrenta a Oswald Cobblepot y al terror intelectual de Edward Nygma.',
+                sinopsisCompleta: [
+                    'El origen del trauma: La historia arranca la lluviosa noche en que Thomas y Martha Wayne son asesinados en un callejón a manos de Jack Napier frente a un Bruce de 8 años.',
+                    'El regreso y la leyenda: En 2012, un Bruce de 30 años (Armie Hammer, 1,96m) regresa tras entrenar con Henri Ducard / Ra\'s al Ghul (Alexander Siddig). Tras recibir un disparo en su primera noche sin traje, acude a Lucius Fox (Giancarlo Esposito) para obtener el traje de Kevlar/carbono y el Batmóvil militar.',
+                    'Corrupción y Enygma: Detiene un trato de armas del Pingüino (Alfred Molina) en los muelles y sella un pacto en la azotea con Jim Gordon (Jon Hamm). Cuando Edward Nygma (David Tennant) hackea la ciudad, asalta el museo y revela desde su guarida bajo la comisaría que conoce la identidad de Bruce, Batman escapa fingiendo golpear a Gordon y derrota a Nygma en Ace Chemicals.',
+                    'Post-créditos (2014): Alfred le muestra a Bruce el periódico con el debut de Superman en Metrópolis y descubren la fotografía de Diana en 1944.'
+                ],
+                reparto: [
+                    { nombre: 'Bruce Wayne / Batman', actor: 'Armie Hammer (30 años)', rol: '1,96m • Depredador analítico', imagen: 'Imagenes/batman_icon.jpg' },
+                    { nombre: 'Alfred Pennyworth', actor: 'Anton Lesser (55 años)', rol: 'Estratega logístico en la Batcueva', imagen: 'Imagenes/alfred_icon.jfif' },
+                    { nombre: 'Jim Gordon', actor: 'Jon Hamm (36 años)', rol: 'Aliado policial en el GCPD', imagen: 'Imagenes/gordon_icon.jpg' },
+                    { nombre: 'Lucius Fox', actor: 'Giancarlo Esposito (54 años)', rol: 'Contabilidad fantasma e I+D', imagen: 'Imagenes/fox_icon.jpeg' },
+                    { nombre: 'Edward Nygma / El Acertijo', actor: 'David Tennant (41 años)', rol: 'Terrorista intelectual narcisista', imagen: 'Imagenes/acertijo_icon.jpeg' },
+                    { nombre: 'Oswald Cobblepot / El Pingüino', actor: 'Alfred Molina (59 años)', rol: 'Aristócrata mafioso de los muelles', imagen: 'Imagenes/pinguino_icon.jpg' },
+                    { nombre: 'Henri Ducard / Ra\'s al Ghul', actor: 'Alexander Siddig (47 años)', rol: 'Maestro de la Liga de las Sombras', imagen: 'Imagenes/ras_icon.jpeg' }
+                ]
+            },
+            {
+                id: 'green_lantern',
+                tituloCorto: 'proximamente',
+                tituloOficial: 'GREEN LANTERN (2012)',
+                subtitulo: 'El Guardián del Sector 2814',
+                estado: 'PRÓXIMAMENTE',
+                etiquetaSuperior: 'PRÓXIMAMENTE • PROYECTO 02',
+                urlArchivo: '', // <-- Cuando crees el juego de Green Lantern, pon aquí su archivo .html
+                imagenPoster: 'Imagenes/greenlantern_poster.jpg', // <-- Imagen en blanco (#FFFFFF) lista para tu póster
+                colorAcento: 'emerald',
+                icono: 'fa-ring',
+                resumenCorto: 'Reclutado en 2007 y entrenado por Thaal Sinestro (Mark Strong), Hal Jordan (Chris Pine) descubre en 2012 la dictadura de su mentor en Korugar y se enfrenta al primer Anillo Amarillo.',
+                sinopsisCompleta: [
+                    'El origen del anillo (2007): Abin Sur se estrella en la Tierra y su anillo elige a Hal Jordan (Chris Pine, 32 años), un piloto de pruebas brillante, temerario y arrogante. En Oa, es entrenado por el condecorado y estricto Thaal Sinestro (Mark Strong, 49 años).',
+                    'La dictadura en Korugar (2012): Cinco años después, Hal es un veterano endurecido en el espacio profundo. Al desviarse hacia Korugar, descubre que Sinestro ha instaurado una dictadura militar perfecta basada en el orden absoluto y el terror.',
+                    'El gran giro y el Anillo Amarillo: Expuesto ante los Guardianes en Oa, Sinestro asesina a sangre fría a un Guardián, escapa al universo de antimateria de Qward y forja el primer Anillo Amarillo alimentado por el miedo.',
+                    'Clímax: Hal comprende que la verdadera voluntad es aceptar y superar el miedo, quebrando las construcciones amarillas de Sinestro y encerrándolo en Oa mientras la Tierra sigue ignorando que no está sola.'
+                ],
+                reparto: [
+                    { nombre: 'Hal Jordan / Green Lantern', actor: 'Chris Pine (32 años)', rol: 'Piloto temerario • Protector del Sector 2814', imagen: '' },
+                    { nombre: 'Thaal Sinestro', actor: 'Mark Strong (49 años)', rol: 'Antiguo mentor y portador del Anillo Amarillo', imagen: '' }
+                ]
+            },
+            {
+                id: 'wonder_woman',
+                tituloCorto: 'proximamente',
+                tituloOficial: 'WONDER WOMAN (2013)',
+                subtitulo: 'La Guerrera de 1944 y el Silencio de 70 Años',
+                estado: 'PRÓXIMAMENTE',
+                etiquetaSuperior: 'PRÓXIMAMENTE • PROYECTO 03',
+                urlArchivo: '', // <-- Cuando crees el juego de Wonder Woman, pon aquí su archivo .html
+                imagenPoster: 'Imagenes/wonderwoman_poster.jfif', // <-- Imagen en blanco (#FFFFFF) lista para tu póster
+                colorAcento: 'amber',
+                icono: 'fa-shield-halved',
+                resumenCorto: 'Moldeada en arcilla por la Reina Hipólita (Lucy Lawless), Diana (Gal Gadot) viaja a la Segunda Guerra Mundial en 1944 junto a Steve Trevor (Charlie Hunnam) frente a Ares y Hades (Mads Mikkelsen).',
+                sinopsisCompleta: [
+                    'El origen de la arcilla y 1944: Moldeada en arcilla en Themyscira por la Reina Hipólita (Lucy Lawless) y dotada de vida por los dioses, Diana (Gal Gadot) rescata en 1944 al piloto y espía aliado Steve Trevor (Charlie Hunnam, 33 años) cuando su avión atraviesa la barrera mágica.',
+                    'El viaje al frente sin retorno: Convencida de que Ares manipula la Segunda Guerra Mundial, Diana roba la armadura sagrada y abandona Themyscira para siempre. En las trincheras, el dios del inframundo Hades (Mads Mikkelsen) observa en traje sastre la cosecha de almas con elegancia gélida.',
+                    'El gran giro y el sacrificio: Al matar al general que creía que era Ares, la guerra no se detiene: el verdadero Ares revela que él solo dio las ideas de las armas; la humanidad eligió la masacre. Mientras Diana derrota a Ares en el barro, Steve Trevor se sacrifica pilotando el bombardero con gas letal hacia la atmósfera.',
+                    'El exilio en las sombras: Desilusionada con la humanidad y rota por la pérdida de Steve, Diana borra todo rastro y vive 70 años en el anonimato hasta ser captada por el software de Bruce Wayne en 2014.'
+                ],
+                reparto: [
+                    { nombre: 'Diana / Wonder Woman', actor: 'Gal Gadot', rol: 'Princesa Amazona de Themyscira', imagen: 'Imagenes/wonderwoman_icon.jpg' },
+                    { nombre: 'Steve Trevor', actor: 'Charlie Hunnam (33 años)', rol: 'Piloto y espía aliado en 1944', imagen: '' },
+                    { nombre: 'Reina Hipólita', actor: 'Lucy Lawless', rol: 'Gobernante guerrera de Themyscira', imagen: '' },
+                    { nombre: 'Hades', actor: 'Mads Mikkelsen', rol: 'Señor del Inframundo • Estratega de almas', imagen: '' }
+                ]
+            },
+            {
+                id: 'superman',
+                tituloCorto: 'proximamente',
+                tituloOficial: 'SUPERMAN (2014)',
+                subtitulo: 'El Símbolo de Esperanza en Metrópolis',
+                estado: 'PRÓXIMAMENTE',
+                etiquetaSuperior: 'PRÓXIMAMENTE • PROYECTO 04',
+                urlArchivo: '', // <-- Cuando crees el juego de Superman, pon aquí su archivo .html
+                imagenPoster: 'Imagenes/superman_poster.jfif', // <-- Imagen en blanco (#FFFFFF) lista para tu póster
+                colorAcento: 'sky',
+                icono: 'fa-sun',
+                resumenCorto: 'Clark Kent (Matt Bomer) se revela ante el mundo salvando Metrópolis del desastre de Lex Luthor (Michael Fassbender) y enfrentándose a John Corben / Metallo (Joel Kinnaman) junto a Lois Lane.',
+                sinopsisCompleta: [
+                    'El símbolo de Martha Kent: Tras la caída de Krypton y su juventud en Smallville, Jonathan y Martha Kent le entregan un traje cosido con las mantas indestructibles de su nave: debe ser un símbolo de esperanza a plena luz del día.',
+                    'La revelación en Metrópolis (2014): Clark (Matt Bomer, 27 años) llega al Daily Planet junto a la incisiva Lois Lane (Mary Elizabeth Winstead, 29 años) en una ciudad hipnotizada por Lex Luthor (Michael Fassbender, 37 años). Cuando una demostración de LexCorp colapsa, Clark vuela frente a miles de cámaras y salva la ciudad.',
+                    'La creación de Metallo: Humillado en su ego narcisista, Luthor utiliza al Dr. Emmett Vale para transferir la mente de su jefe de seguridad herido, John Corben (Joel Kinnaman, 34 años), a un exoesqueleto impulsado por Kryptonita. Lex asesina a Vale y manipula a un Corben privado de sus sentidos humanos para culpar a Superman.',
+                    'Clímax y conexión con la Trinidad: Superman supera el dolor agonizante de la radiación verde para desmantelar a Metallo protegiendo a los civiles. En la escena post-créditos, Bruce Wayne y Alfred observan la pelea en la Batcueva y descubren a Diana entre la multitud de Metrópolis.'
+                ],
+                reparto: [
+                    { nombre: 'Clark Kent / Superman', actor: 'Matt Bomer (27 años)', rol: 'El Hombre de Acero • Reportero del Daily Planet', imagen: 'Imagenes/superman_icon.jpg' },
+                    { nombre: 'Lex Luthor', actor: 'Michael Fassbender (37 años)', rol: 'CEO de LexCorp • Narcisista tecnológico', imagen: '' },
+                    { nombre: 'John Corben / Metallo', actor: 'Joel Kinnaman (34 años)', rol: 'Ex-jefe de seguridad con núcleo de Kryptonita', imagen: '' },
+                    { nombre: 'Lois Lane', actor: 'Mary Elizabeth Winstead (29 años)', rol: 'Reportera estrella del Daily Planet', imagen: '' }
+                ]
+            }
+        ];
+
+        // Imagen SVG en blanco puro (#FFFFFF) por defecto para todos los pósters y retratos vacíos
+        const BLANK_WHITE_IMG = "data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='800' viewBox='0 0 600 800'%3E%3Crect width='600' height='800' fill='%23ffffff'/%3E%3C/svg%3E";
+
+        function obtenerImagen(ruta) {
+            return (ruta && ruta.trim() !== "") ? ruta : BLANK_WHITE_IMG;
+        }
+
+        /* ==========================================================================
+           BASE DE DATOS DE LA CRONOLOGÍA DEL UNIVERSO (BOTÓN [ CRONOLOGÍA ])
+           ========================================================================== */
+        const CRONOLOGIA_HISTORICA = [
+            {
+                fecha: 'ANTIGÜEDAD MITOLÓGICA',
+                pelicula: 'Wonder Woman (2013)',
+                titulo: 'El Nacimiento en Arcilla en Themyscira',
+                detalle: 'Diana (Gal Gadot) es moldeada en arcilla por su madre, la Reina Hipólita (Lucy Lawless), y dotada de vida por los dioses del Olimpo. Las amazonas viven aisladas entrenando tras la antigua traición de los hombres.'
+            },
+            {
+                fecha: 'AÑO 1944 (SEGUNDA GUERRA MUNDIAL)',
+                pelicula: 'Wonder Woman (2013)',
+                titulo: 'El Frente Europeo, el Sacrificio de Steve Trevor y el Exilio de 70 Años',
+                detalle: 'El avión de Steve Trevor (Charlie Hunnam) se estrella en Themyscira. Diana viaja sin retorno posible a las trincheras de 1944, donde Hades (Mads Mikkelsen) observa la masacre y Ares revela la naturaleza destructiva humana. Tras el sacrificio de Trevor en un bombardero y la derrota de Ares, Diana decide desaparecer en las sombras durante siete décadas.'
+            },
+            {
+                fecha: 'AÑO 1990 (GOTHAM CITY)',
+                pelicula: 'Batman (2012)',
+                titulo: 'El Callejón del Crimen: Asesinato de Thomas y Martha Wayne',
+                detalle: 'En una noche lluviosa, Jack Napier asesina a los padres de un Bruce Wayne de 8 años, marcando el inicio de su trauma y su posterior viaje por el mundo entrenando con Henri Ducard / Ra\'s al Ghul (Alexander Siddig).'
+            },
+            {
+                fecha: 'AÑO 2007 (TIERRA Y PLANETA OA)',
+                pelicula: 'Green Lantern (2012)',
+                titulo: 'El Anillo de Abin Sur Elige a Hal Jordan',
+                detalle: 'El alienígena Abin Sur se estrella en la Tierra. Su anillo selecciona al piloto de pruebas Hal Jordan (Chris Pine), quien es transportado a Oa y entrenado brutalmente por su mentor Thaal Sinestro (Mark Strong), ausentándose de la Tierra desde entonces.'
+            },
+            {
+                fecha: 'AÑO 2012 (GOTHAM CITY)',
+                pelicula: 'Batman (2012) • JUGABLE AHORA',
+                titulo: 'El Regreso de Bruce Wayne, la Alianza con Gordon y la Caída de Enygma',
+                detalle: 'Bruce Wayne (Armie Hammer, 30 años) regresa a Gotham. Con el apoyo de Alfred (Anton Lesser) y el blindaje militar de Lucius Fox (Giancarlo Esposito), detiene al Pingüino (Alfred Molina), se alía con Jim Gordon (Jon Hamm) y derrota en Ace Chemicals a Edward Nygma / El Acertijo (David Tennant) tras escapar de la trampa bajo la comisaría.',
+                jugable: true
+            },
+            {
+                fecha: 'AÑO 2012 (KORUGAR, OA Y QWARD)',
+                pelicula: 'Green Lantern (2012)',
+                titulo: 'La Rebelión de Sinestro y la Forja del Primer Anillo Amarillo',
+                detalle: 'Hal Jordan descubre que Sinestro ha impuesto una dictadura militar en Korugar. En su juicio en Oa, Sinestro asesina a un Guardián, huye a Qward para crear el Anillo Amarillo del miedo y libra un duelo devastador contra Hal.'
+            },
+            {
+                fecha: 'AÑO 2014 (METRÓPOLIS Y LA BATCUEVA)',
+                pelicula: 'Superman (2014) + Post-Créditos Batman',
+                titulo: 'El Debut Público de Superman, Metallo y el Protocolo Trinidad',
+                detalle: 'Clark Kent / Superman (Matt Bomer) salva Metrópolis a plena luz del día durante el colapso del evento de Lex Luthor (Michael Fassbender) y derrota a John Corben / Metallo (Joel Kinnaman) con la ayuda de Lois Lane (Mary Elizabeth Winstead). Desde la Batcueva, Bruce y Alfred ven la batalla y descubren con reconocimiento facial que Diana de Themyscira estuvo observando entre la multitud sin haber envejecido desde 1944.'
+            }
+        ];
+
+        /* ==========================================================================
+           CONTROLADOR PRINCIPAL DEL HUB LAUNCHER
+           ========================================================================== */
+        const hubApp = {
+            columnsMode: 3, // 3 (idéntico al boceto) o 4 (todas las películas de Fase 1 en fila)
+            thirdSlotId: 'wonder_woman',
+            currentView: 'posters', // 'posters' o 'cronologia'
+            cronoMode: 'historica',
+
+            init() {
+                this.renderProjectsGrid();
+                this.renderCronologiaContent();
+                initBackgroundParticles();
+            },
+
+            toggleGridColumns() {
+                this.columnsMode = this.columnsMode === 3 ? 4 : 3;
+                const label = document.getElementById('grid-mode-label');
+                const switcher = document.getElementById('third-slot-switcher');
+                const grid = document.getElementById('projects-grid');
+
+                if (this.columnsMode === 3) {
+                    if (label) label.textContent = 'Vista: 3 Tarjetas (Boceto)';
+                    if (switcher) switcher.classList.remove('hidden');
+                    if (grid) grid.className = 'grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8';
+                } else {
+                    if (label) label.textContent = 'Vista: 4 Películas (Fase 1)';
+                    if (switcher) switcher.classList.add('hidden');
+                    if (grid) grid.className = 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5';
+                }
+                this.renderProjectsGrid();
+            },
+
+            setThirdCardProject(projId) {
+                this.thirdSlotId = projId;
+                const btnWW = document.getElementById('slot3-ww');
+                const btnSup = document.getElementById('slot3-sup');
+                if (projId === 'wonder_woman') {
+                    btnWW.className = 'px-2.5 py-1 rounded-lg font-mono text-xs bg-amber-500/20 text-amber-300 border border-amber-500/50 font-semibold transition';
+                    btnSup.className = 'px-2.5 py-1 rounded-lg font-mono text-xs bg-slate-900 text-slate-400 border border-slate-700 hover:text-white transition';
+                } else {
+                    btnSup.className = 'px-2.5 py-1 rounded-lg font-mono text-xs bg-amber-500/20 text-amber-300 border border-amber-500/50 font-semibold transition';
+                    btnWW.className = 'px-2.5 py-1 rounded-lg font-mono text-xs bg-slate-900 text-slate-400 border border-slate-700 hover:text-white transition';
+                }
+                this.renderProjectsGrid();
+            },
+
+            getVisibleProjects() {
+                if (this.columnsMode === 4) {
+                    return CONFIG_PROYECTOS;
+                }
+                // En modo 3 tarjetas (como el boceto):
+                // 1ª Tarjeta: Batman | 2ª Tarjeta: Green Lantern (Próximamente) | 3ª Tarjeta: Wonder Woman o Superman
+                const first = CONFIG_PROYECTOS[0];
+                const second = CONFIG_PROYECTOS[1];
+                const third = CONFIG_PROYECTOS.find(p => p.id === this.thirdSlotId) || CONFIG_PROYECTOS[2];
+                return [first, second, third];
+            },
+
+            renderProjectsGrid() {
+                const grid = document.getElementById('projects-grid');
+                if (!grid) return;
+
+                const list = this.getVisibleProjects();
+                grid.innerHTML = list.map((proj) => {
+                    const isPlayable = proj.estado === 'DISPONIBLE' && proj.urlArchivo.trim() !== '';
+                    const cardClass = isPlayable ? 'card-playable' : 'card-upcoming';
+
+                    // Etiqueta grande tipo boceto ("batman" vs "proximamente")
+                    const sketchHeaderLabel = isPlayable
+                        ? `<span class="text-xs font-mono uppercase tracking-widest px-2.5 py-1 rounded bg-amber-500/20 text-amber-300 border border-amber-500/40 font-bold"><i class="fa-solid fa-play mr-1"></i>DISPONIBLE AHORA</span>`
+                        : `<span class="text-xs font-mono uppercase tracking-widest px-2.5 py-1 rounded bg-slate-800 text-slate-300 border border-slate-600 font-bold"><i class="fa-solid fa-lock mr-1 text-sky-400"></i>PRÓXIMAMENTE</span>`;
+
+                    return `
+                        <article class="project-tall-card ${cardClass} rounded-2xl p-5 sm:p-6 min-h-[510px]">
+                            <!-- Parte Superior de la Tarjeta Vertical -->
+                            <div>
+                                <div class="flex items-center justify-between gap-2 mb-3">
+                                    ${sketchHeaderLabel}
+                                    <span class="text-[11px] font-mono text-slate-400">${proj.reparto.length} ACTORES</span>
+                                </div>
+
+                                <!-- Título al estilo del boceto + Nombre Oficial -->
+                                <div class="mb-3">
+                                    <div class="text-[11px] font-mono uppercase tracking-widest text-sky-400">${proj.subtitulo}</div>
+                                    <h2 class="font-display text-xl sm:text-2xl font-extrabold text-white tracking-wide mt-0.5">${proj.tituloOficial}</h2>
+                                </div>
+
+                                <!-- RECUADRO DE IMAGEN VERTICAL EN BLANCO PURO (#FFFFFF) -->
+                                <div onclick="${isPlayable ? `hubApp.launchProject('${proj.id}')` : `hubApp.openProjectModal('${proj.id}')`}" class="relative w-full h-56 sm:h-64 rounded-xl overflow-hidden border-2 ${isPlayable ? 'border-amber-500/60' : 'border-slate-700'} cursor-pointer group mb-4 shadow-inner">
+                                    <img src="${obtenerImagen(proj.imagenPoster)}" alt="${proj.tituloOficial}" class="blank-white-slot w-full h-full" />
+                                    <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-slate-950/95 via-slate-950/60 to-transparent p-3 flex items-end justify-between">
+                                        <span class="font-mono text-[11px] font-bold ${isPlayable ? 'text-amber-300' : 'text-slate-200'} uppercase tracking-wider">
+                                            ${isPlayable ? '▶ CLICK PARA JUGAR BATMAN (2012)' : '🔍 VER SINOPSIS Y REPARTO'}
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <!-- Resumen narrativo -->
+                                <p class="text-xs sm:text-sm text-slate-300 leading-relaxed line-clamp-3">
+                                    ${proj.resumenCorto}
+                                </p>
+                            </div>
+
+                            <!-- Botones Inferiores de Acción -->
+                            <div class="pt-4 mt-4 border-t border-slate-800/90 space-y-2.5">
+                                ${isPlayable ? `
+                                    <a href="${proj.urlArchivo}" class="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-amber-500 to-yellow-400 hover:from-amber-400 hover:to-yellow-300 text-slate-950 font-mono font-extrabold text-xs sm:text-sm uppercase tracking-wider shadow-lg transition flex items-center justify-between">
+                                        <span>JUGAR BATMAN (2012)</span>
+                                        <i class="fa-solid fa-arrow-right-to-bracket"></i>
+                                    </a>
+                                    <button type="button" onclick="hubApp.openProjectModal('${proj.id}')" class="w-full py-2 px-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-700 font-mono text-xs transition">
+                                        <i class="fa-solid fa-users mr-1.5 text-amber-400"></i>Ver Reparto (7) y Sinopsis
+                                    </button>
+                                ` : `
+                                    <button type="button" onclick="hubApp.openProjectModal('${proj.id}')" class="w-full py-3.5 px-4 rounded-xl bg-slate-900 hover:bg-slate-800 text-sky-300 border border-sky-500/40 hover:border-sky-400 font-mono font-bold text-xs sm:text-sm uppercase tracking-wider transition flex items-center justify-between">
+                                        <span>PRÓXIMAMENTE • VER DOSSIER</span>
+                                        <i class="fa-solid fa-folder-open"></i>
+                                    </button>
+                                `}
+                            </div>
+                        </article>
+                    `;
+                }).join('');
+            },
+
+            launchProject(projId) {
+                const proj = CONFIG_PROYECTOS.find(p => p.id === projId);
+                if (!proj) return;
+                if (proj.urlArchivo && proj.urlArchivo.trim() !== '') {
+                    window.location.href = proj.urlArchivo;
+                } else {
+                    this.openProjectModal(projId);
+                }
+            },
+
+            /* ======================================================================
+               VISTA DE CRONOLOGÍA (ACTIVADA CON EL BOTÓN [ CRONOLOGÍA ])
+               ====================================================================== */
+            toggleCronologiaView() {
+                if (this.currentView === 'cronologia') {
+                    this.showPostersView();
+                } else {
+                    this.showCronologiaView();
+                }
+            },
+
+            showCronologiaView() {
+                this.currentView = 'cronologia';
+                document.getElementById('section-posters').classList.add('hidden');
+                document.getElementById('section-cronologia').classList.remove('hidden');
+                document.getElementById('btn-back-posters').classList.remove('hidden');
+                document.getElementById('btn-cronologia').classList.add('active-crono');
+                document.getElementById('view-badge').textContent = 'CRONOLOGÍA DEL UNIVERSO';
+            },
+
+            showPostersView() {
+                this.currentView = 'posters';
+                document.getElementById('section-cronologia').classList.add('hidden');
+                document.getElementById('section-posters').classList.remove('hidden');
+                document.getElementById('btn-back-posters').classList.add('hidden');
+                document.getElementById('btn-cronologia').classList.remove('active-crono');
+                document.getElementById('view-badge').textContent = 'SELECCIÓN DE PROYECTO';
+            },
+
+            switchCronoMode(mode) {
+                this.cronoMode = mode;
+                const btnHist = document.getElementById('tab-crono-historica');
+                const btnEst = document.getElementById('tab-crono-estreno');
+
+                if (mode === 'historica') {
+                    btnHist.className = 'px-3.5 py-2 rounded-xl font-mono text-xs bg-amber-500/20 text-amber-300 border border-amber-500/50 font-bold transition';
+                    btnEst.className = 'px-3.5 py-2 rounded-xl font-mono text-xs bg-slate-900 text-slate-400 border border-slate-700 hover:text-white transition';
+                } else {
+                    btnEst.className = 'px-3.5 py-2 rounded-xl font-mono text-xs bg-amber-500/20 text-amber-300 border border-amber-500/50 font-bold transition';
+                    btnHist.className = 'px-3.5 py-2 rounded-xl font-mono text-xs bg-slate-900 text-slate-400 border border-slate-700 hover:text-white transition';
+                }
+                this.renderCronologiaContent();
+            },
+
+            renderCronologiaContent() {
+                const container = document.getElementById('crono-content');
+                if (!container) return;
+
+                if (this.cronoMode === 'historica') {
+                    container.innerHTML = CRONOLOGIA_HISTORICA.map((ev, idx) => `
+                        <div class="relative pl-6 sm:pl-8 py-3 border-l-2 ${ev.jugable ? 'border-amber-400 bg-amber-500/5 rounded-r-xl pr-4' : 'border-slate-700'}">
+                            <span class="absolute -left-[9px] top-4 w-4 h-4 rounded-full ${ev.jugable ? 'bg-amber-400 shadow-[0_0_12px_rgba(245,158,11,0.8)]' : 'bg-slate-800 border-2 border-sky-400'}"></span>
+                            <div class="flex flex-wrap items-center justify-between gap-2">
+                                <span class="font-mono text-xs font-bold ${ev.jugable ? 'text-amber-300' : 'text-sky-400'} uppercase tracking-wider">0${idx + 1} • ${ev.fecha}</span>
+                                <span class="text-[11px] font-mono px-2.5 py-0.5 rounded bg-slate-900 text-slate-300 border border-slate-700">${ev.pelicula}</span>
+                            </div>
+                            <h3 class="font-display font-bold text-base sm:text-lg text-white mt-1">${ev.titulo}</h3>
+                            <p class="text-xs sm:text-sm text-slate-300 mt-1 leading-relaxed">${ev.detalle}</p>
+                            ${ev.jugable ? `
+                                <div class="mt-3">
+                                    <a href="${CONFIG_PROYECTOS[0].urlArchivo}" class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 font-mono font-bold text-xs uppercase transition">
+                                        <i class="fa-solid fa-play"></i> Iniciar Batman (2012) Ahora
+                                    </a>
+                                </div>
+                            ` : ''}
+                        </div>
+                    `).join('');
+                } else {
+                    container.innerHTML = `
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            ${CONFIG_PROYECTOS.map((p, i) => `
+                                <div class="bg-slate-900/90 border ${i === 0 ? 'border-amber-500/60' : 'border-slate-800'} rounded-xl p-4 flex flex-col justify-between gap-3">
+                                    <div>
+                                        <div class="flex items-center justify-between">
+                                            <span class="font-mono text-xs text-amber-400 font-bold">PELÍCULA 0${i + 1} • FASE 1</span>
+                                            <span class="text-[11px] font-mono ${i === 0 ? 'text-emerald-400' : 'text-slate-400'}">${p.estado}</span>
+                                        </div>
+                                        <h3 class="font-display font-bold text-lg text-white mt-1">${p.tituloOficial}</h3>
+                                        <p class="text-xs text-slate-300 mt-1.5 leading-relaxed">${p.resumenCorto}</p>
+                                    </div>
+                                    <button type="button" onclick="hubApp.openProjectModal('${p.id}')" class="w-full py-2 rounded-lg bg-slate-950 hover:bg-slate-800 text-sky-300 border border-slate-700 font-mono text-xs font-semibold transition">
+                                        Ver Sinopsis Completa y Reparto (${p.reparto.length})
+                                    </button>
+                                </div>
+                            `).join('')}
+                        </div>
+                    `;
+                }
+            },
+
+            /* ======================================================================
+               MODAL DE DETALLES DE PELÍCULA Y REPARTO (CON ICONOS EN BLANCO #FFFFFF)
+               ====================================================================== */
+            openProjectModal(projId) {
+                const proj = CONFIG_PROYECTOS.find(p => p.id === projId);
+                if (!proj) return;
+
+                const isPlayable = proj.estado === 'DISPONIBLE' && proj.urlArchivo.trim() !== '';
+                const modal = document.getElementById('hub-modal');
+                document.getElementById('hub-modal-subtitle').textContent = `EXPEDIENTE OFICIAL • ${proj.tituloOficial}`;
+
+                document.getElementById('hub-modal-body').innerHTML = `
+                    <div class="space-y-6">
+                        <div class="flex flex-col sm:flex-row items-start justify-between gap-4 border-b border-slate-800 pb-4">
+                            <div>
+                                <span class="text-xs font-mono uppercase px-2.5 py-0.5 rounded ${isPlayable ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40' : 'bg-slate-800 text-sky-300 border border-slate-700'} font-bold">
+                                    ${proj.estado}
+                                </span>
+                                <h3 class="font-display text-2xl font-extrabold text-white mt-2">${proj.tituloOficial}</h3>
+                                <p class="text-xs font-mono text-slate-400">${proj.subtitulo}</p>
+                            </div>
+                            ${isPlayable ? `
+                                <a href="${proj.urlArchivo}" class="px-5 py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-mono font-extrabold text-xs uppercase tracking-wider shadow-lg transition shrink-0">
+                                    ▶ Jugar Ahora
+                                </a>
+                            ` : ''}
+                        </div>
+
+                        <!-- Sinopsis Estructurada del Documento Fase 1 -->
+                        <div class="space-y-2.5">
+                            <h4 class="font-mono text-xs uppercase tracking-wider text-amber-400 font-bold">ESTRUCTURA NARRATIVA DE LA PELÍCULA</h4>
+                            <div class="space-y-2.5 text-xs sm:text-sm text-slate-200 leading-relaxed bg-slate-900/80 p-4 rounded-xl border border-slate-800">
+                                ${proj.sinopsisCompleta.map(p => `<p>• ${p}</p>`).join('')}
+                            </div>
+                        </div>
+
+                        <!-- Reparto Oficial con Recuadros en Blanco (#FFFFFF) para tus imágenes -->
+                        <div class="space-y-3">
+                            <h4 class="font-mono text-xs uppercase tracking-wider text-sky-400 font-bold">REPARTO CONFIRMADO (${proj.reparto.length} PERSONAJES)</h4>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                ${proj.reparto.map(r => `
+                                    <div class="bg-slate-900 border border-slate-800 rounded-xl p-3 flex items-center gap-3.5">
+                                        <img src="${obtenerImagen(r.imagen)}" alt="${r.nombre}" class="blank-white-slot w-14 h-16 rounded-lg border-2 border-amber-500/50 shrink-0" />
+                                        <div class="min-w-0">
+                                            <div class="font-display font-bold text-sm text-white truncate">${r.nombre}</div>
+                                            <div class="text-xs font-mono text-amber-300 font-semibold">${r.actor}</div>
+                                            <div class="text-[11px] text-slate-400 truncate mt-0.5">${r.rol}</div>
+                                        </div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    </div>
+                `;
+                modal.classList.remove('hidden');
+            },
+
+            openGuideModal() {
+                const modal = document.getElementById('hub-modal');
+                document.getElementById('hub-modal-subtitle').textContent = 'GUÍA RÁPIDA DE PERSONALIZACIÓN';
+                document.getElementById('hub-modal-body').innerHTML = `
+                    <div class="space-y-4 text-xs sm:text-sm text-slate-200 leading-relaxed">
+                        <h3 class="font-display text-lg font-bold text-white">Cómo conectar tus minijuegos y añadir tus imágenes</h3>
+                        <p>
+                            Guarda este archivo como <code>index.html</code> en la misma carpeta donde tienes tu juego de Batman (<code>C:/Users/Usuario/Desktop/UNIVERSE/</code>).
+                        </p>
+                        <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 font-mono text-xs space-y-2">
+                            <div class="text-amber-400 font-bold">// Al principio del bloque &lt;script&gt; encontrarás CONFIG_PROYECTOS:</div>
+                            <div>urlArchivo: <span class="text-emerald-300">'batman_gotham_2012_dcu_nv.html'</span>,</div>
+                            <div>imagenPoster: <span class="text-sky-300">'imagenes/poster_batman.jpg'</span>, // Vacío "" = recuadro blanco</div>
+                        </div>
+                        <p>
+                            Todos los pósters verticales y las fichas de reparto tienen por defecto un <strong>recuadro en blanco puro (#FFFFFF)</strong> para que puedas colocar tus propias imágenes cuando quieras.
+                        </p>
+                    </div>
+                `;
+                modal.classList.remove('hidden');
+            },
+
+            closeModal() {
+                document.getElementById('hub-modal').classList.add('hidden');
+            }
+        };
+
+        /* ==========================================================================
+           PARTÍCULAS ATMOSFÉRICAS EN CANVAS DE FONDO
+           ========================================================================== */
+        function initBackgroundParticles() {
+            const canvas = document.getElementById('bg-canvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            let w = canvas.width = window.innerWidth;
+            let h = canvas.height = window.innerHeight;
+
+            window.addEventListener('resize', () => {
+                w = canvas.width = window.innerWidth;
+                h = canvas.height = window.innerHeight;
+            });
+
+            const particles = Array.from({ length: 55 }, () => ({
+                x: Math.random() * w,
+                y: Math.random() * h,
+                r: 1 + Math.random() * 2,
+                vy: -0.25 - Math.random() * 0.45,
+                vx: (Math.random() - 0.5) * 0.3,
+                alpha: 0.2 + Math.random() * 0.5
+            }));
+
+            function animate() {
+                ctx.clearRect(0, 0, w, h);
+                for (const p of particles) {
+                    ctx.fillStyle = `rgba(248, 250, 252, ${p.alpha})`;
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                    ctx.fill();
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    if (p.y < -10) {
+                        p.y = h + 10;
+                        p.x = Math.random() * w;
+                    }
+                }
+                requestAnimationFrame(animate);
+            }
+            animate();
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            hubApp.init();
+        });
+    </script>
+</body>
+</html>
