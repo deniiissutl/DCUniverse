@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es" class="dark">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,7 +10,9 @@
     <!-- Google Fonts: Cinzel, Inter & JetBrains Mono -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
@@ -40,14 +43,19 @@
         }
     </script>
 
-    <link href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,600;0,700;0,800;0,900;1,600&display=swap"
+        rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap"
+        rel="stylesheet">
     <style>
         /* ==========================================================================
            ESTÉTICA ABISMAL NEO-NOIR (SIN CANVAS) + MODO TOTAL ENYGMA OVERRIDE
            ========================================================================== */
         body {
             background-color: #020305;
-            background-image: 
+            background-image:
                 radial-gradient(circle at 50% 0%, rgba(15, 23, 42, 0.45) 0%, transparent 60%),
                 radial-gradient(circle at 50% 100%, rgba(2, 3, 5, 0.98) 0%, #010203 100%);
             color: #cbd5e1;
@@ -92,7 +100,7 @@
            ========================================================================== */
         body.enygma-hack {
             background-color: #010804 !important;
-            background-image: 
+            background-image:
                 radial-gradient(circle at 50% 25%, rgba(0, 255, 102, 0.12) 0%, transparent 55%),
                 repeating-linear-gradient(45deg, rgba(0, 255, 102, 0.02) 0px, rgba(0, 255, 102, 0.02) 2px, transparent 2px, transparent 14px) !important;
             color: #d1fae5;
@@ -107,16 +115,31 @@
             z-index: 1;
             overflow: hidden;
         }
+
         body.enygma-hack #enygma-bg-overlay {
             display: block;
         }
 
         @keyframes floatRiddleMark {
-            0% { transform: translateY(105vh) rotate(-12deg) scale(0.8); opacity: 0; }
-            20% { opacity: 0.14; }
-            80% { opacity: 0.14; }
-            100% { transform: translateY(-15vh) rotate(15deg) scale(1.25); opacity: 0; }
+            0% {
+                transform: translateY(105vh) rotate(-12deg) scale(0.8);
+                opacity: 0;
+            }
+
+            20% {
+                opacity: 0.14;
+            }
+
+            80% {
+                opacity: 0.14;
+            }
+
+            100% {
+                transform: translateY(-15vh) rotate(15deg) scale(1.25);
+                opacity: 0;
+            }
         }
+
         .riddle-mark {
             position: absolute;
             font-family: 'JetBrains Mono', monospace;
@@ -128,8 +151,17 @@
         }
 
         @keyframes enygmaPulseBorder {
-            0%, 100% { border-color: rgba(0, 255, 102, 0.65); box-shadow: 0 0 28px rgba(0, 255, 102, 0.18), inset 0 0 15px rgba(0, 255, 102, 0.06); }
-            50% { border-color: rgba(16, 185, 129, 0.95); box-shadow: 0 0 42px rgba(0, 255, 102, 0.32), inset 0 0 22px rgba(0, 255, 102, 0.12); }
+
+            0%,
+            100% {
+                border-color: rgba(0, 255, 102, 0.65);
+                box-shadow: 0 0 28px rgba(0, 255, 102, 0.18), inset 0 0 15px rgba(0, 255, 102, 0.06);
+            }
+
+            50% {
+                border-color: rgba(16, 185, 129, 0.95);
+                box-shadow: 0 0 42px rgba(0, 255, 102, 0.32), inset 0 0 22px rgba(0, 255, 102, 0.12);
+            }
         }
 
         body.enygma-hack .bat-panel {
@@ -146,10 +178,12 @@
             background: linear-gradient(90deg, rgba(2, 22, 10, 0.95) 0%, rgba(4, 34, 16, 0.9) 100%) !important;
             border-color: rgba(0, 255, 102, 0.45) !important;
         }
+
         body.enygma-hack .choice-btn:hover {
             border-color: #00ff66 !important;
             box-shadow: 0 0 25px rgba(0, 255, 102, 0.3) !important;
         }
+
         body.enygma-hack .choice-btn::before {
             background: linear-gradient(180deg, #00ff66, #10b981) !important;
         }
@@ -164,6 +198,7 @@
             box-shadow: 0 6px 18px rgba(0, 0, 0, 0.8);
             transition: transform 0.25s ease, border-color 0.25s ease;
         }
+
         body.enygma-hack .char-blank-img {
             border-color: #00ff66 !important;
             box-shadow: 0 0 18px rgba(0, 255, 102, 0.4);
@@ -181,9 +216,17 @@
 
         /* Animación de entrada de escena */
         @keyframes sceneReveal {
-            from { opacity: 0; transform: translateY(8px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
+
         .animate-scene {
             animation: sceneReveal 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
@@ -196,6 +239,7 @@
             cursor: pointer;
             background: linear-gradient(90deg, rgba(9, 13, 22, 0.98) 0%, rgba(15, 23, 38, 0.95) 100%);
         }
+
         .choice-btn::before {
             content: '';
             position: absolute;
@@ -207,9 +251,11 @@
             transform: scaleY(0);
             transition: transform 0.2s ease;
         }
+
         .choice-btn:hover::before {
             transform: scaleY(1);
         }
+
         .choice-btn:hover {
             transform: translateX(5px);
             border-color: rgba(245, 158, 11, 0.85);
@@ -217,35 +263,375 @@
         }
 
         /* Scrollbars oscuras */
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: #020305; }
-        ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 3px; }
-        ::-webkit-scrollbar-thumb:hover { background: #f59e0b; }
-    
-/* ===== CAPA DE DISEÑO (tipografía, geometría, contraste, accesibilidad) ===== */
-:root{--ui:'Barlow Semi Condensed','Inter',sans-serif;--read:'Source Serif 4',Georgia,serif;--b:linear-gradient(var(--accent),var(--accent))}
-body{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
-.font-mono{font-family:var(--ui)!important;letter-spacing:.05em!important;font-weight:600}
-code,pre{font-family:'JetBrains Mono',monospace!important}
-[class*="text-[10px]"]{font-size:11.5px!important}
-[class*="text-[11px]"]{font-size:12.5px!important}
-.text-slate-500{color:#8493a8!important}
-.text-slate-400{color:#a3b2c7!important}
-.font-display{letter-spacing:.035em}
-.rounded-2xl{border-radius:6px!important}
-.rounded-xl,.rounded-lg{border-radius:4px!important}
-[id*="narrative"]{font-family:var(--read);font-size:1.075rem;line-height:1.75;max-width:68ch}
-:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-::selection{background:color-mix(in srgb,var(--accent) 35%,transparent)}
-::-webkit-scrollbar-thumb:hover{background:var(--accent)}
-.bat-panel,.oa-panel{position:relative}
-@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
-body{--accent:#d97706}body.enygma-hack{--accent:#00ff66}
-.scanlines::after{opacity:.3}
-.noir-vignette{box-shadow:inset 0 0 90px rgba(0,0,0,.78)}
-.bat-panel::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;background:linear-gradient(90deg,var(--accent),transparent 45%);pointer-events:none}
-</style>
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #020305;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #f59e0b;
+        }
+
+        /* ===== CAPA DE DISEÑO (tipografía, geometría, contraste, accesibilidad) ===== */
+        :root {
+            --ui: 'Barlow Semi Condensed', 'Inter', sans-serif;
+            --read: 'Source Serif 4', Georgia, serif;
+            --b: linear-gradient(var(--accent), var(--accent))
+        }
+
+        body {
+            -webkit-font-smoothing: antialiased;
+            text-rendering: optimizeLegibility
+        }
+
+        .font-mono {
+            font-family: var(--ui) !important;
+            letter-spacing: .05em !important;
+            font-weight: 600
+        }
+
+        code,
+        pre {
+            font-family: 'JetBrains Mono', monospace !important
+        }
+
+        [class*="text-[10px]"] {
+            font-size: 11.5px !important
+        }
+
+        [class*="text-[11px]"] {
+            font-size: 12.5px !important
+        }
+
+        .text-slate-500 {
+            color: #8493a8 !important
+        }
+
+        .text-slate-400 {
+            color: #a3b2c7 !important
+        }
+
+        .font-display {
+            letter-spacing: .035em
+        }
+
+        .rounded-2xl {
+            border-radius: 6px !important
+        }
+
+        .rounded-xl,
+        .rounded-lg {
+            border-radius: 4px !important
+        }
+
+        [id*="narrative"] {
+            font-family: var(--read);
+            font-size: 1.075rem;
+            line-height: 1.75;
+            max-width: 68ch
+        }
+
+        :focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px
+        }
+
+        ::selection {
+            background: color-mix(in srgb, var(--accent) 35%, transparent)
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent)
+        }
+
+        .bat-panel,
+        .oa-panel {
+            position: relative
+        }
+
+        @media (prefers-reduced-motion:reduce) {
+
+            *,
+            *::before,
+            *::after {
+                animation-duration: .01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: .01ms !important
+            }
+        }
+
+        body {
+            --accent: #d97706
+        }
+
+        body.enygma-hack {
+            --accent: #00ff66
+        }
+
+        .scanlines::after {
+            opacity: .3
+        }
+
+        .noir-vignette {
+            box-shadow: inset 0 0 90px rgba(0, 0, 0, .78)
+        }
+
+        .bat-panel::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent), transparent 45%);
+            pointer-events: none
+        }
+
+        /* ===== NUEVA ESTÉTICA: GOTHAM ART DÉCO (tinta, latón y niebla) ===== */
+        body {
+            --accent: #c9a24b;
+            --brass: #c9a24b;
+            --brass-soft: #e6d3a3;
+            --ink: #0a0f18;
+            --ink2: #101826;
+            --bone: #ece4d2;
+            --steel: #8fb3c4;
+            background-color: #070b12 !important;
+            background-image: radial-gradient(ellipse 80% 45% at 50% -5%, rgba(201, 162, 75, .16), transparent 65%), linear-gradient(180deg, #0a111c 0%, #070b12 55%, #05080d 100%) !important;
+            color: #d9d3c3
+        }
+
+        body.enygma-hack {
+            --accent: #00ff66
+        }
+
+        html {
+            background: #05080d
+        }
+
+        html::before {
+            content: "";
+            position: fixed;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 34vh;
+            min-height: 180px;
+            z-index: -1;
+            pointer-events: none;
+            background: url("data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%201600%20240%22%20preserveAspectRatio=%22none%22%3E%3Cg%20fill=%22%230d1522%22%3E%3Crect%20x=%220%22%20y=%22142%22%20width=%2281%22%20height=%2298%22/%3E%3Crect%20x=%2216%22%20y=%22120%22%20width=%2249%22%20height=%2222%22/%3E%3Crect%20x=%2231%22%20y=%2292%22%20width=%2219%22%20height=%2230%22/%3E%3Crect%20x=%2239%22%20y=%2264%22%20width=%223%22%20height=%2230%22/%3E%3Crect%20x=%2281%22%20y=%22156%22%20width=%2249%22%20height=%2284%22/%3E%3Crect%20x=%2291%22%20y=%22134%22%20width=%2229%22%20height=%2222%22/%3E%3Crect%20x=%22100%22%20y=%22106%22%20width=%2212%22%20height=%2230%22/%3E%3Crect%20x=%22105%22%20y=%2278%22%20width=%222%22%20height=%2230%22/%3E%3Crect%20x=%22130%22%20y=%22126%22%20width=%22104%22%20height=%22114%22/%3E%3Crect%20x=%22151%22%20y=%22104%22%20width=%2262%22%20height=%2222%22/%3E%3Crect%20x=%22170%22%20y=%2276%22%20width=%2225%22%20height=%2230%22/%3E%3Crect%20x=%22180%22%20y=%2248%22%20width=%224%22%20height=%2230%22/%3E%3Crect%20x=%22240%22%20y=%22163%22%20width=%2293%22%20height=%2277%22/%3E%3Crect%20x=%22259%22%20y=%22141%22%20width=%2256%22%20height=%2222%22/%3E%3Crect%20x=%22275%22%20y=%22113%22%20width=%2222%22%20height=%2230%22/%3E%3Crect%20x=%22285%22%20y=%2285%22%20width=%224%22%20height=%2230%22/%3E%3Crect%20x=%22341%22%20y=%22165%22%20width=%2294%22%20height=%2275%22/%3E%3Crect%20x=%22436%22%20y=%22165%22%20width=%2268%22%20height=%2275%22/%3E%3Crect%20x=%22450%22%20y=%22143%22%20width=%2241%22%20height=%2222%22/%3E%3Crect%20x=%22462%22%20y=%22115%22%20width=%2216%22%20height=%2230%22/%3E%3Crect%20x=%22469%22%20y=%2287%22%20width=%223%22%20height=%2230%22/%3E%3Crect%20x=%22510%22%20y=%22124%22%20width=%2246%22%20height=%22116%22/%3E%3Crect%20x=%22519%22%20y=%22102%22%20width=%2228%22%20height=%2222%22/%3E%3Crect%20x=%22527%22%20y=%2274%22%20width=%2211%22%20height=%2230%22/%3E%3Crect%20x=%22532%22%20y=%2246%22%20width=%222%22%20height=%2230%22/%3E%3Crect%20x=%22558%22%20y=%2273%22%20width=%2277%22%20height=%22167%22/%3E%3Crect%20x=%22573%22%20y=%2251%22%20width=%2246%22%20height=%2222%22/%3E%3Crect%20x=%22587%22%20y=%2223%22%20width=%2218%22%20height=%2230%22/%3E%3Crect%20x=%22595%22%20y=%22-5%22%20width=%223%22%20height=%2230%22/%3E%3Crect%20x=%22636%22%20y=%22134%22%20width=%2279%22%20height=%22106%22/%3E%3Crect%20x=%22652%22%20y=%22112%22%20width=%2247%22%20height=%2222%22/%3E%3Crect%20x=%22666%22%20y=%2284%22%20width=%2219%22%20height=%2230%22/%3E%3Crect%20x=%22674%22%20y=%2256%22%20width=%223%22%20height=%2230%22/%3E%3Crect%20x=%22718%22%20y=%22156%22%20width=%2287%22%20height=%2284%22/%3E%3Crect%20x=%22735%22%20y=%22134%22%20width=%2252%22%20height=%2222%22/%3E%3Crect%20x=%22751%22%20y=%22106%22%20width=%2221%22%20height=%2230%22/%3E%3Crect%20x=%22760%22%20y=%2278%22%20width=%223%22%20height=%2230%22/%3E%3Crect%20x=%22806%22%20y=%22128%22%20width=%2247%22%20height=%22112%22/%3E%3Crect%20x=%22815%22%20y=%22106%22%20width=%2228%22%20height=%2222%22/%3E%3Crect%20x=%22824%22%20y=%2278%22%20width=%2211%22%20height=%2230%22/%3E%3Crect%20x=%22829%22%20y=%2250%22%20width=%222%22%20height=%2230%22/%3E%3Crect%20x=%22861%22%20y=%22100%22%20width=%2294%22%20height=%22140%22/%3E%3Crect%20x=%22880%22%20y=%2278%22%20width=%2256%22%20height=%2222%22/%3E%3Crect%20x=%22897%22%20y=%2250%22%20width=%2223%22%20height=%2230%22/%3E%3Crect%20x=%22906%22%20y=%2222%22%20width=%224%22%20height=%2230%22/%3E%3Crect%20x=%22962%22%20y=%22104%22%20width=%2286%22%20height=%22136%22/%3E%3Crect%20x=%22979%22%20y=%2282%22%20width=%2252%22%20height=%2222%22/%3E%3Crect%20x=%22995%22%20y=%2254%22%20width=%2221%22%20height=%2230%22/%3E%3Crect%20x=%221003%22%20y=%2226%22%20width=%223%22%20height=%2230%22/%3E%3Crect%20x=%221050%22%20y=%22160%22%20width=%2271%22%20height=%2280%22/%3E%3Crect%20x=%221064%22%20y=%22138%22%20width=%2243%22%20height=%2222%22/%3E%3Crect%20x=%221077%22%20y=%22110%22%20width=%2217%22%20height=%2230%22/%3E%3Crect%20x=%221084%22%20y=%2282%22%20width=%223%22%20height=%2230%22/%3E%3Crect%20x=%221129%22%20y=%2293%22%20width=%22103%22%20height=%22147%22/%3E%3Crect%20x=%221236%22%20y=%22150%22%20width=%2249%22%20height=%2290%22/%3E%3Crect%20x=%221246%22%20y=%22128%22%20width=%2229%22%20height=%2222%22/%3E%3Crect%20x=%221255%22%20y=%22100%22%20width=%2212%22%20height=%2230%22/%3E%3Crect%20x=%221260%22%20y=%2272%22%20width=%222%22%20height=%2230%22/%3E%3Crect%20x=%221287%22%20y=%22142%22%20width=%2283%22%20height=%2298%22/%3E%3Crect%20x=%221376%22%20y=%22161%22%20width=%2245%22%20height=%2279%22/%3E%3Crect%20x=%221426%22%20y=%2291%22%20width=%2283%22%20height=%22149%22/%3E%3Crect%20x=%221443%22%20y=%2269%22%20width=%2250%22%20height=%2222%22/%3E%3Crect%20x=%221458%22%20y=%2241%22%20width=%2220%22%20height=%2230%22/%3E%3Crect%20x=%221466%22%20y=%2213%22%20width=%223%22%20height=%2230%22/%3E%3Crect%20x=%221516%22%20y=%22157%22%20width=%2248%22%20height=%2283%22/%3E%3Crect%20x=%221571%22%20y=%22165%22%20width=%2248%22%20height=%2275%22/%3E%3C/g%3E%3C/svg%3E") bottom/100% 100% no-repeat;
+            opacity: .9
+        }
+
+        html::after {
+            content: "";
+            position: fixed;
+            inset: -20% 0 0 0;
+            z-index: -1;
+            pointer-events: none;
+            opacity: .35;
+            background: repeating-linear-gradient(104deg, transparent 0 22px, rgba(143, 179, 196, .10) 22px 23px, transparent 23px 61px);
+            animation: rainFall 1.1s linear infinite
+        }
+
+        @keyframes rainFall {
+            to {
+                transform: translate(-34px, 60px)
+            }
+        }
+
+        .scanlines::after {
+            background: url("data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20width=%22160%22%20height=%22160%22%3E%3Cfilter%20id=%22n%22%3E%3CfeTurbulence%20type=%22fractalNoise%22%20baseFrequency=%22.9%22%20numOctaves=%222%22%20stitchTiles=%22stitch%22/%3E%3CfeColorMatrix%20values=%220%200%200%200%201%20%200%200%200%200%201%20%200%200%200%200%201%20%200%200%200%20.55%200%22/%3E%3C/filter%3E%3Crect%20width=%22100%25%22%20height=%22100%25%22%20filter=%22url%28%23n%29%22/%3E%3C/svg%3E") !important;
+            background-size: 160px 160px !important;
+            opacity: .07 !important;
+            mix-blend-mode: screen
+        }
+
+        .noir-vignette {
+            box-shadow: inset 0 0 160px rgba(0, 0, 0, .85)
+        }
+
+        /* Tipografía */
+        .font-display {
+            font-family: 'Bodoni Moda', 'Cinzel', serif !important;
+            letter-spacing: .02em !important;
+            font-weight: 800
+        }
+
+        .accent-title {
+            background: linear-gradient(180deg, #f6ecd0 10%, #c9a24b 90%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent
+        }
+
+        body.enygma-hack .accent-title {
+            background: none;
+            -webkit-text-fill-color: #00ff66
+        }
+
+        [id*="narrative"] {
+            color: #e4dccb
+        }
+
+        .text-white {
+            color: var(--bone) !important
+        }
+
+        /* Paleta: ámbar -> latón, cian -> acero */
+        [class*="text-amber-"] {
+            color: var(--brass) !important
+        }
+
+        [class*="text-sky-"] {
+            color: var(--steel) !important
+        }
+
+        [class*="border-amber-"] {
+            border-color: rgba(201, 162, 75, .55) !important
+        }
+
+        [class*="border-sky-"] {
+            border-color: rgba(143, 179, 196, .4) !important
+        }
+
+        [class*="bg-amber-500/"],
+        [class*="bg-amber-400/"] {
+            background-color: rgba(201, 162, 75, .16) !important
+        }
+
+        .bg-amber-500,
+        .bg-amber-400 {
+            background-color: var(--brass) !important;
+            color: #1a1305 !important
+        }
+
+        .hover\:bg-amber-400:hover {
+            background-color: var(--brass-soft) !important
+        }
+
+        [class*="bg-sky-"] {
+            background-color: rgba(143, 179, 196, .14) !important
+        }
+
+        [class*="border-slate-"] {
+            border-color: rgba(201, 162, 75, .16) !important
+        }
+
+        .bg-black,
+        [class*="bg-black/"],
+        .bg-slate-900 {
+            background-color: rgba(13, 20, 32, .82) !important
+        }
+
+        .text-slate-300 {
+            color: #cfc7b4 !important
+        }
+
+        .text-slate-400 {
+            color: #aeb5bf !important
+        }
+
+        .text-slate-500 {
+            color: #8b93a1 !important
+        }
+
+        /* Paneles con esquinas de latón */
+        .bat-panel {
+            background:
+                linear-gradient(var(--brass), var(--brass)) top left/16px 1.5px no-repeat, linear-gradient(var(--brass), var(--brass)) top left/1.5px 16px no-repeat,
+                linear-gradient(var(--brass), var(--brass)) top right/16px 1.5px no-repeat, linear-gradient(var(--brass), var(--brass)) top right/1.5px 16px no-repeat,
+                linear-gradient(var(--brass), var(--brass)) bottom left/16px 1.5px no-repeat, linear-gradient(var(--brass), var(--brass)) bottom left/1.5px 16px no-repeat,
+                linear-gradient(var(--brass), var(--brass)) bottom right/16px 1.5px no-repeat, linear-gradient(var(--brass), var(--brass)) bottom right/1.5px 16px no-repeat,
+                linear-gradient(180deg, rgba(16, 24, 38, .93), rgba(8, 12, 20, .95));
+            border: 1px solid rgba(201, 162, 75, .2);
+            border-radius: 2px !important;
+            box-shadow: 0 24px 60px -18px rgba(0, 0, 0, .95)
+        }
+
+        body.enygma-hack .bat-panel {
+            background: rgba(2, 13, 6, .94) !important
+        }
+
+        .bat-panel::before {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent) 50%, transparent)
+        }
+
+        .rounded-2xl,
+        .rounded-xl,
+        .rounded-lg {
+            border-radius: 2px !important
+        }
+
+        /* Botones de decisión: estilo programa de mano de teatro */
+        .choice-btn {
+            background: linear-gradient(90deg, rgba(18, 27, 43, .96), rgba(10, 16, 27, .96)) !important;
+            border: 1px solid rgba(201, 162, 75, .28) !important;
+            border-radius: 2px !important
+        }
+
+        .choice-btn::before {
+            width: 3px;
+            background: var(--accent) !important
+        }
+
+        .choice-btn:hover {
+            border-color: var(--brass) !important;
+            box-shadow: 0 0 0 1px rgba(201, 162, 75, .25), 0 14px 30px -10px rgba(0, 0, 0, .95) !important;
+            transform: translateX(6px)
+        }
+
+        body.enygma-hack .choice-btn {
+            background: linear-gradient(90deg, rgba(2, 22, 10, .95), rgba(4, 34, 16, .9)) !important
+        }
+
+        /* Pestañas y visor */
+        nav button {
+            text-transform: uppercase;
+            letter-spacing: .1em !important
+        }
+
+        .char-blank-img {
+            border: 1px solid var(--brass) !important;
+            border-radius: 2px !important;
+            box-shadow: 0 0 0 3px rgba(10, 15, 24, .9), 0 0 0 4px rgba(201, 162, 75, .35), 0 10px 24px rgba(0, 0, 0, .8)
+        }
+
+        body.enygma-hack .char-blank-img {
+            border-color: #00ff66 !important
+        }
+
+        .scene-img-viewer {
+            filter: contrast(1.06) saturate(.82) sepia(.12)
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #2a3548
+        }
+
+        ::selection {
+            background: rgba(201, 162, 75, .35)
+        }
+
+        @media (prefers-reduced-motion:reduce) {
+            html::after {
+                animation: none
+            }
+        }
+    </style>
 </head>
+
 <body class="scanlines min-h-screen flex flex-col font-sans selection:bg-amber-500/30 selection:text-amber-200">
 
     <!-- Viñeta Neo-Noir Profunda (Sin Canvas) -->
@@ -270,27 +656,44 @@ body{--accent:#d97706}body.enygma-hack{--accent:#00ff66}
             <div class="flex items-center gap-3.5 w-full lg:w-auto justify-between lg:justify-start">
                 <div class="flex items-center gap-3.5">
                     <!-- Botón Volver al Hub o Ver Sinopsis -->
-                    <a href="index.html" class="w-11 h-11 rounded-xl bg-black border border-slate-800 hover:border-amber-500/60 flex items-center justify-center text-slate-400 hover:text-amber-400 transition shadow-lg" title="Volver al Hub DC Universe">
+                    <a href="index.html"
+                        class="w-11 h-11 rounded-xl bg-black border border-slate-800 hover:border-amber-500/60 flex items-center justify-center text-slate-400 hover:text-amber-400 transition shadow-lg"
+                        title="Volver al Hub DC Universe">
                         <i class="fa-solid fa-chevron-left"></i>
                     </a>
-                    <button type="button" onclick="app.showUniverseModal()" class="w-12 h-12 rounded-xl bg-black border border-amber-500/50 flex items-center justify-center shadow-lg group hover:border-amber-400 transition" title="Progreso y controles" aria-label="Progreso y controles">
-                        <svg id="header-bat-logo" class="w-8 h-8 text-amber-500 group-hover:scale-110 transition-transform" viewBox="0 0 100 60" fill="currentColor">
-                            <path d="M50 15 C53 15 55 8 56 5 C57 10 61 14 66 14 C75 14 85 6 98 8 C90 18 88 28 94 38 C82 34 74 38 69 45 C63 37 56 42 50 55 C44 42 37 37 31 45 C26 38 18 34 6 38 C12 28 10 18 2 8 C15 6 25 14 34 14 C39 14 43 10 44 5 C45 8 47 15 50 15 Z"/>
+                    <button type="button" onclick="app.showUniverseModal()"
+                        class="w-12 h-12 rounded-xl bg-black border border-amber-500/50 flex items-center justify-center shadow-lg group hover:border-amber-400 transition"
+                        title="Progreso y controles" aria-label="Progreso y controles">
+                        <svg id="header-bat-logo"
+                            class="w-8 h-8 text-amber-500 group-hover:scale-110 transition-transform"
+                            viewBox="0 0 100 60" fill="currentColor">
+                            <path
+                                d="M50 15 C53 15 55 8 56 5 C57 10 61 14 66 14 C75 14 85 6 98 8 C90 18 88 28 94 38 C82 34 74 38 69 45 C63 37 56 42 50 55 C44 42 37 37 31 45 C26 38 18 34 6 38 C12 28 10 18 2 8 C15 6 25 14 34 14 C39 14 43 10 44 5 C45 8 47 15 50 15 Z" />
                         </svg>
                     </button>
                     <div>
                         <div class="flex items-center gap-2 flex-wrap">
-                            <span id="header-phase-badge" class="text-[10px] font-mono uppercase tracking-widest px-2 py-0.5 rounded bg-amber-500/15 text-amber-400 border border-amber-500/30 font-semibold">DCU NV • FASE 1</span>
-                            <span id="header-year-badge" class="text-[10px] font-mono uppercase tracking-widest px-2 py-0.5 rounded bg-sky-500/15 text-sky-400 border border-sky-500/30 font-semibold">AÑO 2012</span>
-                            <span id="header-os-badge" class="hidden sm:inline-block text-[10px] font-mono text-slate-500">WAYNETECH DARK-OS v6.0</span>
+                            <span id="header-phase-badge"
+                                class="text-[10px] font-mono uppercase tracking-widest px-2 py-0.5 rounded bg-amber-500/15 text-amber-400 border border-amber-500/30 font-semibold">DCU
+                                NV • FASE 1</span>
+                            <span id="header-year-badge"
+                                class="text-[10px] font-mono uppercase tracking-widest px-2 py-0.5 rounded bg-sky-500/15 text-sky-400 border border-sky-500/30 font-semibold">AÑO
+                                2012</span>
+                            <span id="header-os-badge"
+                                class="hidden sm:inline-block text-[10px] font-mono text-slate-500">WAYNETECH DARK-OS
+                                v6.0</span>
                         </div>
-                        <h1 id="main-game-title" class="font-display text-lg sm:text-2xl font-extrabold tracking-wider text-white accent-title mt-0.5">BATMAN: GOTHAM 2012</h1>
+                        <h1 id="main-game-title"
+                            class="font-sans text-xl sm:text-3xl font-light tracking-[0.3em] uppercase text-zinc-100 drop-shadow-[0_0_12px_rgba(255,255,255,0.15)] mt-0.5">
+                            BATMAN
+                        </h1>
                     </div>
                 </div>
 
                 <!-- Botón Audio Móvil -->
                 <div class="flex lg:hidden items-center gap-2">
-                    <button type="button" id="audio-btn-mobile" onclick="soundEngine.toggleAudio()" class="p-2.5 rounded-xl bg-black border border-slate-800 text-slate-300 hover:text-amber-400 transition">
+                    <button type="button" id="audio-btn-mobile" onclick="soundEngine.toggleAudio()"
+                        class="p-2.5 rounded-xl bg-black border border-slate-800 text-slate-300 hover:text-amber-400 transition">
                         <i class="fa-solid fa-volume-xmark"></i>
                     </button>
                 </div>
@@ -298,23 +701,28 @@ body{--accent:#d97706}body.enygma-hack{--accent:#00ff66}
 
             <!-- Pestañas de Navegación Principal -->
             <nav class="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 w-full lg:w-auto">
-                <button type="button" onclick="app.switchTab('story')" id="tab-story" class="px-3.5 py-2 rounded-xl font-mono text-xs sm:text-sm flex items-center gap-2 bg-amber-500/20 text-amber-300 border border-amber-500/60 font-semibold transition">
+                <button type="button" onclick="app.switchTab('story')" id="tab-story"
+                    class="px-3.5 py-2 rounded-xl font-mono text-xs sm:text-sm flex items-center gap-2 bg-amber-500/20 text-amber-300 border border-amber-500/60 font-semibold transition">
                     <i class="fa-solid fa-terminal"></i>
                     <span>CAMPAÑA</span>
                 </button>
-                <button type="button" onclick="app.switchTab('cast')" id="tab-cast" class="px-3.5 py-2 rounded-xl font-mono text-xs sm:text-sm flex items-center gap-2 bg-black/90 text-slate-400 border border-slate-800 hover:text-slate-200 transition">
+                <button type="button" onclick="app.switchTab('cast')" id="tab-cast"
+                    class="px-3.5 py-2 rounded-xl font-mono text-xs sm:text-sm flex items-center gap-2 bg-black/90 text-slate-400 border border-slate-800 hover:text-slate-200 transition">
                     <i class="fa-solid fa-id-badge"></i>
                     <span>REPARTO (7)</span>
                 </button>
-                <button type="button" onclick="app.switchTab('acts')" id="tab-acts" class="px-3.5 py-2 rounded-xl font-mono text-xs sm:text-sm flex items-center gap-2 bg-black/90 text-slate-400 border border-slate-800 hover:text-slate-200 transition">
+                <button type="button" onclick="app.switchTab('acts')" id="tab-acts"
+                    class="px-3.5 py-2 rounded-xl font-mono text-xs sm:text-sm flex items-center gap-2 bg-black/90 text-slate-400 border border-slate-800 hover:text-slate-200 transition">
                     <i class="fa-solid fa-folder-tree"></i>
                     <span>CAPÍTULOS (8)</span>
                 </button>
-                <button type="button" onclick="app.switchTab('world')" id="tab-world" class="px-3.5 py-2 rounded-xl font-mono text-xs sm:text-sm flex items-center gap-2 bg-black/90 text-slate-400 border border-slate-800 hover:text-slate-200 transition">
+                <button type="button" onclick="app.switchTab('world')" id="tab-world"
+                    class="px-3.5 py-2 rounded-xl font-mono text-xs sm:text-sm flex items-center gap-2 bg-black/90 text-slate-400 border border-slate-800 hover:text-slate-200 transition">
                     <i class="fa-solid fa-satellite-dish"></i>
                     <span>RED DCU (2007-2014)</span>
                 </button>
-                <button type="button" id="audio-btn-desktop" onclick="soundEngine.toggleAudio()" class="hidden lg:flex items-center gap-2 px-3.5 py-2 rounded-xl font-mono text-xs bg-black border border-slate-800 text-slate-300 hover:border-amber-500/50 hover:text-amber-300 transition">
+                <button type="button" id="audio-btn-desktop" onclick="soundEngine.toggleAudio()"
+                    class="hidden lg:flex items-center gap-2 px-3.5 py-2 rounded-xl font-mono text-xs bg-black border border-slate-800 text-slate-300 hover:border-amber-500/50 hover:text-amber-300 transition">
                     <i id="audio-icon" class="fa-solid fa-volume-xmark text-slate-500"></i>
                     <span id="audio-label">AUDIO OFF</span>
                 </button>
@@ -322,9 +730,11 @@ body{--accent:#d97706}body.enygma-hack{--accent:#00ff66}
         </header>
 
         <!-- BANNER ESPECIAL DE INTRUSIÓN CUANDO ENYGMA HACKEA LA INTERFAZ -->
-        <div id="enygma-taunt-banner" class="hidden rounded-2xl bg-emerald-950/90 border-2 border-[#00ff66] px-4 py-3 shadow-[0_0_35px_rgba(0,255,102,0.3)] flex flex-col sm:flex-row items-center justify-between gap-3 animate-scene">
+        <div id="enygma-taunt-banner"
+            class="hidden rounded-2xl bg-emerald-950/90 border-2 border-[#00ff66] px-4 py-3 shadow-[0_0_35px_rgba(0,255,102,0.3)] flex flex-col sm:flex-row items-center justify-between gap-3 animate-scene">
             <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-black border border-[#00ff66] flex items-center justify-center text-[#00ff66] font-mono font-black text-xl shrink-0 animate-pulse">
+                <div
+                    class="w-10 h-10 rounded-xl bg-black border border-[#00ff66] flex items-center justify-center text-[#00ff66] font-mono font-black text-xl shrink-0 animate-pulse">
                     ?
                 </div>
                 <div>
@@ -332,11 +742,13 @@ body{--accent:#d97706}body.enygma-hack{--accent:#00ff66}
                         <i class="fa-solid fa-skull-crossbones mr-1"></i>SEÑAL DE WAYNETECH SECUESTRADA POR E. NYGMA
                     </div>
                     <p id="enygma-live-taunt" class="text-xs sm:text-sm font-mono text-emerald-100 font-semibold">
-                        "¡Tic, tac, murciélago! ¿De verdad creías que tus pantallas blindadas podían dejar fuera a una mente superior?"
+                        "¡Tic, tac, murciélago! ¿De verdad creías que tus pantallas blindadas podían dejar fuera a una
+                        mente superior?"
                     </p>
                 </div>
             </div>
-            <span class="text-[10px] font-mono px-2.5 py-1 rounded bg-black text-[#00ff66] border border-[#00ff66]/50 uppercase tracking-widest shrink-0">
+            <span
+                class="text-[10px] font-mono px-2.5 py-1 rounded bg-black text-[#00ff66] border border-[#00ff66]/50 uppercase tracking-widest shrink-0">
                 ENCRIPTACIÓN: ENYGMA-OS
             </span>
         </div>
@@ -350,7 +762,9 @@ body{--accent:#d97706}body.enygma-hack{--accent:#00ff66}
                     <span id="stat-health-val" class="text-sky-400 font-bold">100%</span>
                 </div>
                 <div class="w-full h-2.5 bg-slate-950 rounded-full overflow-hidden border border-slate-800">
-                    <div id="stat-health-bar" class="h-full bg-gradient-to-r from-sky-700 to-cyan-400 transition-all duration-500" style="width: 100%"></div>
+                    <div id="stat-health-bar"
+                        class="h-full bg-gradient-to-r from-sky-700 to-cyan-400 transition-all duration-500"
+                        style="width: 100%"></div>
                 </div>
             </div>
 
@@ -361,7 +775,9 @@ body{--accent:#d97706}body.enygma-hack{--accent:#00ff66}
                     <span id="stat-fear-val" class="text-amber-400 font-bold">70%</span>
                 </div>
                 <div class="w-full h-2.5 bg-slate-950 rounded-full overflow-hidden border border-slate-800">
-                    <div id="stat-fear-bar" class="h-full bg-gradient-to-r from-amber-700 to-yellow-500 transition-all duration-500" style="width: 70%"></div>
+                    <div id="stat-fear-bar"
+                        class="h-full bg-gradient-to-r from-amber-700 to-yellow-500 transition-all duration-500"
+                        style="width: 70%"></div>
                 </div>
             </div>
 
@@ -372,7 +788,9 @@ body{--accent:#d97706}body.enygma-hack{--accent:#00ff66}
                     <span id="stat-intel-val" class="text-emerald-400 font-bold">55%</span>
                 </div>
                 <div class="w-full h-2.5 bg-slate-950 rounded-full overflow-hidden border border-slate-800">
-                    <div id="stat-intel-bar" class="h-full bg-gradient-to-r from-emerald-700 to-teal-400 transition-all duration-500" style="width: 55%"></div>
+                    <div id="stat-intel-bar"
+                        class="h-full bg-gradient-to-r from-emerald-700 to-teal-400 transition-all duration-500"
+                        style="width: 55%"></div>
                 </div>
             </div>
 
@@ -380,9 +798,13 @@ body{--accent:#d97706}body.enygma-hack{--accent:#00ff66}
             <div class="bg-black/90 rounded-xl p-3 border border-slate-800/90 flex items-center justify-between gap-2">
                 <div class="overflow-hidden">
                     <div class="text-[10px] font-mono uppercase text-slate-500 tracking-wider">EQUIPO ACTIVO</div>
-                    <div id="current-suit-status" class="text-xs font-mono text-amber-400 truncate font-semibold mt-0.5">Civil / Sin Blindaje</div>
+                    <div id="current-suit-status"
+                        class="text-xs font-mono text-amber-400 truncate font-semibold mt-0.5">Civil / Sin Blindaje
+                    </div>
                 </div>
-                <button type="button" onclick="app.resetGamePrompt()" class="px-3 py-2 rounded-lg bg-slate-950 hover:bg-red-950/80 text-slate-400 hover:text-red-300 border border-slate-800 hover:border-red-800/60 text-xs font-mono transition shrink-0" title="Reiniciar Historia desde el Prólogo">
+                <button type="button" onclick="app.resetGamePrompt()"
+                    class="px-3 py-2 rounded-lg bg-slate-950 hover:bg-red-950/80 text-slate-400 hover:text-red-300 border border-slate-800 hover:border-red-800/60 text-xs font-mono transition shrink-0"
+                    title="Reiniciar Historia desde el Prólogo">
                     <i class="fa-solid fa-rotate-left"></i>
                 </button>
             </div>
@@ -400,10 +822,14 @@ body{--accent:#d97706}body.enygma-hack{--accent:#00ff66}
                 <div id="story-main-panel" class="lg:col-span-8 bat-panel rounded-2xl overflow-hidden flex flex-col">
 
                     <!-- Barra Superior del Capítulo Activo -->
-                    <div class="bg-black/95 border-b border-slate-800/90 px-4 py-3 flex flex-wrap items-center justify-between gap-2">
+                    <div
+                        class="bg-black/95 border-b border-slate-800/90 px-4 py-3 flex flex-wrap items-center justify-between gap-2">
                         <div class="flex items-center gap-2.5">
-                            <span id="scene-status-dot" class="w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse"></span>
-                            <span id="scene-act-title" class="font-mono text-xs sm:text-sm uppercase tracking-wider text-amber-400 font-bold">CAPÍTULO 1: EL ORIGEN DEL TRAUMA</span>
+                            <span id="scene-status-dot"
+                                class="w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse"></span>
+                            <span id="scene-act-title"
+                                class="font-mono text-xs sm:text-sm uppercase tracking-wider text-amber-400 font-bold">CAPÍTULO
+                                1: EL ORIGEN DEL TRAUMA</span>
                         </div>
                         <div id="scene-location" class="font-mono text-xs text-slate-400 flex items-center gap-1.5">
                             <i class="fa-solid fa-location-crosshairs text-sky-400"></i>
@@ -412,33 +838,44 @@ body{--accent:#d97706}body.enygma-hack{--accent:#00ff66}
                     </div>
 
                     <!-- VISOR DE IMAGEN DE ESCENA (REEMPLAZA AL ANTIGUO CANVAS) -->
-                    <div class="relative w-full h-56 sm:h-72 bg-black border-b border-slate-800/90 overflow-hidden group">
+                    <div
+                        class="relative w-full h-56 sm:h-72 bg-black border-b border-slate-800/90 overflow-hidden group">
                         <img id="scene-img" src="" alt="Escena de Gotham" class="scene-img-viewer" />
                         <!-- Degradado oscuro inferior para lectura de etiquetas -->
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent pointer-events-none"></div>
-                        <div class="absolute bottom-3 left-4 right-4 flex flex-wrap items-center justify-between gap-2 pointer-events-none">
-                            <span id="scene-stage-badge" class="px-2.5 py-1 rounded bg-black/90 border border-amber-500/40 font-mono text-[10px] text-amber-300 uppercase tracking-widest font-bold">
+                        <div
+                            class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent pointer-events-none">
+                        </div>
+                        <div
+                            class="absolute bottom-3 left-4 right-4 flex flex-wrap items-center justify-between gap-2 pointer-events-none">
+                            <span id="scene-stage-badge"
+                                class="px-2.5 py-1 rounded bg-black/90 border border-amber-500/40 font-mono text-[10px] text-amber-300 uppercase tracking-widest font-bold">
                                 ESCENA INTERACTIVA
                             </span>
-                            <span id="scene-img-caption" class="px-2.5 py-1 rounded bg-black/90 border border-slate-700/80 font-mono text-[10px] text-sky-300 tracking-widest uppercase">
+                            <span id="scene-img-caption"
+                                class="px-2.5 py-1 rounded bg-black/90 border border-slate-700/80 font-mono text-[10px] text-sky-300 tracking-widest uppercase">
                                 ARCHIVO VISUAL WAYNETECH
                             </span>
                         </div>
                     </div>
 
                     <!-- Banner del Personaje en Escena (CON TUS RUTAS DE IMAGENES_PERSONAJES) -->
-                    <div id="speaker-banner" class="bg-black/95 border-b border-slate-800/90 px-4 py-3.5 flex items-center justify-between gap-3">
+                    <div id="speaker-banner"
+                        class="bg-black/95 border-b border-slate-800/90 px-4 py-3.5 flex items-center justify-between gap-3">
                         <div class="flex items-center gap-3.5 min-w-0">
-                            <img id="speaker-img" src="Imagenes/batman_icon.jpg" alt="Retrato del Personaje" class="char-blank-img w-14 h-14 sm:w-16 sm:h-16 rounded-xl shrink-0" />
+                            <img id="speaker-img" src="Imagenes/batman_icon.jpg" alt="Retrato del Personaje"
+                                class="char-blank-img w-14 h-14 sm:w-16 sm:h-16 rounded-xl shrink-0" />
                             <div class="min-w-0">
                                 <div class="flex items-center gap-2 flex-wrap">
-                                    <h3 id="speaker-name" class="font-display font-bold text-sm sm:text-base text-white tracking-wide">BRUCE WAYNE / BATMAN</h3>
-                                    <span id="speaker-actor" class="text-[11px] font-mono px-2 py-0.5 rounded-md bg-amber-500/15 text-amber-300 border border-amber-500/30 font-semibold">Armie Hammer (30 años)</span>
+                                    <h3 id="speaker-name"
+                                        class="font-display font-bold text-sm sm:text-base text-white tracking-wide">
+                                        BRUCE WAYNE / BATMAN</h3>
                                 </div>
-                                <p id="speaker-desc" class="text-xs text-slate-400 line-clamp-2 mt-1">1,96 metros • Heredero corporativo calculador • Depredador analítico</p>
+                                <p id="speaker-desc" class="text-xs text-slate-400 line-clamp-2 mt-1">1,96 metros •
+                                    Heredero corporativo calculador • Depredador analítico</p>
                             </div>
                         </div>
-                        <button type="button" onclick="app.openCharacterModal(app.currentSpeakerId)" class="px-3 py-2 rounded-xl bg-slate-950 hover:bg-slate-900 text-xs font-mono text-sky-300 border border-slate-800 hover:border-sky-400 transition shrink-0">
+                        <button type="button" onclick="app.openCharacterModal(app.currentSpeakerId)"
+                            class="px-3 py-2 rounded-xl bg-slate-950 hover:bg-slate-900 text-xs font-mono text-sky-300 border border-slate-800 hover:border-sky-400 transition shrink-0">
                             <i class="fa-solid fa-id-card mr-1.5"></i>Ficha
                         </button>
                     </div>
@@ -446,12 +883,14 @@ body{--accent:#d97706}body.enygma-hack{--accent:#00ff66}
                     <!-- Cuerpo de Texto Narrativo + Contenedor de Minijuego + Decisiones -->
                     <div id="scene-content-box" class="p-4 sm:p-6 space-y-5 flex-1 flex flex-col justify-between">
                         <!-- Párrafos de la historia -->
-                        <div id="scene-narrative" class="space-y-4 text-slate-200 leading-relaxed text-sm sm:text-base font-normal">
+                        <div id="scene-narrative"
+                            class="space-y-4 text-slate-200 leading-relaxed text-sm sm:text-base font-normal">
                             <!-- Inyectado dinámicamente -->
                         </div>
 
                         <!-- Contenedor de Minijuegos Tácticos (Sin Canvas) -->
-                        <div id="minigame-container" class="hidden my-2 rounded-2xl bg-black/95 border border-slate-700/80 p-4 sm:p-5 shadow-2xl">
+                        <div id="minigame-container"
+                            class="hidden my-2 rounded-2xl bg-black/95 border border-slate-700/80 p-4 sm:p-5 shadow-2xl">
                             <!-- Controles interactivos de minijuego -->
                         </div>
 
@@ -470,24 +909,29 @@ body{--accent:#d97706}body.enygma-hack{--accent:#00ff66}
                         <div class="flex items-center justify-between border-b border-slate-800 pb-2.5 mb-3">
                             <div class="flex items-center gap-2">
                                 <i class="fa-solid fa-headset text-amber-500"></i>
-                                <h2 class="font-mono text-xs uppercase tracking-wider text-slate-200 font-bold">ENLACE BATCUEVA • ALFRED</h2>
+                                <h2 class="font-mono text-xs uppercase tracking-wider text-slate-200 font-bold">ENLACE
+                                    BATCUEVA • ALFRED</h2>
                             </div>
-                            <span id="alfred-link-badge" class="text-[10px] font-mono text-emerald-400 bg-emerald-950/70 border border-emerald-700/50 px-2 py-0.5 rounded font-semibold">ENCRIPTADO</span>
+                            <span id="alfred-link-badge"
+                                class="text-[10px] font-mono text-emerald-400 bg-emerald-950/70 border border-emerald-700/50 px-2 py-0.5 rounded font-semibold">ENCRIPTADO</span>
                         </div>
 
                         <!-- Retrato de Alfred + Comentario en tiempo real -->
                         <div class="flex items-start gap-3 bg-black/90 p-3 rounded-xl border border-slate-800/90">
-                            <img id="alfred-mini-img" src="Imagenes/alfred_icon.jfif" alt="Alfred Pennyworth" class="char-blank-img w-12 h-12 rounded-lg shrink-0" />
+                            <img id="alfred-mini-img" src="Imagenes/alfred_icon.jfif" alt="Alfred Pennyworth"
+                                class="char-blank-img w-12 h-12 rounded-lg shrink-0" />
                             <p id="alfred-commentary" class="text-xs italic text-slate-300 leading-relaxed">
-                                "Señor Wayne, he calibrado los servidores de la cueva. Recuerde que la fuerza bruta sin estrategia solo le garantizará una visita prematura a mi mesa de sutura."
+                                "Señor Wayne, he calibrado los servidores de la cueva. Recuerde que la fuerza bruta sin
+                                estrategia solo le garantizará una visita prematura a mi mesa de sutura."
                             </p>
                         </div>
 
                         <!-- Selector de capítulos: cada uno se desbloquea al completar el anterior -->
                         <div class="mt-3.5 pt-3 border-t border-slate-800/80">
                             <div class="flex items-center justify-between mb-2">
-                                <span class="text-[11px] font-mono text-slate-300 uppercase font-semibold">SELECTOR DE CAPÍTULOS</span>
-                                <span class="text-[10px] font-mono text-amber-400">22 ESCENAS JUGABLES</span>
+                                <span class="text-[11px] font-mono text-slate-300 uppercase font-semibold">SELECTOR DE
+                                    CAPÍTULOS</span>
+                                <span class="text-[10px] font-mono text-amber-400">21 ESCENAS JUGABLES</span>
                             </div>
                             <div id="chapter-pills" class="grid grid-cols-4 gap-1.5">
                                 <!-- Botones CAP 1 a CAP 8 con onclick="cargarCapitulo(n)" -->
@@ -500,9 +944,11 @@ body{--accent:#d97706}body.enygma-hack{--accent:#00ff66}
                         <div class="flex items-center justify-between border-b border-slate-800 pb-2.5 mb-3">
                             <div class="flex items-center gap-2">
                                 <i class="fa-solid fa-briefcase text-sky-400"></i>
-                                <h2 class="font-mono text-xs uppercase tracking-wider text-slate-200 font-bold">ARSENAL & EVIDENCIAS</h2>
+                                <h2 class="font-mono text-xs uppercase tracking-wider text-slate-200 font-bold">ARSENAL
+                                    & EVIDENCIAS</h2>
                             </div>
-                            <span id="inventory-count" class="text-[10px] font-mono text-sky-400 font-bold">1 ITEM</span>
+                            <span id="inventory-count" class="text-[10px] font-mono text-sky-400 font-bold">1
+                                ITEM</span>
                         </div>
                         <div id="inventory-list" class="space-y-2 max-h-52 overflow-y-auto pr-1">
                             <!-- Items desbloqueados -->
@@ -514,13 +960,16 @@ body{--accent:#d97706}body.enygma-hack{--accent:#00ff66}
                         <div class="flex items-center justify-between border-b border-slate-800 pb-2.5 mb-3">
                             <div class="flex items-center gap-2">
                                 <i class="fa-solid fa-tower-broadcast text-red-500 animate-pulse"></i>
-                                <h2 class="font-mono text-xs uppercase tracking-wider text-slate-200 font-bold">ESCÁNER GCPD / PRENSA</h2>
+                                <h2 class="font-mono text-xs uppercase tracking-wider text-slate-200 font-bold">ESCÁNER
+                                    GCPD / PRENSA</h2>
                             </div>
-                            <button type="button" onclick="app.nextRadioFeed()" class="text-[11px] font-mono text-sky-400 hover:text-sky-300 transition font-semibold">
+                            <button type="button" onclick="app.nextRadioFeed()"
+                                class="text-[11px] font-mono text-sky-400 hover:text-sky-300 transition font-semibold">
                                 Sintonizar <i class="fa-solid fa-forward-step ml-0.5"></i>
                             </button>
                         </div>
-                        <div id="radio-feed-box" class="bg-black/90 border border-slate-800 rounded-xl p-3 font-mono text-xs text-slate-300 space-y-1.5">
+                        <div id="radio-feed-box"
+                            class="bg-black/90 border border-slate-800 rounded-xl p-3 font-mono text-xs text-slate-300 space-y-1.5">
                             <!-- Frecuencia activa -->
                         </div>
                     </div>
@@ -533,10 +982,14 @@ body{--accent:#d97706}body.enygma-hack{--accent:#00ff66}
                  ================================================================== -->
             <div id="view-cast" class="hidden flex-1 space-y-4 animate-scene">
                 <div class="bat-panel rounded-2xl p-4 sm:p-6">
-                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-slate-800 pb-4 mb-5">
+                    <div
+                        class="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-slate-800 pb-4 mb-5">
                         <div>
-                            <span class="text-xs font-mono text-amber-400 uppercase tracking-widest font-semibold">ARCHIVOS CONFIDENCIALES • BATCOMPUTADORA</span>
-                            <h2 class="font-display text-xl sm:text-2xl font-bold text-white mt-0.5">REPARTO OFICIAL: BATMAN (2012)</h2>
+                            <span
+                                class="text-xs font-mono text-amber-400 uppercase tracking-widest font-semibold">ARCHIVOS
+                                CONFIDENCIALES • BATCOMPUTADORA</span>
+                            <h2 class="font-display text-xl sm:text-2xl font-bold text-white mt-0.5">REPARTO OFICIAL:
+                                BATMAN (2012)</h2>
                         </div>
                     </div>
                     <div id="cast-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -550,12 +1003,17 @@ body{--accent:#d97706}body.enygma-hack{--accent:#00ff66}
                  ================================================================== -->
             <div id="view-acts" class="hidden flex-1 space-y-4 animate-scene">
                 <div class="bat-panel rounded-2xl p-4 sm:p-6">
-                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800 pb-4 mb-5">
+                    <div
+                        class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800 pb-4 mb-5">
                         <div>
-                            <span class="text-xs font-mono text-sky-400 uppercase tracking-widest font-semibold">CRONOLOGÍA NARRATIVA EXPANDIDA</span>
-                            <h2 class="font-display text-xl sm:text-2xl font-bold text-white mt-0.5">LOS 8 CAPÍTULOS DE BATMAN (2012)</h2>
+                            <span
+                                class="text-xs font-mono text-sky-400 uppercase tracking-widest font-semibold">CRONOLOGÍA
+                                NARRATIVA EXPANDIDA</span>
+                            <h2 class="font-display text-xl sm:text-2xl font-bold text-white mt-0.5">LOS 8 CAPÍTULOS DE
+                                BATMAN (2012)</h2>
                         </div>
-                        <span id="acts-progress-badge" class="px-3.5 py-2 rounded-xl bg-emerald-500/15 border border-emerald-500/40 text-emerald-300 font-mono text-xs font-semibold">
+                        <span id="acts-progress-badge"
+                            class="px-3.5 py-2 rounded-xl bg-emerald-500/15 border border-emerald-500/40 text-emerald-300 font-mono text-xs font-semibold">
                             <i class="fa-solid fa-circle-check mr-1.5"></i>0 / 8 capítulos completados
                         </span>
                     </div>
@@ -571,38 +1029,57 @@ body{--accent:#d97706}body.enygma-hack{--accent:#00ff66}
             <div id="view-world" class="hidden flex-1 space-y-4 animate-scene">
                 <div class="bat-panel rounded-2xl p-4 sm:p-6">
                     <div class="border-b border-slate-800 pb-4 mb-5">
-                        <span class="text-xs font-mono text-emerald-400 uppercase tracking-widest font-semibold">CIMIENTOS NARRATIVOS • FASE 1 DCU NV</span>
-                        <h2 class="font-display text-xl sm:text-2xl font-bold text-white mt-0.5">EL ESTADO DEL MUNDO (2007 – 2014)</h2>
+                        <span
+                            class="text-xs font-mono text-emerald-400 uppercase tracking-widest font-semibold">CIMIENTOS
+                            NARRATIVOS • FASE 1 DCU NV</span>
+                        <h2 class="font-display text-xl sm:text-2xl font-bold text-white mt-0.5">EL ESTADO DEL MUNDO
+                            (2007 – 2014)</h2>
                         <p class="text-xs sm:text-sm text-slate-400 mt-1">
-                            La historia de Batman en 2012 establece tres pilares temáticos mientras siembra las semillas de Green Lantern (2012), Wonder Woman (1944/2013) y Superman (2014).
+                            La historia de Batman en 2012 establece tres pilares temáticos mientras siembra las semillas
+                            de Green Lantern (2012), Wonder Woman (1944/2013) y Superman (2014).
                         </p>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
                         <div class="bg-black/90 border border-slate-800 rounded-xl p-4">
-                            <div class="text-amber-400 font-mono text-xs uppercase font-bold mb-1"><i class="fa-solid fa-user-shield mr-1.5"></i>Cimiento I</div>
-                            <h3 class="font-display font-bold text-base text-white mb-2">El Colapso del Justiciero Solitario</h3>
+                            <div class="text-amber-400 font-mono text-xs uppercase font-bold mb-1"><i
+                                    class="fa-solid fa-user-shield mr-1.5"></i>Cimiento I</div>
+                            <h3 class="font-display font-bold text-base text-white mb-2">El Colapso del Justiciero
+                                Solitario</h3>
                             <p class="text-xs text-slate-300 leading-relaxed">
-                                Bruce arranca su cruzada convencido de que sus 1,96m y su fuerza bruta son suficientes, pero recibe un disparo en el hombro en su primera noche. Aprende a base de fracasos que necesita la red logística de Alfred, el equipo militar de Lucius Fox y la placa de Jim Gordon para sobrevivir.
+                                Bruce arranca su cruzada convencido de que sus 1,96m y su fuerza bruta son suficientes,
+                                pero recibe un disparo en el hombro en su primera noche. Aprende a base de fracasos que
+                                necesita la red logística de Alfred, el equipo militar de Lucius Fox y la placa de Jim
+                                Gordon para sobrevivir.
                             </p>
                         </div>
                         <div class="bg-black/90 border border-slate-800 rounded-xl p-4">
-                            <div class="text-red-400 font-mono text-xs uppercase font-bold mb-1"><i class="fa-solid fa-building-columns mr-1.5"></i>Cimiento II</div>
-                            <h3 class="font-display font-bold text-base text-white mb-2">Corrupción Sistémica y Absoluta</h3>
+                            <div class="text-red-400 font-mono text-xs uppercase font-bold mb-1"><i
+                                    class="fa-solid fa-building-columns mr-1.5"></i>Cimiento II</div>
+                            <h3 class="font-display font-bold text-base text-white mb-2">Corrupción Sistémica y Absoluta
+                            </h3>
                             <p class="text-xs text-slate-300 leading-relaxed">
-                                Gotham es un organismo enfermo donde el sistema judicial y la policía son los verdaderos antagonistas, financiados por figuras intocables de guante blanco como Oswald Cobblepot. El tono neo-noir se asienta en la asfixia de luchar contra una ciudad que protege a los criminales y persigue a los justos.
+                                Gotham es un organismo enfermo donde el sistema judicial y la policía son los verdaderos
+                                antagonistas, financiados por figuras intocables de guante blanco como Oswald Cobblepot.
+                                El tono neo-noir se asienta en la asfixia de luchar contra una ciudad que protege a los
+                                criminales y persigue a los justos.
                             </p>
                         </div>
                         <div class="bg-black/90 border border-slate-800 rounded-xl p-4">
-                            <div class="text-sky-400 font-mono text-xs uppercase font-bold mb-1"><i class="fa-solid fa-earth-americas mr-1.5"></i>Cimiento III</div>
-                            <h3 class="font-display font-bold text-base text-white mb-2">El Amanecer de una Nueva Era</h3>
+                            <div class="text-sky-400 font-mono text-xs uppercase font-bold mb-1"><i
+                                    class="fa-solid fa-earth-americas mr-1.5"></i>Cimiento III</div>
+                            <h3 class="font-display font-bold text-base text-white mb-2">El Amanecer de una Nueva Era
+                            </h3>
                             <p class="text-xs text-slate-300 leading-relaxed">
-                                Mientras Hal Jordan opera en el espacio profundo desde 2007 y Diana vive oculta en las sombras desde 1944, la aparición pública de Superman en Metrópolis en 2014 rompe el silencio de la Tierra y activa los protocolos de vigilancia de Bruce Wayne.
+                                Mientras Hal Jordan opera en el espacio profundo desde 2007 y Diana vive oculta en las
+                                sombras desde 1944, titulares de fondo y transmisiones interceptadas insinúan extrañas
+                                anomalías en Metrópolis: Gotham es solo la zona cero del nacimiento de nuevos héroes.
                             </p>
                         </div>
                     </div>
 
-                    <h3 class="font-mono text-xs uppercase tracking-wider text-sky-400 font-bold mb-3">ARCHIVOS SATELITALES DEL UNIVERSO DCU NV</h3>
+                    <h3 class="font-mono text-xs uppercase tracking-wider text-sky-400 font-bold mb-3">ARCHIVOS
+                        SATELITALES DEL UNIVERSO DCU NV</h3>
                     <div id="world-easter-eggs" class="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <!-- Inyectado por JS -->
                     </div>
@@ -612,21 +1089,28 @@ body{--accent:#d97706}body.enygma-hack{--accent:#00ff66}
         </main>
 
         <!-- PIE DE PÁGINA -->
-        <footer class="bat-panel rounded-xl px-4 py-2.5 flex flex-col sm:flex-row items-center justify-between text-[11px] font-mono text-slate-500 gap-2">
+        <footer
+            class="bat-panel rounded-xl px-4 py-2.5 flex flex-col sm:flex-row items-center justify-between text-[11px] font-mono text-slate-500 gap-2">
             <div>WAYNETECH DARK-OS v6.0 • DIVISIÓN DE CIENCIAS APLICADAS (CERO CANVAS • MODO IMÁGENES)</div>
             <div class="flex items-center gap-4">
-                <span id="save-indicator" class="text-emerald-400"><i class="fa-solid fa-floppy-disk mr-1"></i>Autoguardado Activo</span>
+                <span id="save-indicator" class="text-emerald-400"><i
+                        class="fa-solid fa-floppy-disk mr-1"></i>Autoguardado Activo</span>
                 <span>FASE 1 • BATMAN (2012)</span>
             </div>
         </footer>
     </div>
 
     <!-- MODAL DE FICHA DE PERSONAJE Y AVISOS -->
-    <div id="custom-modal" onclick="if(event.target===this)app.closeModal()" class="fixed inset-0 z-50 hidden bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
-        <div role="dialog" aria-modal="true" aria-labelledby="modal-subtitle" class="bg-slate-950 border border-slate-700 rounded-2xl max-w-2xl w-full overflow-hidden shadow-2xl animate-scene">
+    <div id="custom-modal" onclick="if(event.target===this)app.closeModal()"
+        class="fixed inset-0 z-50 hidden bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
+        <div role="dialog" aria-modal="true" aria-labelledby="modal-subtitle"
+            class="bg-slate-950 border border-slate-700 rounded-2xl max-w-2xl w-full overflow-hidden shadow-2xl animate-scene">
             <div class="bg-black px-5 py-3.5 border-b border-slate-800 flex items-center justify-between">
-                <span id="modal-subtitle" class="font-mono text-xs uppercase tracking-widest text-amber-400 font-bold">EXPEDIENTE DE LA BATCOMPUTADORA</span>
-                <button type="button" onclick="app.closeModal()" aria-label="Cerrar" class="w-8 h-8 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-300 flex items-center justify-center transition">
+                <span id="modal-subtitle"
+                    class="font-mono text-xs uppercase tracking-widest text-amber-400 font-bold">EXPEDIENTE DE LA
+                    BATCOMPUTADORA</span>
+                <button type="button" onclick="app.closeModal()" aria-label="Cerrar"
+                    class="w-8 h-8 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-300 flex items-center justify-center transition">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
@@ -648,8 +1132,8 @@ body{--accent:#d97706}body.enygma-hack{--accent:#00ff66}
             enygma: "Imagenes/acertijo_icon.jpeg",   // Edward Nygma / El Acertijo (David Tennant - 41 años)
             penguin: "Imagenes/pinguino_icon.jpg",   // Oswald Cobblepot / El Pingüino (Alfred Molina - 59 años)
             ducard: "Imagenes/ras_icon.jpeg",        // Henri Ducard / Ra's al Ghul (Alexander Siddig - 47 años)
-            superman: "Imagenes/superman_icon.jpg",  // Clark Kent / Superman (Matt Bomer - 27 años • Cameo 2014)
-            diana: "Imagenes/wonderwoman_icon.jpg"   // Diana / Wonder Woman (Jaimie Alexander • Archivo 1944 / 2014)
+            superman: "Imagenes/superman_icon.jpg",  // Clark Kent / Superman (Matt Bomer - 27 años • Fase 1 DCU NV)
+            diana: "Imagenes/wonderwoman_icon.jpg"   // Diana / Wonder Woman (Jaimie Alexander • Archivo 1944)
         };
 
         /* ==========================================================================
@@ -677,7 +1161,6 @@ body{--accent:#d97706}body.enygma-hack{--accent:#00ff66}
             ace_deduction: "Imagenes/Capitulos/1Batman/pistas.jfif",// Cap 7: Deducción forense en el Batmóvil
             ace_chemicals: "Imagenes/Capitulos/1Batman/derrota.jpg",  // Cap 7: Clímax en Ace Chemicals
             enygma_derrotado: "Imagenes/Capitulos/1Batman/final.jpg",  // Cap 7: Clímax en Ace Chemicals
-            batcave_2014: "Imagenes/Capitulos/1Batman/postcreditos.jpg"    // Cap 8: Escena Post-Créditos 2014 (Superman y Diana)
         };
 
         const BLANK_WHITE_URI = "data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400' viewBox='0 0 400 400'%3E%3Crect width='400' height='400' fill='%23ffffff'/%3E%3C/svg%3E";
@@ -710,7 +1193,7 @@ body{--accent:#d97706}body.enygma-hack{--accent:#00ff66}
         }
 
         /* ==========================================================================
-           MAPA DE LOS 8 CAPÍTULOS EXPANDIDOS (22 ESCENAS Y RETOS TÁCTICOS)
+           MAPA DE LOS 8 CAPÍTULOS EXPANDIDOS (21 ESCENAS Y RETOS TÁCTICOS)
            ========================================================================== */
         const MAPA_CAPITULOS = {
             1: 'ch1_alley_intro',
@@ -727,10 +1210,10 @@ body{--accent:#d97706}body.enygma-hack{--accent:#00ff66}
         // Escena que cierra cada capítulo: solo al salir de ella el capítulo cuenta como completado
         const CHAPTER_FINALES = {
             1: 'ch1_ducard_training', 2: 'ch2_batcave_stitch', 3: 'ch3_armory_calibration', 4: 'ch4_rooftop_gordon',
-            5: 'ch5_museum_bomb_wires', 6: 'ch6_gcpd_ambush', 7: 'ch7_ace_climax', 8: 'ch8_postcredits_2014'
+            5: 'ch5_museum_bomb_wires', 6: 'ch6_gcpd_ambush', 7: 'ch7_ace_climax', 8: 'ch8_epilogue_2012'
         };
 
-        window.irAEscena = function(sceneId, choiceIndex = null) {
+        window.irAEscena = function (sceneId, choiceIndex = null) {
             if (!app) return;
             if (choiceIndex !== null && app.activeChoices && app.activeChoices[choiceIndex]) {
                 const choice = app.activeChoices[choiceIndex];
@@ -748,7 +1231,7 @@ body{--accent:#d97706}body.enygma-hack{--accent:#00ff66}
         };
 
         // Salto desde el selector: solo a capítulos desbloqueados. No cuenta como "completar" el capítulo actual.
-        window.cargarCapitulo = function(chapterNum) {
+        window.cargarCapitulo = function (chapterNum) {
             const n = Number(chapterNum);
             const targetScene = MAPA_CAPITULOS[n];
             if (!targetScene) return;
@@ -855,7 +1338,7 @@ body{--accent:#d97706}body.enygma-hack{--accent:#00ff66}
                 try {
                     if (this.rainSource) { this.rainSource.stop(); this.rainSource = null; }
                     if (this.droneOsc) { this.droneOsc.stop(); this.droneOsc = null; }
-                } catch (e) {}
+                } catch (e) { }
             },
 
             playClick(freq = 540, duration = 0.04) {
@@ -1040,7 +1523,7 @@ body{--accent:#d97706}body.enygma-hack{--accent:#00ff66}
         ];
 
         /* ==========================================================================
-           CAMPAÑA EXPANDIDA DE 22 ESCENAS INTERACTIVAS EN 8 CAPÍTULOS
+           CAMPAÑA EXPANDIDA DE 21 ESCENAS INTERACTIVAS EN 8 CAPÍTULOS
            ========================================================================== */
         const STORY_SCENES = {
             // ======================================================================
@@ -1494,11 +1977,11 @@ body{--accent:#d97706}body.enygma-hack{--accent:#00ff66}
             },
 
             // ======================================================================
-            // CAPÍTULO 8: FINAL Y ESCENA POST-CRÉDITOS 2014 (2 ESCENAS)
+            // CAPÍTULO 8: EPÍLOGO Y CIERRE DE LA PELÍCULA (1 ESCENA)
             // ======================================================================
             ch8_epilogue_2012: {
                 chapter: 8,
-                stageLabel: 'FASE 1/2 • EL SECRETO SEGURO',
+                stageLabel: 'FASE 1/1 • EL SECRETO SEGURO',
                 actTitle: 'CAPÍTULO 8: LA RESPUESTA A SU MAYOR ENIGMA',
                 location: 'Puerta del GCPD / Interior de la Batcueva',
                 year: 'FIN DE 2012',
@@ -1511,32 +1994,7 @@ body{--accent:#d97706}body.enygma-hack{--accent:#00ff66}
                     'Tras derrotarlo rápidamente en Ace Chemicals, entregas a Edward Nygma encadenado en la puerta de la comisaría de policía de Gotham para que el Comisario Gordon lo encierre.',
                     'De regreso en la Batcueva, cuando Alfred te pregunta si temes que el villano revele al mundo tu identidad, concluyes con frialdad analítica que <strong>Enygma nunca revelará que eres Bruce Wayne porque su ego narcisista jamás le permitirá compartir con nadie la respuesta a su mayor enigma</strong>.'
                 ],
-                choices: [
-                    {
-                        text: 'Avanzar al Salto Temporal del Año 2014: El Periódico de Metrópolis y la Escena Post-Créditos →',
-                        stats: { intel: +15, fear: +10 },
-                        next: 'ch8_postcredits_2014'
-                    }
-                ]
-            },
-
-            ch8_postcredits_2014: {
-                chapter: 8,
-                stageLabel: 'FASE 2/2 • ESCENA POST-CRÉDITOS (AÑO 2014)',
-                actTitle: 'CAPÍTULO 8: LOS DIOSES BAJAN DE LOS CIELOS (2014)',
-                location: 'La Batcueva • Monitores Gigantes • Salto al Año 2014',
-                year: 'AÑO 2014',
-                visual: 'batcave_2014',
-                caption: 'POST-CRÉDITOS 2014 • SUPERMAN EN METRÓPOLIS Y ARCHIVO 1944 (DIANA)',
-                speaker: 'alfred',
-                enygmaHack: false,
-                alfredNote: '"La pregunta es, señor Wayne... ¿qué se necesita para obligar a alguien que lleva setenta años en las sombras a salir a la luz?"',
-                paragraphs: [
-                    '<strong>Salto temporal al año 2014.</strong> La Batcueva está iluminada únicamente por el resplandor de decenas de monitores gigantes que repiten desde distintos ángulos la brutal pelea entre <strong>Superman</strong> y <strong>Metallo</strong> en las calles de Metrópolis tras el colapso del evento de <strong>Lex Luthor</strong>.',
-                    '<strong>Alfred Pennyworth</strong> se acerca con una bandeja y el periódico del <em>Daily Planet</em> anunciando al nuevo héroe de Metrópolis: —<em>«El mundo entero ha cambiado hoy, señor Wayne. Parece que los dioses han decidido bajar de los cielos»</em>.',
-                    '—<em>«No es un dios, Alfred. Es un alienígena. Y tiene el poder de borrar una ciudad entera si un día decide que ya no le gustamos»</em> —respondes con voz grave mientras tu software de reconocimiento facial militar aísla a una mujer entre la multitud de Metrópolis y traza una coincidencia imposible con una fotografía clasificada de <strong>1944</strong>.'
-                ],
-                minigame: 'trinity_files_2014',
+                minigame: 'batman_finale',
                 choices: []
             }
         };
@@ -1644,8 +2102,8 @@ body{--accent:#d97706}body.enygma-hack{--accent:#00ff66}
                     document.body.appendChild(t);
                 }
                 const tone = kind === 'success' ? 'bg-emerald-950/95 border-emerald-500/70 text-emerald-200'
-                           : kind === 'locked'  ? 'bg-red-950/95 border-red-500/70 text-red-200'
-                           :                      'bg-slate-950/95 border-slate-600 text-slate-200';
+                    : kind === 'locked' ? 'bg-red-950/95 border-red-500/70 text-red-200'
+                        : 'bg-slate-950/95 border-slate-600 text-slate-200';
                 t.className = `fixed left-1/2 -translate-x-1/2 bottom-6 z-[60] max-w-[92vw] px-4 py-3 rounded-xl border font-mono text-xs sm:text-sm font-semibold shadow-2xl text-center ${tone}`;
                 t.textContent = msg;
                 clearTimeout(this._toastTimer);
@@ -1662,7 +2120,7 @@ body{--accent:#d97706}body.enygma-hack{--accent:#00ff66}
                         completedChapters: this.completedChapters
                     };
                     localStorage.setItem(SAVE_KEY, JSON.stringify(data));
-                } catch (e) {}
+                } catch (e) { }
             },
 
             loadProgress() {
@@ -1698,7 +2156,7 @@ body{--accent:#d97706}body.enygma-hack{--accent:#00ff66}
                             ? data.currentSceneId
                             : MAPA_CAPITULOS[this.unlockedChapter()];
                     }
-                } catch (e) {}
+                } catch (e) { }
             },
 
             switchTab(tabName) {
@@ -1815,7 +2273,7 @@ body{--accent:#d97706}body.enygma-hack{--accent:#00ff66}
                 const configuredPath = IMAGENES_ESCENAS[visualKey];
                 const fallbackSvg = generarFallbackEscenaSVG(visualKey, caption, isEnygma);
 
-                imgEl.onerror = function() {
+                imgEl.onerror = function () {
                     this.onerror = null;
                     this.src = fallbackSvg;
                 };
@@ -1870,7 +2328,7 @@ body{--accent:#d97706}body.enygma-hack{--accent:#00ff66}
                 } else {
                     document.body.classList.remove('enygma-hack');
                     if (tauntBanner) tauntBanner.classList.add('hidden');
-                    if (mainTitle) mainTitle.textContent = 'BATMAN: GOTHAM 2012';
+                    if (mainTitle) mainTitle.textContent = 'BATMAN';
                     if (osBadge) {
                         osBadge.textContent = 'WAYNETECH DARK-OS v6.0';
                         osBadge.className = 'hidden sm:inline-block text-[10px] font-mono text-slate-500';
@@ -1899,7 +2357,6 @@ body{--accent:#d97706}body.enygma-hack{--accent:#00ff66}
                     speakerImg.alt = `${char.name} (${char.actor})`;
                 }
                 document.getElementById('speaker-name').textContent = char.name.toUpperCase();
-                document.getElementById('speaker-actor').textContent = `${char.actor} (${char.age})`;
                 document.getElementById('speaker-desc').textContent = char.summary;
 
                 // Comentario de Alfred
@@ -2405,56 +2862,24 @@ body{--accent:#d97706}body.enygma-hack{--accent:#00ff66}
                 }
 
                 // ------------------------------------------------------------------
-                // 16. MONITORES DE LA BATCUEVA EN 2014 (SUPERMAN Y DIANA 1944)
+                // 16. CIERRE DE LA CAMPAÑA (SIN ESCENA POST-CRÉDITOS)
                 // ------------------------------------------------------------------
-                else if (type === 'trinity_files_2014') {
+                else if (type === 'batman_finale') {
                     this.markChapterCompleted(8);
                     container.innerHTML = `
-                        <div class="space-y-4">
-                            <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800 pb-2">
-                                <span class="font-mono text-xs uppercase text-sky-400 font-bold"><i class="fa-solid fa-display mr-1.5"></i>CONSOLA CENTRAL DE LA BATCUEVA • AÑO 2014</span>
-                                <span class="font-mono text-xs text-amber-400 font-bold">PROTOCOLO: TRINIDAD</span>
-                            </div>
-
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <!-- Monitor 1: Superman en Metrópolis (2014) -->
-                                <div class="bg-black border border-sky-500/40 rounded-xl p-3.5 flex items-start gap-3">
-                                    <img src="${obtenerImagenPersonaje('superman')}" alt="Clark Kent / Superman" class="char-blank-img w-16 h-16 rounded-xl shrink-0" />
-                                    <div>
-                                        <div class="text-[10px] font-mono text-sky-400 uppercase font-bold">PERIÓDICO DAILY PLANET • 2014</div>
-                                        <div class="font-display font-bold text-white text-sm">Clark Kent / Superman</div>
-                                        <p class="text-xs text-slate-300 mt-1 leading-relaxed">
-                                            Tras salvar Metrópolis en la demostración de Lex Luthor, se enfrentó en las calles a John Corben alias Metallo impulsado por Kryptonita.
-                                        </p>
-                                    </div>
-                                </div>
-
-                                <!-- Monitor 2: Fotografía Clasificada de 1944 (Wonder Woman) -->
-                                <div class="bg-black border border-amber-500/40 rounded-xl p-3.5 flex items-start gap-3">
-                                    <img src="${obtenerImagenPersonaje('diana')}" alt="Diana / Wonder Woman" class="char-blank-img w-16 h-16 rounded-xl shrink-0" />
-                                    <div>
-                                        <div class="text-[10px] font-mono text-amber-400 uppercase font-bold">COINCIDENCIA FACIAL • 1944 / 2014</div>
-                                        <div class="font-display font-bold text-white text-sm">Diana de Themyscira</div>
-                                        <p class="text-xs text-slate-300 mt-1 leading-relaxed">
-                                            Captada entre la multitud de Metrópolis evaluando a Superman sin intervenir. Coincide al 100% con una fotografía clasificada de 1944 en una trinchera aliada. No ha envejecido un solo día.
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="bg-black border border-emerald-500/40 rounded-xl p-4 text-center space-y-2">
-                                <div class="font-display font-bold text-base sm:text-lg text-emerald-300">CAMPAÑA EXTENDIDA DE BATMAN (2012) COMPLETADA AL 100%</div>
-                                <p class="text-xs text-slate-300 max-w-xl mx-auto">
-                                    Has completado las 22 fases narrativas y tácticas de la primera película de Batman de tu DCU NV, dejando la mesa servida para el encuentro de la Trinidad.
-                                </p>
-                                <div class="flex flex-wrap items-center justify-center gap-3 pt-2">
-                                    <button type="button" onclick="cargarCapitulo(1)" class="px-4 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-mono font-bold text-xs uppercase transition">
-                                        <i class="fa-solid fa-rotate-right mr-1.5"></i>Rejugar desde el Capítulo 1
-                                    </button>
-                                    <a href="index.html" class="px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-sky-300 border border-slate-700 font-mono text-xs uppercase transition">
-                                        <i class="fa-solid fa-grip-vertical mr-1.5"></i>Volver al Hub DC Universe
-                                    </a>
-                                </div>
+                        <div class="finale-card text-center space-y-3 py-2">
+                            <div class="font-mono text-xs uppercase text-amber-400 font-bold tracking-widest"><i class="fa-solid fa-moon mr-1.5"></i>FIN • BATMAN (2012)</div>
+                            <div class="font-display font-bold text-xl sm:text-2xl text-white">CAMPAÑA COMPLETADA AL 100%</div>
+                            <p class="text-xs sm:text-sm text-slate-300 max-w-xl mx-auto">
+                                Has completado las 21 fases narrativas y tácticas de la primera película de tu DCU NV. Gotham respira, por ahora. El secreto de Bruce Wayne está a salvo en el ego de Edward Nygma.
+                            </p>
+                            <div class="flex flex-wrap items-center justify-center gap-3 pt-2">
+                                <button type="button" onclick="cargarCapitulo(1)" class="px-4 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-mono font-bold text-xs uppercase transition">
+                                    <i class="fa-solid fa-rotate-right mr-1.5"></i>Rejugar desde el Capítulo 1
+                                </button>
+                                <a href="index.html" class="px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-sky-300 border border-slate-700 font-mono text-xs uppercase transition">
+                                    <i class="fa-solid fa-grip-vertical mr-1.5"></i>Volver al Hub DC Universe
+                                </a>
                             </div>
                         </div>
                     `;
@@ -2985,7 +3410,7 @@ body{--accent:#d97706}body.enygma-hack{--accent:#00ff66}
                     { num: 5, title: 'Capítulo 5: El Hackeo de Enygma y el Museo (3 Fases)', sub: 'Modo Enygma Override: Edward Nygma secuestra las pantallas de Gotham y coloca bombas con acertijos en el Museo.' },
                     { num: 6, title: 'Capítulo 6: El Gran Giro Bajo la Comisaría (3 Fases)', sub: 'Triangulación satelital al subsuelo del GCPD, revelación de la identidad de Bruce Wayne, explosión y escape fingiendo golpear a Gordon.' },
                     { num: 7, title: 'Capítulo 7: El Clímax en Ace Chemicals (3 Fases)', sub: 'Tablero detectivesco de 4 evidencias en el Batmóvil, infiltración industrial y derrota fulminante de Enygma.' },
-                    { num: 8, title: 'Capítulo 8: Epílogo y Post-Créditos 2014 (2 Fases)', sub: 'El ego de Nygma como candado de tu identidad y el salto a 2014: el periódico de Superman y la foto de 1944 de Diana.' }
+                    { num: 8, title: 'Capítulo 8: Epílogo (1 Fase)', sub: 'Nygma entregado en la puerta del GCPD y su ego narcisista como candado de la identidad de Bruce Wayne.' }
                 ];
 
                 const unlocked = this.unlockedChapter();
@@ -3032,7 +3457,7 @@ body{--accent:#d97706}body.enygma-hack{--accent:#00ff66}
                     {
                         badge: 'WONDER WOMAN (1944 - 2013)',
                         title: 'El Fantasma Entre Nosotros desde 1944',
-                        desc: 'Moldeada en arcilla en Themyscira por la Reina Hipólita, Diana viajó al frente europeo en 1944 junto a Steve Trevor frente a Ares y la fría mirada de Hades. Tras el sacrificio de Trevor, vivió 70 años en el anonimato hasta ser detectada por Bruce Wayne.'
+                        desc: 'Moldeada en arcilla en Themyscira por la Reina Hipólita, Diana viajó al frente europeo en 1944 junto a Steve Trevor frente a Ares y la fría mirada de Hades. Tras el sacrificio de Trevor, vivió décadas en el anonimato, convertida en un mito para el mundo.'
                     },
                     {
                         badge: 'SUPERMAN (2014)',
@@ -3128,7 +3553,7 @@ body{--accent:#d97706}body.enygma-hack{--accent:#00ff66}
 
             confirmReset() {
                 this.stopAllMinigameLoops();
-                try { localStorage.removeItem(SAVE_KEY); } catch (e) {}
+                try { localStorage.removeItem(SAVE_KEY); } catch (e) { }
                 this.completedChapters = [];
                 this._jumping = false;
                 this.stats = { health: 100, fear: 70, intel: 55 };
@@ -3152,4 +3577,5 @@ body{--accent:#d97706}body.enygma-hack{--accent:#00ff66}
         });
     </script>
 </body>
+
 </html>

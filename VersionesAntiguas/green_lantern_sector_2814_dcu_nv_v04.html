@@ -40,7 +40,6 @@
     </script>
 
     <link href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
     <style>
         /* ==========================================================================
            INTERFAZ HOLOGRÁFICA DEL ANILLO DE PODER DE OA (CERO CANVAS)
@@ -274,27 +273,6 @@ body{--accent:#00ff88}body.qward-fear-mode{--accent:#facc15}
 .font-display{letter-spacing:.02em}
 .oa-panel::before{content:"";position:absolute;inset:-1px;pointer-events:none;border-radius:inherit;background:var(--b) 0 0/18px 2px no-repeat,var(--b) 0 0/2px 18px no-repeat,var(--b) 100% 0/18px 2px no-repeat,var(--b) 100% 0/2px 18px no-repeat,var(--b) 0 100%/18px 2px no-repeat,var(--b) 0 100%/2px 18px no-repeat,var(--b) 100% 100%/18px 2px no-repeat,var(--b) 100% 100%/2px 18px no-repeat}
 
-/* ===== CAPA DE DISEÑO (tipografía, geometría, contraste, accesibilidad) ===== */
-:root{--ui:'Barlow Semi Condensed','Inter',sans-serif;--read:'Source Serif 4',Georgia,serif;--b:linear-gradient(var(--accent),var(--accent))}
-body{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
-.font-mono{font-family:var(--ui)!important;letter-spacing:.05em!important;font-weight:600}
-code,pre{font-family:'JetBrains Mono',monospace!important}
-[class*="text-[10px]"]{font-size:11.5px!important}
-[class*="text-[11px]"]{font-size:12.5px!important}
-.text-slate-500{color:#8493a8!important}
-.text-slate-400{color:#a3b2c7!important}
-.font-display{letter-spacing:.035em}
-.rounded-2xl{border-radius:6px!important}
-.rounded-xl,.rounded-lg{border-radius:4px!important}
-[id*="narrative"]{font-family:var(--read);font-size:1.075rem;line-height:1.75;max-width:68ch}
-:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-::selection{background:color-mix(in srgb,var(--accent) 35%,transparent)}
-::-webkit-scrollbar-thumb:hover{background:var(--accent)}
-.bat-panel,.oa-panel{position:relative}
-@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
-body{--accent:#00ff88}body.qward-fear-mode{--accent:#facc15}
-.font-display{letter-spacing:.02em}
-.oa-panel::before{content:"";position:absolute;inset:-1px;pointer-events:none;border-radius:inherit;background:var(--b) 0 0/18px 2px no-repeat,var(--b) 0 0/2px 18px no-repeat,var(--b) 100% 0/18px 2px no-repeat,var(--b) 100% 0/2px 18px no-repeat,var(--b) 0 100%/18px 2px no-repeat,var(--b) 0 100%/2px 18px no-repeat,var(--b) 100% 100%/18px 2px no-repeat,var(--b) 100% 100%/2px 18px no-repeat}
 
 div:has(>#scene-img)::after{content:"";position:absolute;left:0;right:0;top:0;height:35%;background:linear-gradient(transparent,rgba(0,255,136,.18),transparent);animation:glSweep 5s linear infinite;pointer-events:none}
 @keyframes glSweep{to{transform:translateY(290%)}}
@@ -344,7 +322,7 @@ body.ring-over .oa-panel{box-shadow:0 0 34px rgba(34,211,238,.22)}
             <div class="flex items-center gap-3.5 w-full lg:w-auto justify-between lg:justify-start">
                 <div class="flex items-center gap-3">
                     <!-- Enlace de regreso al Hub DC Universe -->
-                    <a href="dc_universe_launcher_hub_v02.html" class="w-11 h-11 rounded-xl bg-black/80 border border-emerald-500/40 hover:border-[#00ff88] flex items-center justify-center text-emerald-400 hover:text-[#00ff88] transition shadow-lg" title="Volver al Hub DC Universe">
+                    <a href="index.html" class="w-11 h-11 rounded-xl bg-black/80 border border-emerald-500/40 hover:border-[#00ff88] flex items-center justify-center text-emerald-400 hover:text-[#00ff88] transition shadow-lg" title="Volver al Hub DC Universe">
                         <i class="fa-solid fa-chevron-left"></i>
                     </a>
 
@@ -543,7 +521,7 @@ body.ring-over .oa-panel{box-shadow:0 0 34px rgba(34,211,238,.22)}
                             <img id="speaker-img" src="" alt="Retrato del Personaje" class="char-blank-img w-14 h-14 sm:w-16 sm:h-16 rounded-xl shrink-0" />
                             <div class="min-w-0">
                                 <div class="flex items-center gap-2 flex-wrap">
-                                    <h3 id="speaker-name" class="font-display font-bold text-sm sm:text-base text-white tracking-wide">HAL JORDAN / GREEN LANTERN</h3>
+                                    <h3 id="speaker-name" class="font-display font-bold text-sm sm:text-base text-white tracking-wide">HAL JORDAN</h3>
                                     <span id="speaker-rank" class="text-[11px] font-mono px-2 py-0.5 rounded bg-emerald-500/15 text-[#00ff88] border border-emerald-500/40 font-semibold">Oficial del Sector 2814</span>
                                 </div>
                                 <p id="speaker-desc" class="text-xs text-emerald-200/70 line-clamp-2 mt-1">Piloto de pruebas temerario • Voluntad indomable del Cuerpo de Linternas Verdes</p>
@@ -715,9 +693,6 @@ body.ring-over .oa-panel{box-shadow:0 0 34px rgba(34,211,238,.22)}
                     <div class="border-b border-emerald-900/80 pb-4 mb-5">
                         <span class="text-xs font-mono text-[#00ff88] uppercase tracking-widest font-bold">BASE DE DATOS PLANETARIA DE OA</span>
                         <h2 class="font-display text-xl sm:text-2xl font-bold text-white mt-0.5">EXPEDIENTES DE PERSONAJES (GREEN LANTERN 2012)</h2>
-                        <p class="text-xs text-emerald-200/70 mt-1">
-                            Los recuadros de imagen están en blanco puro (#FFFFFF) listos para tus fotografías en el objeto <code>IMAGENES_PERSONAJES</code>.
-                        </p>
                     </div>
                     <div id="cast-grid" class="grid grid-cols-1 md:grid-cols-2 gap-5">
                         <!-- Tarjetas de personajes -->
@@ -836,14 +811,15 @@ body.ring-over .oa-panel{box-shadow:0 0 34px rgba(34,211,238,.22)}
            2. IMÁGENES DE ESCENAS (REEMPLAZA A CUALQUIER CANVAS)
            ========================================================================== */
         const IMAGENES_ESCENAS = {
-            abin_crash_2007: "",      // Cap 1: Accidente de Abin Sur y elección de Hal Jordan (2007)
-            oa_citadel: "",           // Cap 2: Llegada a Oa y arena de constructos con Sinestro
-            space_patrol_2012: "",    // Cap 3: Patrulla espacial en el Sector 2814 (2012)
-            korugar_dictatorship: "", // Cap 4 y 5: Dictadura militar de Sinestro en Korugar y arresto
-            oa_trial_murder: "",      // Cap 6: Juicio en Oa y asesinato del Guardián
-            qward_yellow_ring: "",    // Cap 6: Forja del Anillo Amarillo en Qward
-            oa_climax_duel: "",       // Cap 7: Clímax de constructos y haces Hal vs Sinestro
-            oa_sci_cell: ""           // Cap 8: Celda de contención en Oa y guardia solitaria
+            abin_crash_2007: "Imagenes/Capitulos/2Lantern/abinsurcrash.jpg",      // Cap 1: Accidente de Abin Sur y elección de Hal Jordan (2007)
+            oa_citadel: "Imagenes/Capitulos/2Lantern/jordanoa.jpg",           // Cap 2: Llegada a Oa
+            oa_entrenamiento: "Imagenes/Capitulos/2Lantern/sinestroyjordan.jpg",           // Cap 2: Arena de constructos con Sinestro
+            space_patrol_2012: "Imagenes/Capitulos/2Lantern/halpatrulla.jpg",    // Cap 3: Patrulla espacial en el Sector 2814 (2012)
+            korugar_dictatorship: "Imagenes/Capitulos/2Lantern/traicion.jpg", // Cap 4 y 5: Dictadura militar de Sinestro en Korugar y arresto
+            oa_trial_murder: "Imagenes/Capitulos/2Lantern/asesinato.jpg",      // Cap 6: Juicio en Oa y asesinato del Guardián
+            qward_yellow_ring: "Imagenes/Capitulos/2Lantern/amarillo.jpg",    // Cap 6: Forja del Anillo Amarillo en Qward
+            oa_climax_duel: "Imagenes/Capitulos/2Lantern/halvssinestro.png",       // Cap 7: Clímax de constructos y haces Hal vs Sinestro
+            oa_sci_cell: "Imagenes/Capitulos/2Lantern/detenido.jpg"           // Cap 8: Celda de contención en Oa y guardia solitaria
         };
 
         const BLANK_WHITE_URI = "data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400' viewBox='0 0 400 400'%3E%3Crect width='400' height='400' fill='%23ffffff'/%3E%3C/svg%3E";
@@ -1109,8 +1085,8 @@ body.ring-over .oa-panel{box-shadow:0 0 34px rgba(34,211,238,.22)}
         const CAST_DB = {
             hal: {
                 id: 'hal',
-                name: 'Hal Jordan / Green Lantern',
-                age: '32 años (en 2012)',
+                name: 'Hal Jordan',
+                age: '32 años',
                 rank: 'Linterna Verde del Sector 2814',
                 quote: '"La verdadera fuerza no es la ausencia de miedo; es mirarlo de frente, aceptarlo y tener la voluntad de superarlo."',
                 summary: 'Piloto de pruebas brillante, temerario y carismático que confía ciegamente en sus instintos. Guardián del Sector 2814.',
@@ -1171,7 +1147,7 @@ body.ring-over .oa-panel{box-shadow:0 0 34px rgba(34,211,238,.22)}
                 source: 'SONDA ORBITAL TERRESTRE • SECTOR METRÓPOLIS',
                 date: 'NOVIEMBRE 2012 – 2014',
                 title: 'Radiación Xenomineral en Laboratorios de LexCorp',
-                body: 'Lectura de espectro verde anómalo en la superficie terrestre: la corporación dirigida por L. Luthor y su jefe de seguridad J. Corben están almacenando fragmentos de un meteorito radiactivo de origen kryptoniano.'
+                body: 'Lectura de espectro verde anómalo en la superficie terrestre: la corporación dirigida por L. Luthor y su jefe de seguridad J. Corben están almacenando fragmentos de un meteorito radiactivo de origen desconocido.'
             }
         ];
 
@@ -1191,7 +1167,7 @@ body.ring-over .oa-panel{box-shadow:0 0 34px rgba(34,211,238,.22)}
                 visual: 'abin_crash_2007',
                 caption: 'IMPACTO DE ABIN SUR • ESCANEO BIOMÉTRICO DEL SECTOR 2814',
                 speaker: 'abin_sur',
-                aiNote: '"Alerta crítica: El oficial Abin Sur agoniza tras el impacto. Iniciando escaneo planetario para localizar a alguien capaz de superar el gran miedo."',
+                aiNote: '"Alerta crítica: El oficial Abin Sur agoniza tras el impacto. Reserva del anillo al 5%: solo alcanza para un escaneo. Localizando a alguien capaz de superar el gran miedo."',
                 paragraphs: [
                     '<strong>Principios del año 2007.</strong> El alienígena <strong>Abin Sur</strong> se estrella en el desierto de la Tierra tras haber sido herido mortalmente en el espacio profundo.',
                     'Antes de morir entre los restos humeantes de su nave, su Anillo de Poder escanea el Sector 2814 buscando a un sucesor capaz de superar el gran miedo. Analiza los perfiles biométricos del sector y selecciona al elegido.'
@@ -1251,7 +1227,7 @@ body.ring-over .oa-panel{box-shadow:0 0 34px rgba(34,211,238,.22)}
                 actTitle: 'CAPÍTULO 2: EL CRISOL DE VOLUNTAD EN OA',
                 location: 'Arena Orbital de Oa • Entrenamiento con Sinestro',
                 year: 'AÑO 2007',
-                visual: 'oa_citadel',
+                visual: 'oa_entrenamiento',
                 caption: 'FORJA DE LUZ SÓLIDA • 3 MISIONES DE ENTRENAMIENTO CON SINESTRO',
                 speaker: 'sinestro',
                 aiNote: '"Complete el trazado de nodos SVG y la solidificación de los 3 constructos tácticos para ganarse el respeto de Thaal Sinestro."',
@@ -1298,7 +1274,7 @@ body.ring-over .oa-panel{box-shadow:0 0 34px rgba(34,211,238,.22)}
                 speaker: 'hal',
                 aiNote: '"Se ha desviado hacia Korugar tras detectar una transmisión de socorro. Utilice el Escáner Espectral del anillo para analizar los 4 nodos de control militar."',
                 paragraphs: [
-                    'Durante tu patrullaje en 2012, te desvías hacia <strong>Korugar</strong>, el planeta natal de tu maestro Thaal Sinestro, y descubres una verdad aterradora.',
+                    'Durante tu patrullaje, te desvías hacia <strong>Korugar</strong>, el planeta natal de tu maestro Thaal Sinestro, y descubres una verdad aterradora.',
                     'Frustrado por la pasividad de los Guardianes del Universo, <strong>Sinestro ha usado el poder del anillo verde para instaurar una dictadura militar perfecta</strong>, controlando a su pueblo mediante el orden absoluto y el terror policial. Escanea los 4 nodos de opresión en la capital para registrar las pruebas.'
                 ],
                 minigame: 'korugar_evidence_scan',
@@ -1443,7 +1419,7 @@ body.ring-over .oa-panel{box-shadow:0 0 34px rgba(34,211,238,.22)}
             currentSpeakerId: 'abin_sur',
             activeChoices: [],
             stats: {
-                charge: 100,
+                charge: 5,
                 will: 80,
                 authority: 65
             },
@@ -2005,7 +1981,7 @@ body.ring-over .oa-panel{box-shadow:0 0 34px rgba(34,211,238,.22)}
                                     <button type="button" onclick="app.switchTab('forge')" class="px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-emerald-950 text-[#00ff88] border border-[#00ff88]/50 font-mono text-xs uppercase transition">
                                         <i class="fa-solid fa-wand-magic-sparkles mr-1.5"></i>Abrir Forja Libre de Constructos SVG
                                     </button>
-                                    <a href="dc_universe_launcher_hub.html" class="px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-amber-300 border border-amber-500/40 font-mono text-xs uppercase transition">
+                                    <a href="index.html" class="px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-amber-300 border border-amber-500/40 font-mono text-xs uppercase transition">
                                         <i class="fa-solid fa-grip-vertical mr-1.5"></i>Volver al Hub DC Universe
                                     </a>
                                 </div>
@@ -2653,7 +2629,7 @@ body.ring-over .oa-panel{box-shadow:0 0 34px rgba(34,211,238,.22)}
                                 <line x1="20" y1="82" x2="80" y2="82" stroke-linecap="round"/>
                             </svg>
                             <span class="absolute -bottom-2 px-2.5 py-0.5 rounded bg-emerald-950 border border-[#00ff88] font-mono text-[10px] text-[#00ff88] font-bold">
-                                CARGA: ${Math.min(120, 40 + count * 20)}%
+                                CARGA: ${Math.round(Math.min(this.stats.charge, 100) + (120 - Math.min(this.stats.charge, 100)) * count / 4)}%
                             </span>
                         </div>
 
@@ -2809,7 +2785,7 @@ body.ring-over .oa-panel{box-shadow:0 0 34px rgba(34,211,238,.22)}
 
             confirmReset() {
                 localStorage.removeItem('green_lantern_dcu_nv_2012_v2');
-                this.stats = { charge: 100, will: 80, authority: 65 };
+                this.stats = { charge: 5, will: 80, authority: 65 };
                 this.equippedConstruct = 'Caza F-22 Supersónico';
                 this.constructsUnlocked = ['jet', 'prison'];
                 this.renderConstructMemory();
@@ -2849,6 +2825,64 @@ const us=app.updateStatsUI;app.updateStatsUI=function(){us.call(this);document.b
 const ls=app.loadScene;app.loadScene=function(...a){used=false;return ls.apply(this,a)};
 const ad=app.addConstructById;app.addConstructById=function(id){ad.call(this,id);const b=CONSTRUCT_BLUEPRINTS.find(x=>x.id===id);b&&this.summonFx(b.name)};
 const eq=app.equipSavedConstruct;app.equipSavedConstruct=function(n){eq.call(this,n);this.summonFx(n)};
+})();
+</script>
+<style>
+.ch-pill{text-align:center;padding:6px 0;border-radius:6px;border:1px solid #064e3b;background:#000;color:#5eead4;font:600 12.5px var(--ui);letter-spacing:.05em;cursor:pointer;transition:border-color .2s,background .2s}
+.ch-pill:hover{border-color:#00ff88}.ch-pill.cur{background:rgba(16,185,129,.3);color:#00ff88;border-color:#00ff88;box-shadow:0 0 12px rgba(0,255,136,.35)}
+.ch-pill.lock{color:#5b6b66;border-color:#1b2a25;cursor:not-allowed}.ch-pill.lock:hover{border-color:#3a4a44}
+.act-locked{background:#0b1210!important;color:#7d8f88!important;border-color:#26332e!important;cursor:not-allowed}
+.oath-gate{text-align:center;padding:26px 18px;border:1px solid rgba(0,255,136,.45);border-radius:8px;background:radial-gradient(70% 90% at 50% 0%,rgba(0,255,136,.14),transparent 70%),rgba(2,18,11,.9)}
+.oath-gate .og-pct{font:800 3.2rem/1 'Orbitron',sans-serif;color:#ff5a4d;text-shadow:0 0 18px rgba(255,90,77,.5);animation:ogBlink 1.6s ease-in-out infinite}
+.oath-gate .og-k{margin-top:6px;font:600 1rem var(--ui);color:#a3b2c7;letter-spacing:.05em}
+.oath-gate h3{margin-top:14px;font:700 1.15rem 'Orbitron',sans-serif;color:#fff}
+.oath-gate p.og-t{margin:8px auto 0;max-width:52ch;font:400 1rem/1.65 var(--read);color:#d1fae5}
+.og-btn{margin-top:18px;min-height:46px;padding:0 24px;border-radius:6px;border:0;background:#00ff88;color:#02120b;font:700 1.1rem var(--ui);letter-spacing:.06em;cursor:pointer;box-shadow:0 0 22px rgba(0,255,136,.4)}
+.og-btn:hover{filter:brightness(1.1)}
+@keyframes ogBlink{50%{opacity:.55}}
+.gl-toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%);z-index:80;max-width:min(92vw,460px);padding:12px 18px;border-radius:8px;background:#06150e;border:1px solid #00ff88;color:#d1fae5;font:600 1.05rem var(--ui);box-shadow:0 12px 40px rgba(0,0,0,.7);animation:holoReveal .25s ease-out}
+</style>
+<script>
+(()=>{
+const $=id=>document.getElementById(id), UK='green_lantern_dcu_nv_unlocked', OK='green_lantern_dcu_nv_oath';
+let maxCh=1, oath=false;
+try{maxCh=Math.max(1,+localStorage.getItem(UK)||1);oath=localStorage.getItem(OK)==='1'}catch(e){}
+const save=(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}};
+function toast(t){document.querySelectorAll('.gl-toast').forEach(e=>e.remove());const d=document.createElement('div');d.className='gl-toast';d.setAttribute('role','status');d.textContent=t;document.body.appendChild(d);setTimeout(()=>d.remove(),3200)}
+
+/* Bloqueo de capítulos: el capítulo N+1 se abre al completar el N */
+const cc=window.cargarCapitulo;
+window.cargarCapitulo=function(n){
+ if(n>maxCh){soundEngine.playBeamClash();toast('Capítulo '+n+' bloqueado: completa el capítulo '+(n-1)+' para desbloquearlo.');return}
+ cc(n)};
+app.renderChapterPills=function(active){
+ $('chapter-pills').innerHTML=Array.from({length:8},(_,k)=>{const i=k+1,lock=i>maxCh;
+  return `<button type="button" onclick="cargarCapitulo(${i})" class="ch-pill${i===active?' cur':''}${lock?' lock':''}" aria-disabled="${lock}" title="${lock?'Completa el capítulo '+(i-1)+' para desbloquear':''}">${lock?'<i class="fa-solid fa-lock"></i> ':''}CAP ${i}</button>`}).join('')};
+const ra=app.renderActsTab;
+app.renderActsTab=function(){ra.call(this);document.querySelectorAll('#acts-grid button[onclick^="cargarCapitulo"]').forEach(b=>{
+ const n=+b.getAttribute('onclick').match(/\d+/)[0];if(n>maxCh){b.classList.add('act-locked');b.innerHTML='<i class="fa-solid fa-lock mr-1.5"></i>Bloqueado: completa el capítulo '+(n-1)}})};
+const ls=app.loadScene;
+app.loadScene=function(id,...r){const sc=STORY_SCENES[id];
+ if(sc){if(sc.chapter>=2&&!oath){oath=true;save(OK,'1')}
+  if(sc.chapter>maxCh){maxCh=sc.chapter;save(UK,maxCh);if(this.renderActsTab)this.renderActsTab();toast('Capítulo '+maxCh+' desbloqueado')}}
+ return ls.call(this,id,...r)};
+
+/* Anillo al 5 %: hay que hacer el juramento al recibirlo para activarlo */
+const lm=app.launchMinigame;
+app.launchMinigame=function(t){
+ if(t==='first_construct_trace'&&!oath){
+  $('minigame-container').innerHTML=`<div class="oath-gate"><div class="og-pct">${this.stats.charge}%</div><p class="og-k">Energía del anillo</p>
+   <h3>Recita el juramento para activarlo</h3>
+   <p class="og-t">El anillo de Abin Sur apenas conserva carga. Antes de forjar tu primer constructo, jura como Linterna Verde y enciende la batería central.</p>
+   <button type="button" class="og-btn" id="og-btn">Recitar el juramento</button></div>`;
+  $('og-btn').onclick=()=>this.openOathModal();return}
+ return lm.call(this,t)};
+const rv=app.reciteOathVerse;
+app.reciteOathVerse=function(i){const was=oath;rv.call(this,i);
+ if(!was&&this.oathVersesCompleted.every(Boolean)){oath=true;save(OK,'1');
+  setTimeout(()=>{if(this.currentSceneId==='ch1_ring_acceptance')this.launchMinigame('first_construct_trace')},750)}};
+const cr=app.confirmReset;
+app.confirmReset=function(){oath=false;try{localStorage.removeItem(OK)}catch(e){}cr.call(this)};
 })();
 </script>
 </body>

@@ -40,6 +40,17 @@ blockquote{border-left:5px solid var(--r);padding:6px 12px;margin:8px 0;font-sty
 input{font:inherit;padding:8px;border:2px solid var(--k);background:#fff9e6;flex:1;min-width:180px;text-transform:uppercase}
 .grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}
 .card{border:2px solid var(--k);background:var(--c);padding:12px}.card h3{font:1.05rem var(--st);color:var(--n)}.card small{color:var(--r);letter-spacing:.08em}
+.fx{position:relative;background:var(--c);border:2px solid var(--k);padding:14px 12px 12px;box-shadow:4px 4px 0 #0005;transform:rotate(-.6deg)}.fx:nth-child(even){transform:rotate(.7deg)}
+.fx::before{content:"";position:absolute;top:-9px;left:42%;width:70px;height:20px;background:#cdbd7caa;transform:rotate(-3deg)}
+.ph{position:relative;border:6px solid #f3ead0;outline:1px solid var(--k);box-shadow:2px 2px 0 #0004;margin-bottom:10px;background:#000}.ph img{display:block;width:100%;aspect-ratio:4/5;object-fit:cover;filter:grayscale(1) sepia(.7) contrast(1.15)}
+.ph::after{content:"";position:absolute;inset:0;background:radial-gradient(#0003 1px,transparent 1.5px) 0 0/3px 3px;mix-blend-mode:multiply}
+.ph .st{position:absolute;right:-6px;bottom:10px;z-index:2;font-size:.8rem;background:#efe4c4cc;transform:rotate(-9deg)}
+.fx dl{display:grid;grid-template-columns:auto 1fr;gap:2px 8px;font-size:.82rem;margin:6px 0;border-top:1px dashed var(--k);padding-top:6px}.fx dt{font-weight:bold;color:var(--r)}.fx dd{margin:0}
+dialog{border:3px solid var(--k);background:var(--p);color:var(--k);padding:0;width:min(520px,92vw);box-shadow:8px 8px 0 #000a;font:inherit;margin:auto}
+dialog::backdrop{background:#000b;backdrop-filter:sepia(.6) blur(2px)}
+.dh{display:flex;justify-content:space-between;align-items:center;background:var(--k);color:var(--c);padding:8px 14px;font:.9rem var(--st);letter-spacing:.14em}
+.x{background:none;border:0;color:var(--c);font:1.6rem/1 var(--st);cursor:pointer}.x:hover{color:var(--r)}
+.db{margin:8px;padding:16px;text-align:center;outline:1px dashed #231f1688;outline-offset:-4px}.db h3{font:1.15rem var(--st);color:var(--n);margin:12px 0 6px}.db .row{justify-content:center;margin-top:16px}
 #toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:var(--k);color:var(--c);border:2px solid var(--r);padding:10px 16px;z-index:9;max-width:92vw;text-align:center}
 footer{margin-top:16px;border-top:4px double var(--k);padding-top:8px;display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between;font-size:.78rem}
 a{color:var(--n)}[hidden]{display:none!important}
@@ -73,15 +84,21 @@ a{color:var(--n)}[hidden]{display:none!important}
 <footer><a href="index.html">← Volver al Hub DC Universe</a><span>Autoguardado activo · <a href="#" id="rst">Reiniciar campaña</a></span></footer>
 </div>
 <div id="toast" role="status" hidden></div>
+<dialog id="dlg" aria-labelledby="dt">
+ <div class="dh"><span id="dt">REINICIAR EXPEDIENTE</span><button class="x" data-c aria-label="Cerrar">×</button></div>
+ <div class="db"><div class="st">ATENCIÓN</div><h3>¿Reabrir el expediente desde Themyscira?</h3>
+  <p>Se borrará tu avance y el vigor y la fe en la humanidad volverán al inicio. <b>Los capítulos 2 a <span id="nn"></span> volverán a bloquearse.</b></p>
+  <div class="row"><button class="b" data-c>CANCELAR</button><button class="b on" id="ok2">REINICIAR CAMPAÑA</button></div></div>
+</dialog>
 
 <script>
 /* ===== DATOS (editables) ===== */
-const IMG='Imagenes/Capitulos/2WonderWoman/cap';   // cap1.jpg ... cap8.jpg; si no existe, se dibuja un cartel de propaganda
+const IMG='Imagenes/Capitulos/3WonderWoman/cap';   // cap1.jpg ... cap8.jpg; si no existe, se dibuja un cartel de propaganda
 const CAST=[
- {n:'Diana / Wonder Woman',a:'Gal Gadot',r:'Princesa amazona de Themyscira',d:'Pura gracia natural y fiereza contenida. Empieza con un idealismo casi divino que la guerra de 1944 convierte en determinación y, al final, en melancolía.'},
- {n:'Steve Trevor',a:'Charlie Hunnam · 33 años',r:'Piloto y espía aliado',d:'Cínico, desgastado y cubierto de barro. Le enseña que la guerra moderna es una picadora de carne de hombres mortales.'},
- {n:'Reina Hipólita',a:'Lucy Lawless',r:'Gobernante de Themyscira',d:'Severa y a la vez maternal; lidera desde la primera línea y entrena a su hija sin piedad porque el mundo exterior es implacable.'},
- {n:'Hades',a:'Mads Mikkelsen',r:'Señor del inframundo',d:'Elegancia gélida en traje sastre. Observa la masacre industrial como un empresario ve prosperar su cosecha de almas.'}
+ {f:'diana',n:'Diana / Wonder Woman',a:'Jaimie Alexander',r:'Princesa amazona de Themyscira',d:'Pura gracia natural y fiereza contenida. Empieza con un idealismo casi divino que la guerra de 1944 convierte en determinación y, al final, en melancolía.'},
+ {f:'steve',n:'Steve Trevor',a:'Charlie Hunnam',r:'Piloto y espía aliado',d:'Cínico, desgastado y cubierto de barro. Le enseña que la guerra moderna es una picadora de carne de hombres mortales.'},
+ {f:'hipolita',n:'Reina Hipólita',a:'Lucy Lawless',r:'Gobernante de Themyscira',d:'Severa y a la vez maternal; lidera desde la primera línea y entrena a su hija sin piedad porque el mundo exterior es implacable.'},
+ {f:'ares',n:'Ares',a:'Mads Mikkelsen',r:'Dios de la Guerra · Antagonista',d:'Hijo de Zeus y primer rival de las amazonas. No empuña las armas: las inspira. Se mueve entre generales y consejeros con una calma gélida, susurrando ideas de destrucción hasta que los hombres las hacen suyas. Cuando se revela, muestra su colosal forma divina.'}
 ];
 const CH=[
  {t:'La Isla de Arcilla',l:'Themyscira',y:'ANTES DE 1944',
@@ -94,13 +111,13 @@ const CH=[
   p:['Rescatado Steve, Diana lo somete al <b>Lazo de la Verdad</b>. Así descubre que el mundo exterior arde en un conflicto apocalíptico: la <b>Segunda Guerra Mundial</b>.'],
   g:{k:'lasso',q:'Interrogatorio',r:[['Soy espía aliado y vengo huyendo del Eje.',1,'Era verdad.'],['La guerra está casi terminada y nadie muere ya.',0,'Mentía: la guerra es una carnicería.'],['Millones de hombres mueren en las trincheras.',1,'Era verdad.']]}},
  {t:'El Viaje al Frente',l:'Muro mágico de Themyscira',y:'1944',
-  p:['Diana está convencida de que <b>Ares</b> manipula la carnicería para recuperar su poder. Roba la armadura sagrada, el escudo y la espada.','Hipólita la espera en la orilla. Quien cruce la barrera no podrá regresar jamás.'],
+  p:['Diana está convencida de que <b>Ares</b>, el dios de la guerra, manipula la carnicería humana para recuperar su poder. Roba la armadura sagrada, el escudo y la espada.','Hipólita la espera en la orilla. Quien cruce la barrera no podrá regresar jamás.'],
   g:{k:'choice',q:'¿Cómo te despides?',o:[{t:'Abrazar a tu madre y partir con su bendición.',i:-5,r:'Hipólita calla. Sus ojos lo dicen todo. La barrera se cierra a tus espaldas.'},{t:'Marchar sin mirar atrás, para no flaquear.',i:-10,r:'Avanzas con la mandíbula apretada. Themyscira desaparece tras la niebla.'}]}},
  {t:'Tras las Líneas Enemigas',l:'Trincheras · Europa',y:'1944',
-  p:['Europa es barro, alambre y ruina. En las trincheras ves a un hombre de <b>traje sastre impecable</b> que observa la masacre con fría satisfacción: <b>Hades</b>.','La unidad de Trevor intercepta un telegrama que revela la fábrica de armamento químico.'],
+  p:['Europa es barro, alambre y ruina. En las trincheras ves a un consejero civil de <b>traje impecable</b> que susurra ideas de nuevas armas a oficiales de ambos bandos. Nadie recuerda su rostro, pero todos le hacen caso.','La unidad de Trevor intercepta un telegrama que revela la fábrica de armamento químico.'],
   g:{k:'cipher',s:3,a:'FABRICA DE GAS AL NORTE',q:'Telegrama interceptado del Eje:'}},
  {t:'El Gran Giro',l:'Fábrica de armamento químico',y:'1944',
-  p:['Entre humo y alarmas, un general enemigo dirige la defensa. Estás segura de que es <b>Ares</b> disfrazado.','Cuando cae, la batalla no se detiene. El verdadero Ares aparece entre las llamas: <i>«Yo no inicié esta guerra. Solo entregué las ideas. Ellos eligieron.»</i>'],
+  p:['Entre humo y alarmas, un general enemigo dirige la defensa. Estás segura de que es <b>Ares</b> disfrazado.','Cuando cae, la batalla no se detiene. El verdadero Ares aparece entre las llamas: es el consejero del traje impecable de las trincheras. <i>«Yo no inicié esta guerra. Solo entregué las ideas. Ellos eligieron.»</i>'],
   g:{k:'choice',q:'Ante el cuerpo del general:',o:[{t:'Aferrarte a tu certeza: «Alguien tiene que ser el culpable».',i:-15,r:'Pero el estruendo de la artillería continúa.'},{t:'Escuchar a Ares, aunque duela.',i:-25,r:'La verdad pesa más que cualquier espada.'}]}},
  {t:'Ares y el Bombardero',l:'Campo de batalla',y:'1944',
   p:['Ares se alza en su colosal forma divina, mezclando magia antigua con la chatarra bélica. Lucháis cuerpo a cuerpo entre el barro y la artillería.','Mientras empujas tus poderes al límite, <b>Steve Trevor</b> se sacrifica: pilota un bombardero cargado de gas letal hacia la atmósfera para detonarlo lejos de los inocentes.'],
@@ -109,12 +126,15 @@ const CH=[
   p:['La guerra termina, pero la victoria cuesta demasiado. Desilusionada ante la infinita capacidad de la humanidad para el odio, Diana concluye que el mundo de los hombres no merece ser liderado por dioses.','Decide <b>borrar todo rastro</b> de su existencia militar y vivir en el anonimato durante las próximas décadas.'],
   g:{k:'pick',fi:-10,q:'Quema los rastros de Wonder Woman:',items:['Fotografía del frente','Informe de la OSS','Armadura y escudo','Carta de Steve']}}
 ];
+CH.splice(4,0,{t:'Europa, Otro Mundo',l:'Hospital de campaña · Londres',y:'1944',p:['Diana pisa una Europa devastada y vive el choque cultural: heridos, hambre y ruina. En un hospital de campaña debe repartir los suministros del convoy.'],g:{k:'allot',q:'Reparte los 6 puntos de suministros:',pts:6,it:['Medicina','Comida','Mantas'],need:[3,2,1]}});
+CH.splice(6,0,{t:'Tierra de Nadie',l:'Frente occidental',y:'1944',p:['Para llegar a la fábrica hay que cruzar el barro entre trincheras. <b>Trevor</b> te canta el terreno: los cráteres ocultan minas. Con el escudo en alto, avanza.'],g:{k:'map',q:'Elige tu camino en cada tramo:',m:[1,0,2,1],c:['Tramo 1: hay cráteres a ambos lados.','Tramo 2: huye del centro y de la derecha.','Tramo 3: el camino seguro es el opuesto al del tramo 2.','Tramo 4: repite el camino del tramo 1.']}});
+CH.splice(9,0,{t:'El Último Mensaje',l:'Cielo sobre el frente',y:'1944',p:['El bombardero de <b>Steve</b> asciende con el gas letal a bordo. Solo queda la radio. Diana recibe su transmisión y responde con el código que él le enseñó.'],g:{k:'morse',w:'ADIOS',fi:-10,q:'Radio del bombardero'}},{t:'El Último Aliento de Ares',l:'Cráter humeante',y:'1944',p:['Derrotado, <b>Ares</b> agoniza entre el humo y los restos del campo. No hay ira en su voz, solo un eco: la guerra nunca fue suya, y no terminará con él. Solo terminará cuando los hombres lo decidan.'],g:{k:'choice',q:'Las últimas palabras del dios de la guerra:',o:[{t:'Rechazarlo: «Hay bondad, aunque sea escasa».',i:-5,r:'Ares se desvanece. Su sonrisa no termina de borrarse.'},{t:'Callar. Quizá tenga razón.',i:-20,r:'El silencio pesa más que la batalla.'}]}});
 /* ===== ESTADO ===== */
-const $=s=>document.querySelector(s),KEY='ww_dcu_nv_1944_v1';
+const $=s=>document.querySelector(s),KEY='ww_dcu_nv_1944_v2';
 let S={done:[],cur:1,v:100,i:100},tm=null,hk=null,snd=false,ac;
 try{Object.assign(S,JSON.parse(localStorage.getItem(KEY))||{})}catch(e){}
 const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
-const unl=()=>{let n=0;while(S.done.includes(n+1))n++;return Math.min(8,n+1)};
+const unl=()=>{let n=0;while(S.done.includes(n+1))n++;return Math.min(CH.length,n+1)};
 const cl=x=>Math.max(5,Math.min(100,x));
 const stop=()=>{clearInterval(tm);tm=null;hk=null};
 function beep(f=520,d=.06){if(!snd)return;ac=ac||new(window.AudioContext||window.webkitAudioContext)();const o=ac.createOscillator(),g=ac.createGain();o.type='square';o.frequency.value=f;g.gain.value=.04;o.connect(g);g.connect(ac.destination);o.start();o.stop(ac.currentTime+d)}
@@ -124,9 +144,9 @@ const art=(n,c)=>{const col=['#9b2c1f','#4a5233','#1e2d44','#8a6a2f'][n%4];let r
  return 'data:image/svg+xml;utf8,'+encodeURIComponent(`<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 500'><rect width='1200' height='500' fill='#e6d8b0'/><g fill='${col}' opacity='.3'>${r}</g><circle cx='600' cy='235' r='115' fill='${col}'/><text x='600' y='272' font-size='100' text-anchor='middle' fill='#efe4c4' font-family='Impact,sans-serif'>${n}</text><text x='600' y='450' font-size='36' text-anchor='middle' fill='#231f16' font-family='Impact,sans-serif' letter-spacing='6'>${c.toUpperCase()}</text></svg>`)};
 
 /* ===== MINIJUEGOS ===== */
-function ok(n){beep(880,.2);$('#next').innerHTML=`<p class="ok">✔ OBJETIVO CUMPLIDO</p><button class="b" id="go">${n<8?'AVANZAR AL CAPÍTULO '+(n+1)+' →':'FINALIZAR CAMPAÑA'}</button>`;
+function ok(n){beep(880,.2);$('#next').innerHTML=`<p class="ok">✔ OBJETIVO CUMPLIDO</p><button class="b" id="go">${n<CH.length?'AVANZAR AL CAPÍTULO '+(n+1)+' →':'FINALIZAR CAMPAÑA'}</button>`;
  $('#go').onclick=()=>{const first=!S.done.includes(n);if(first){S.done.push(n);S.done.sort((a,b)=>a-b);S.i=cl(S.i+(CH[n-1].g.fi||0))}save();
-  if(n<8){toast('✓ Capítulo '+n+' completado · Capítulo '+(n+1)+' desbloqueado');load(n+1)}else{toast('🏆 Campaña completada: los 8 capítulos superados');stats();pills();acts();tab('acts')}}}
+  if(n<CH.length){toast('✓ Capítulo '+n+' completado · Capítulo '+(n+1)+' desbloqueado');load(n+1)}else{toast('🏆 Campaña completada: los '+CH.length+' capítulos superados');stats();pills();acts();tab('acts')}}}
 const G={
  pick(g,n){let k=0;const box=$('#game'),ix=g.items.map((_,j)=>j).sort(()=>Math.random()-.5);
   box.innerHTML=`<h3>${g.q}</h3><div class="row">${ix.map(j=>`<button class="b" data-j="${j}">${g.items[j]}</button>`).join('')}</div><p id="msg"></p>`;
@@ -142,6 +162,18 @@ const G={
  choice(g,n){const box=$('#game');box.innerHTML=`<h3>${g.q}</h3>`+g.o.map((o,j)=>`<button class="b opt" data-j="${j}">${o.t}</button>`).join('')+'<p id="msg"></p>';
   box.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{const o=g.o[+b.dataset.j];S.i=cl(S.i+(o.i||0));stats();box.querySelectorAll('.opt').forEach(x=>x.disabled=true);$('#msg').textContent=o.r;ok(n)})}
 };
+const M={A:'.-',D:'-..',I:'..',O:'---',S:'...'},mz=t=>t.replace(/\./g,'•').replace(/-/g,'—').replace(/\//g,'  /  ');
+Object.assign(G,{
+ allot(g,n){const v=g.it.map(()=>0),box=$('#game');let left=g.pts;const d=()=>{box.innerHTML=`<h3>${g.q}</h3><p>Puntos libres: <b>${left}</b></p>`+g.it.map((t,j)=>`<div class="row"><span style="flex:1">${t} · necesita ${g.need[j]}: <b>${v[j]}</b></span><button class="b" data-j="${j}" data-d="-1">−</button><button class="b" data-j="${j}" data-d="1">+</button></div>`).join('')+'<div class="row"><button class="b" id="cf">ENTREGAR</button></div><p id="msg"></p>';
+  box.querySelectorAll('[data-d]').forEach(b=>b.onclick=()=>{const j=+b.dataset.j,x=+b.dataset.d;if((x>0&&!left)||(x<0&&!v[j]))return;v[j]+=x;left-=x;d()});
+  $('#cf').onclick=()=>{if(left)return $('#msg').textContent='Reparte todos los puntos.';const bad=v.findIndex((x,j)=>x<g.need[j]);if(bad<0)ok(n);else{S.v=cl(S.v-3);stats();$('#msg').textContent='✖ Falta '+g.it[bad]+'. Reasigna los recursos.';beep(150,.2)}}};d()},
+ map(g,n){let r=0;const box=$('#game');const d=()=>{box.innerHTML=`<h3>${g.q}</h3><blockquote>${g.c.join('<br>')}</blockquote><p>Tramo ${r+1}/${g.m.length}</p><div class="row">${['IZQUIERDA','CENTRO','DERECHA'].map((t,j)=>`<button class="b" data-j="${j}">${t}</button>`).join('')}</div><p id="msg"></p>`;
+  box.querySelectorAll('button').forEach(b=>b.onclick=()=>{if(+b.dataset.j===g.m[r]){beep(600);r++;r<g.m.length?d():ok(n)}else{S.v=cl(S.v-8);stats();beep(120,.3);$('#msg').textContent='💥 Un cráter oculto. Pierdes vigor: relee las pistas.'}})};d()},
+ morse(g,n){let s='';const T=[...g.w].map(c=>M[c]).join('/'),box=$('#game');
+  box.innerHTML=`<h3>${g.q}</h3><p>Transmite «${g.w}» (/ separa letras):</p><div class="tg">${mz(T)}</div><div class="tg" id="out" style="min-height:3.4rem"></div><div class="row"><button class="b" data-k=".">• PUNTO</button><button class="b" data-k="-">— RAYA</button><button class="b" data-k="/">/ LETRA</button><button class="b" data-k="x">⌫</button><button class="b" id="tx">ENVIAR</button></div><p id="msg"></p>`;
+  box.querySelectorAll('[data-k]').forEach(b=>b.onclick=()=>{const k=b.dataset.k;s=k==='x'?s.slice(0,-1):s+k;beep(k==='-'?400:700,k==='-'?.18:.06);$('#out').textContent=mz(s)});
+  $('#tx').onclick=()=>s===T?ok(n):($('#msg').textContent='✖ Señal ininteligible. Revisa el patrón.',beep(150,.2))}
+});
 /* ===== NAVEGACIÓN ===== */
 function load(n){if(n>unl()){toast('🔒 Capítulo '+n+' bloqueado: supera antes el '+(n-1));beep(160,.25);return}
  stop();S.cur=n;save();const c=CH[n-1],im=$('#img');im.onerror=()=>{im.onerror=null;im.src=art(n,c.t)};im.src=IMG+n+'.jpg';im.alt=c.t;
@@ -150,16 +182,20 @@ function load(n){if(n>unl()){toast('🔒 Capítulo '+n+' bloqueado: supera antes
  G[c.g.k](c.g,n);stats();pills();tab('story');scrollTo({top:0})}
 function pills(){const u=unl();$('#pills').innerHTML=CH.map((_,j)=>{const n=j+1,lk=n>u;return `<button class="b ${n===S.cur?'on':''} ${lk?'lk':''}" data-n="${n}" aria-disabled="${lk}" title="${lk?'Bloqueado: supera el capítulo '+(n-1):S.done.includes(n)?'Completado':'Disponible'}">${lk?'🔒 ':S.done.includes(n)?'✔ ':''}CAP ${n}</button>`}).join('');
  document.querySelectorAll('#pills button').forEach(b=>b.onclick=()=>load(+b.dataset.n))}
-function acts(){const u=unl();$('#prog').textContent=S.done.length+' / 8 capítulos completados';
+function acts(){const u=unl();$('#prog').textContent=S.done.length+' / '+CH.length+' capítulos completados';
  $('#acts').innerHTML=CH.map((c,j)=>{const n=j+1,lk=n>u;return `<div class="card" ${lk?'style="opacity:.55"':''}><small>CAPÍTULO ${n} · ${lk?'🔒 BLOQUEADO':S.done.includes(n)?'✔ COMPLETADO':'DISPONIBLE'}</small><h3>${c.t}</h3><p>${c.l} · ${c.y}</p><div class="row"><button class="b" ${lk?'disabled':''} data-n="${n}">${lk?'COMPLETA EL CAP. '+(n-1):S.done.includes(n)?'REJUGAR':'JUGAR'}</button></div></div>`}).join('');
  document.querySelectorAll('#acts button').forEach(b=>b.onclick=()=>load(+b.dataset.n))}
 function tab(t){stop();['story','cast','acts'].forEach(v=>$('#view-'+v).hidden=v!==t);document.querySelectorAll('nav [data-t]').forEach(b=>b.classList.toggle('on',b.dataset.t===t));if(t==='acts')acts();if(t==='story'&&!tm&&CH[S.cur-1].g.k==='timing'&&!$('#next').innerHTML)G.timing(CH[S.cur-1].g,S.cur)}
 document.querySelectorAll('nav [data-t]').forEach(b=>b.onclick=()=>tab(b.dataset.t));
 $('#snd').onclick=e=>{snd=!snd;e.target.textContent=snd?'🔊 SONIDO':'🔇 SONIDO';e.target.setAttribute('aria-pressed',snd);beep(600,.08)};
-$('#rst').onclick=e=>{e.preventDefault();if(confirm('¿Reiniciar la campaña? Los capítulos 2 a 8 volverán a bloquearse.')){S={done:[],cur:1,v:100,i:100};save();load(1)}};
+const dlg=$('#dlg');
+$('#rst').onclick=e=>{e.preventDefault();$('#nn').textContent=CH.length;dlg.showModal()};
+dlg.addEventListener('click',e=>{if(e.target===dlg||e.target.closest('[data-c]'))dlg.close()});
+$('#ok2').onclick=()=>{dlg.close();S={done:[],cur:1,v:100,i:100};save();load(1);toast('↺ Expediente reiniciado: capítulos 2 a '+CH.length+' bloqueados de nuevo')};
 addEventListener('keydown',e=>{if(e.code==='Space'&&hk&&!$('#view-story').hidden&&e.target.tagName!=='INPUT'){e.preventDefault();if(!e.repeat)hk()}});
 addEventListener('keyup',e=>{if(e.code==='Space'&&hk)e.preventDefault()});
-$('#cast').innerHTML=CAST.map(c=>`<div class="card"><small>${c.a}</small><h3>${c.n}</h3><p><i>${c.r}</i></p><p>${c.d}</p></div>`).join('');
+const sil=()=>'data:image/svg+xml;utf8,'+encodeURIComponent("<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'><rect width='400' height='500' fill='#cdbd92'/><circle cx='200' cy='190' r='85' fill='#6b5d3c'/><path d='M40 500C50 340 120 290 200 290S350 340 360 500Z' fill='#6b5d3c'/><text x='200' y='470' font-size='30' text-anchor='middle' fill='#efe4c4' font-family='Impact,sans-serif' letter-spacing='4'>FOTO PENDIENTE</text></svg>");
+$('#cast').innerHTML=CAST.map((c,j)=>`<div class="fx"><div class="ph"><img src="Imagenes/${c.f}_icon.png" alt="${c.n}" onerror="this.onerror=null;this.src=sil()"><span class="st">ARCHIVADO</span></div><small>FICHA Nº 044-0${j+1}</small><h3>${c.n}</h3><dl><dt>INTÉRPRETE</dt><dd>${c.a}</dd><dt>ROL</dt><dd>${c.r}</dd><dt>ESTADO</dt><dd>${j==2?'AISLADA · THEMYSCIRA':j==1?'BAJA EN ACCIÓN':j==3?'DERROTADO EN EL FRENTE':'EN EXILIO VOLUNTARIO'}</dd></dl><p>${c.d}</p></div>`).join('');
 S.cur=Math.min(Math.max(1,S.cur|0),unl());load(S.cur);
 </script>
 </body>

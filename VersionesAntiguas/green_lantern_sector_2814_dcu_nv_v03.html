@@ -40,6 +40,7 @@
     </script>
 
     <link href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
     <style>
         /* ==========================================================================
            INTERFAZ HOLOGRÁFICA DEL ANILLO DE PODER DE OA (CERO CANVAS)
@@ -272,6 +273,49 @@ code,pre{font-family:'JetBrains Mono',monospace!important}
 body{--accent:#00ff88}body.qward-fear-mode{--accent:#facc15}
 .font-display{letter-spacing:.02em}
 .oa-panel::before{content:"";position:absolute;inset:-1px;pointer-events:none;border-radius:inherit;background:var(--b) 0 0/18px 2px no-repeat,var(--b) 0 0/2px 18px no-repeat,var(--b) 100% 0/18px 2px no-repeat,var(--b) 100% 0/2px 18px no-repeat,var(--b) 0 100%/18px 2px no-repeat,var(--b) 0 100%/2px 18px no-repeat,var(--b) 100% 100%/18px 2px no-repeat,var(--b) 100% 100%/2px 18px no-repeat}
+
+/* ===== CAPA DE DISEÑO (tipografía, geometría, contraste, accesibilidad) ===== */
+:root{--ui:'Barlow Semi Condensed','Inter',sans-serif;--read:'Source Serif 4',Georgia,serif;--b:linear-gradient(var(--accent),var(--accent))}
+body{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+.font-mono{font-family:var(--ui)!important;letter-spacing:.05em!important;font-weight:600}
+code,pre{font-family:'JetBrains Mono',monospace!important}
+[class*="text-[10px]"]{font-size:11.5px!important}
+[class*="text-[11px]"]{font-size:12.5px!important}
+.text-slate-500{color:#8493a8!important}
+.text-slate-400{color:#a3b2c7!important}
+.font-display{letter-spacing:.035em}
+.rounded-2xl{border-radius:6px!important}
+.rounded-xl,.rounded-lg{border-radius:4px!important}
+[id*="narrative"]{font-family:var(--read);font-size:1.075rem;line-height:1.75;max-width:68ch}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+::selection{background:color-mix(in srgb,var(--accent) 35%,transparent)}
+::-webkit-scrollbar-thumb:hover{background:var(--accent)}
+.bat-panel,.oa-panel{position:relative}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+body{--accent:#00ff88}body.qward-fear-mode{--accent:#facc15}
+.font-display{letter-spacing:.02em}
+.oa-panel::before{content:"";position:absolute;inset:-1px;pointer-events:none;border-radius:inherit;background:var(--b) 0 0/18px 2px no-repeat,var(--b) 0 0/2px 18px no-repeat,var(--b) 100% 0/18px 2px no-repeat,var(--b) 100% 0/2px 18px no-repeat,var(--b) 0 100%/18px 2px no-repeat,var(--b) 0 100%/2px 18px no-repeat,var(--b) 100% 100%/18px 2px no-repeat,var(--b) 100% 100%/2px 18px no-repeat}
+
+div:has(>#scene-img)::after{content:"";position:absolute;left:0;right:0;top:0;height:35%;background:linear-gradient(transparent,rgba(0,255,136,.18),transparent);animation:glSweep 5s linear infinite;pointer-events:none}
+@keyframes glSweep{to{transform:translateY(290%)}}
+#scene-img{filter:saturate(.8) contrast(1.08) brightness(.95)}
+body.qward-fear-mode #scene-img{filter:sepia(.7) saturate(1.6)}
+body.ring-low::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:4;box-shadow:inset 0 0 130px rgba(250,204,21,.3);animation:glLow 1.4s ease-in-out infinite alternate}
+@keyframes glLow{from{opacity:.35}to{opacity:1}}
+body.ring-over .oa-panel{box-shadow:0 0 34px rgba(34,211,238,.22)}
+.gl-summon{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none;z-index:5;background:radial-gradient(circle,rgba(0,255,136,.3),transparent 65%);animation:glSummon 2.2s ease-out forwards}
+.gl-summon svg{width:min(70%,380px);filter:drop-shadow(0 0 14px var(--accent)) drop-shadow(0 0 40px var(--accent))}
+.gl-summon span{font:700 .85rem var(--ui);letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin-top:.4rem;text-shadow:0 0 12px var(--accent)}
+@keyframes glSummon{0%{opacity:0;transform:scale(.6);filter:brightness(3)}15%{opacity:1;transform:scale(1.04)}70%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(1.08)}}
+#ring-bar{display:flex;flex-wrap:wrap;gap:.5rem;align-items:stretch;padding:.6rem;border:1px solid color-mix(in srgb,var(--accent) 35%,transparent);border-radius:4px;background:rgba(0,20,12,.6)}
+#ring-bar .rb-t{font:600 13px var(--ui);color:var(--accent);align-self:center;margin-right:.25rem}
+.rb-chip{position:relative;overflow:hidden;display:flex;align-items:center;gap:.5rem;padding:.3rem .65rem;border:1px solid color-mix(in srgb,var(--accent) 45%,transparent);border-radius:4px;background:#02140c;color:#d1fae5;font:600 13px var(--ui);cursor:pointer;touch-action:none}
+.rb-chip svg{width:34px;height:22px}
+.rb-chip.on{border-color:var(--accent);box-shadow:0 0 14px color-mix(in srgb,var(--accent) 40%,transparent)}
+.rb-chip[aria-disabled=true],.rb-chip.used{opacity:.45}
+#ring-recharge{margin-left:auto}
+#ring-recharge::after{content:"";position:absolute;left:0;bottom:0;height:3px;width:0;background:var(--accent)}
+#ring-recharge.holding::after{width:100%;transition:width 1.8s linear}
 </style>
 </head>
 <body class="min-h-screen flex flex-col font-sans selection:bg-emerald-500/30 selection:text-emerald-200">
@@ -300,7 +344,7 @@ body{--accent:#00ff88}body.qward-fear-mode{--accent:#facc15}
             <div class="flex items-center gap-3.5 w-full lg:w-auto justify-between lg:justify-start">
                 <div class="flex items-center gap-3">
                     <!-- Enlace de regreso al Hub DC Universe -->
-                    <a href="dc_universe_launcher_hub.html" class="w-11 h-11 rounded-xl bg-black/80 border border-emerald-500/40 hover:border-[#00ff88] flex items-center justify-center text-emerald-400 hover:text-[#00ff88] transition shadow-lg" title="Volver al Hub DC Universe">
+                    <a href="dc_universe_launcher_hub_v02.html" class="w-11 h-11 rounded-xl bg-black/80 border border-emerald-500/40 hover:border-[#00ff88] flex items-center justify-center text-emerald-400 hover:text-[#00ff88] transition shadow-lg" title="Volver al Hub DC Universe">
                         <i class="fa-solid fa-chevron-left"></i>
                     </a>
 
@@ -782,10 +826,10 @@ body{--accent:#00ff88}body.qward-fear-mode{--accent:#facc15}
            de tu imagen (ejemplo: hal: "Imagenes/hal_icon.jpg").
            ========================================================================== */
         const IMAGENES_PERSONAJES = {
-            hal: "",         // Hal Jordan / Green Lantern (32 años)
-            sinestro: "",    // Thaal Sinestro (49 años)
-            abin_sur: "",    // Abin Sur (Portador caído del Sector 2814)
-            guardianes: ""   // Los Guardianes del Universo (Planeta Oa)
+            hal: "Imagenes/jordan_icon.jpg",         // Hal Jordan / Green Lantern (32 años)
+            sinestro: "Imagenes/sinestro_icon.jfif",    // Thaal Sinestro (49 años)
+            abin_sur: "Imagenes/abinsur_icon.jfif",    // Abin Sur (Portador caído del Sector 2814)
+            guardianes: "Imagenes/guardianes_icon.jpg"   // Los Guardianes del Universo (Planeta Oa)
         };
 
         /* ==========================================================================
@@ -1746,17 +1790,17 @@ body{--accent:#00ff88}body.qward-fear-mode{--accent:#facc15}
                                 El anillo de Abin Sur proyecta tres lecturas humanas en California. Selecciona al candidato cuya voluntad supere el umbral de Oa:
                             </p>
                             <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                                <button type="button" onclick="app.selectSectorCandidate('official')" class="p-3.5 rounded-xl bg-slate-950 hover:bg-emerald-950/50 border border-emerald-900 text-left font-mono text-xs transition">
+                                <button type="button" onclick="app.selectSectorCandidate('guy')" class="p-3.5 rounded-xl bg-slate-950 hover:bg-emerald-950/50 border border-emerald-900 text-left font-mono text-xs transition">
                                     <div class="text-slate-400">SUJETO 2814-A</div>
-                                    <div class="text-white font-bold mt-1">Coronel de Base Aérea</div>
-                                    <div class="text-[11px] text-amber-400 mt-1">Voluntad: 62% • Rígido, teme romper el protocolo</div>
+                                    <div class="text-white font-bold mt-1">Guy Gardner (Oficíal de Policía)</div>
+                                    <div class="text-[11px] text-amber-400 mt-1">Voluntad: 98.4% • Rígido, teme romper el protocolo</div>
                                 </button>
                                 <button type="button" onclick="app.selectSectorCandidate('hal')" class="p-3.5 rounded-xl bg-slate-950 hover:bg-emerald-950/80 border-2 border-[#00ff88] text-left font-mono text-xs transition shadow-[0_0_18px_rgba(0,255,136,0.2)]">
                                     <div class="text-[#00ff88] font-bold">SUJETO 2814-B • COMPATIBLE</div>
                                     <div class="text-white font-bold mt-1">Hal Jordan (Piloto de Pruebas)</div>
                                     <div class="text-[11px] text-emerald-300 mt-1">Voluntad: 99.6% • Temerario, capaz de superar el gran miedo</div>
                                 </button>
-                                <button type="button" onclick="app.selectSectorCandidate('scientist')" class="p-3.5 rounded-xl bg-slate-950 hover:bg-emerald-950/50 border border-emerald-900 text-left font-mono text-xs transition">
+                                <button type="button" onclick="app.selectSectorCandidate('other')" class="p-3.5 rounded-xl bg-slate-950 hover:bg-emerald-950/50 border border-emerald-900 text-left font-mono text-xs transition">
                                     <div class="text-slate-400">SUJETO 2814-C</div>
                                     <div class="text-white font-bold mt-1">Ingeniero de Radar</div>
                                     <div class="text-[11px] text-amber-400 mt-1">Voluntad: 51% • Bloqueo por pánico escénico</div>
@@ -1976,9 +2020,14 @@ body{--accent:#00ff88}body.qward-fear-mode{--accent:#facc15}
                ====================================================================== */
             selectSectorCandidate(who) {
                 const fb = document.getElementById('scan-feedback');
-                if (who !== 'hal') {
+                if (who == 'other') {
                     soundEngine.playBeamClash();
-                    if (fb) fb.innerHTML = '<span class="text-amber-400">Candidato descartado por el anillo: no posee la temeridad necesaria para superar el gran miedo.</span>';
+                    if (fb) fb.innerHTML = '<span class="text-red-500">Candidato descartado por el anillo: no posee la temeridad necesaria para superar el gran miedo.</span>';
+                    return;
+                }
+                else if(who == 'guy'){
+                    soundEngine.playBeamClash();
+                    if (fb) fb.innerHTML = '<span class="text-amber-400">Selección interrumpida por el anillo: energía restante insuficiente para alcanzar la posición del sujeto.</span>';
                     return;
                 }
                 soundEngine.playConstructForge();
@@ -2778,14 +2827,29 @@ body{--accent:#00ff88}body.qward-fear-mode{--accent:#facc15}
             app.init();
         });
     </script>
+<script>
+(()=>{
+const $=id=>document.getElementById(id);let used=false,hold=null;
+const say=t=>{const e=$('ring-ai-commentary');if(e)e.textContent=t};
+app.summonFx=function(name){const b=CONSTRUCT_BLUEPRINTS.find(x=>x.name===name),h=$('scene-img')&&$('scene-img').parentElement;if(!b||!h)return;
+ h.querySelectorAll('.gl-summon').forEach(e=>e.remove());const d=document.createElement('div');d.className='gl-summon';
+ d.innerHTML=`<svg viewBox="0 0 400 250">${b.svgArt}</svg><span>${b.name}</span>`;h.appendChild(d);setTimeout(()=>d.remove(),2200)};
+app.ringAction=function(id){const b=CONSTRUCT_BLUEPRINTS.find(x=>x.id===id);if(!b)return;
+ if(this.equippedConstruct!==b.name){if(this.stats.charge<b.cost){say('Carga insuficiente: mantén pulsado "recargar" para canalizar energía de la batería central.');soundEngine.playRingPulse(220,.15);return}this.stats.charge-=b.cost}
+ this.equippedConstruct=b.name;soundEngine.playConstructForge();this.updateStatsUI();this.renderConstructMemory();this.summonFx(b.name)};
+app.renderRingBar=function(){const mg=$('minigame-container');if(!mg)return;let bar=$('ring-bar');
+ if(!bar){bar=document.createElement('div');bar.id='ring-bar';mg.parentElement.insertBefore(bar,mg)}
+ const ch=this.stats.charge;
+ bar.innerHTML='<span class="rb-t">Anillo de poder</span>'+CONSTRUCT_BLUEPRINTS.filter(b=>this.constructsUnlocked.includes(b.id)).map(b=>`<button type="button" class="rb-chip${this.equippedConstruct===b.name?' on':''}" data-n="${b.id}" aria-disabled="${ch<b.cost&&this.equippedConstruct!==b.name}"><svg viewBox="0 0 400 250">${b.svgArt}</svg>${b.name}<small>−${b.cost}%</small></button>`).join('')+`<button type="button" id="ring-recharge" class="rb-chip${used?' used':''}">${used?'Anillo recargado':'Mantén para recargar'}</button>`;
+ bar.querySelectorAll('[data-n]').forEach(e=>e.onclick=()=>this.ringAction(e.dataset.n));
+ const r=$('ring-recharge'),start=()=>{if(used)return;r.classList.add('holding');hold=setTimeout(()=>{used=true;app.stats.charge+=20;soundEngine.playRingPulse(880,.25);say('Batería central sincronizada: +20% de carga.');app.updateStatsUI()},1800)},stop=()=>{clearTimeout(hold);r.classList.remove('holding')};
+ r.onpointerdown=start;['onpointerup','onpointerleave','onpointercancel','onblur'].forEach(k=>r[k]=stop);
+ r.onkeydown=e=>{if((e.key===' '||e.key==='Enter')&&!e.repeat)start()};r.onkeyup=stop};
+const us=app.updateStatsUI;app.updateStatsUI=function(){us.call(this);document.body.classList.toggle('ring-low',this.stats.charge<=25);document.body.classList.toggle('ring-over',this.stats.charge>100);this.renderRingBar()};
+const ls=app.loadScene;app.loadScene=function(...a){used=false;return ls.apply(this,a)};
+const ad=app.addConstructById;app.addConstructById=function(id){ad.call(this,id);const b=CONSTRUCT_BLUEPRINTS.find(x=>x.id===id);b&&this.summonFx(b.name)};
+const eq=app.equipSavedConstruct;app.equipSavedConstruct=function(n){eq.call(this,n);this.summonFx(n)};
+})();
+</script>
 </body>
 </html>
-```
-
-### Lo que se ha añadido para que se sienta 100% como ser Linterna Verde:
-1. **Forja de Luz Sólida por Trazado de Nodos SVG (Cero `<canvas>`)**:
-   - Ahora tanto en la campaña (en el desierto en 2007, en la Arena de Oa con Thaal Sinestro y en la contención del núcleo de Oa) como en la pestaña **Forja de Luz Sólida (6)**, dibujas los constructos conectando en orden los vértices luminosos de sus planos vectoriales SVG (*Caza F-22 Supersónico*, *Martillo de Asedio Gigante*, *Esfera Prisión Hexagonal*, *Turbina de Rescate*, *Cañones Gatling Orbitales* y *Espadas Gemelas de Voluntad*) y calibrando la densidad de voluntad.
-2. **Ritual Interactivo Verso a Verso del Juramento de Linterna Verde**:
-   - Al pulsar el botón **`JURAMENTO`** en la barra de batería, se abre la Batería Central de Poder en SVG y recitas verso a verso los 4 fragmentos del juramento (*"En el día más brillante..."*, *"...en la noche más oscura..."*, *"...ningún mal escapará a mi vigía..."*, *"¡Que aquellos que adoran el poder del mal, teman mi poder: la Luz de Linterna Verde!"*), encendiendo la linterna hasta alcanzar una **Sobrecarga del 120%**.
-3. **Consola Policial del Sector 2814 y Clímax en 4 Rondas contra Sinestro**:
-   - En 2012 operas la **Rueda Visual de Constructos SVG** para resolver emergencias espaciales reales, liberar Korugar y superar los 4 asaltos del duelo final contra los constructos amarillos de Qward de Sinestro.
