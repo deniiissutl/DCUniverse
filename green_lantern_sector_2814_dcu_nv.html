@@ -322,7 +322,7 @@ body.ring-over .oa-panel{box-shadow:0 0 34px rgba(34,211,238,.22)}
             <div class="flex items-center gap-3.5 w-full lg:w-auto justify-between lg:justify-start">
                 <div class="flex items-center gap-3">
                     <!-- Enlace de regreso al Hub DC Universe -->
-                    <a href="dc_universe_launcher_hub_v02.html" class="w-11 h-11 rounded-xl bg-black/80 border border-emerald-500/40 hover:border-[#00ff88] flex items-center justify-center text-emerald-400 hover:text-[#00ff88] transition shadow-lg" title="Volver al Hub DC Universe">
+                    <a href="index.html" class="w-11 h-11 rounded-xl bg-black/80 border border-emerald-500/40 hover:border-[#00ff88] flex items-center justify-center text-emerald-400 hover:text-[#00ff88] transition shadow-lg" title="Volver al Hub DC Universe">
                         <i class="fa-solid fa-chevron-left"></i>
                     </a>
 
@@ -814,14 +814,15 @@ body.ring-over .oa-panel{box-shadow:0 0 34px rgba(34,211,238,.22)}
            2. IMÁGENES DE ESCENAS (REEMPLAZA A CUALQUIER CANVAS)
            ========================================================================== */
         const IMAGENES_ESCENAS = {
-            abin_crash_2007: "",      // Cap 1: Accidente de Abin Sur y elección de Hal Jordan (2007)
-            oa_citadel: "",           // Cap 2: Llegada a Oa y arena de constructos con Sinestro
-            space_patrol_2012: "",    // Cap 3: Patrulla espacial en el Sector 2814 (2012)
-            korugar_dictatorship: "", // Cap 4 y 5: Dictadura militar de Sinestro en Korugar y arresto
-            oa_trial_murder: "",      // Cap 6: Juicio en Oa y asesinato del Guardián
-            qward_yellow_ring: "",    // Cap 6: Forja del Anillo Amarillo en Qward
-            oa_climax_duel: "",       // Cap 7: Clímax de constructos y haces Hal vs Sinestro
-            oa_sci_cell: ""           // Cap 8: Celda de contención en Oa y guardia solitaria
+            abin_crash_2007: "Imagenes/Capitulos/2Lantern/abinsurcrash.jpg",      // Cap 1: Accidente de Abin Sur y elección de Hal Jordan (2007)
+            oa_citadel: "Imagenes/Capitulos/2Lantern/jordanoa.jpg",           // Cap 2: Llegada a Oa
+            oa_entrenamiento: "Imagenes/Capitulos/2Lantern/sinestroyjordan.jpg",           // Cap 2: Arena de constructos con Sinestro
+            space_patrol_2012: "Imagenes/Capitulos/2Lantern/halpatrulla.jpg",    // Cap 3: Patrulla espacial en el Sector 2814 (2012)
+            korugar_dictatorship: "Imagenes/Capitulos/2Lantern/traicion.jpg", // Cap 4 y 5: Dictadura militar de Sinestro en Korugar y arresto
+            oa_trial_murder: "Imagenes/Capitulos/2Lantern/asesinato.jpg",      // Cap 6: Juicio en Oa y asesinato del Guardián
+            qward_yellow_ring: "Imagenes/Capitulos/2Lantern/amarillo.jpg",    // Cap 6: Forja del Anillo Amarillo en Qward
+            oa_climax_duel: "Imagenes/Capitulos/2Lantern/halvssinestro.png",       // Cap 7: Clímax de constructos y haces Hal vs Sinestro
+            oa_sci_cell: "Imagenes/Capitulos/2Lantern/detenido.jpg"           // Cap 8: Celda de contención en Oa y guardia solitaria
         };
 
         const BLANK_WHITE_URI = "data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400' viewBox='0 0 400 400'%3E%3Crect width='400' height='400' fill='%23ffffff'/%3E%3C/svg%3E";
@@ -1149,7 +1150,7 @@ body.ring-over .oa-panel{box-shadow:0 0 34px rgba(34,211,238,.22)}
                 source: 'SONDA ORBITAL TERRESTRE • SECTOR METRÓPOLIS',
                 date: 'NOVIEMBRE 2012 – 2014',
                 title: 'Radiación Xenomineral en Laboratorios de LexCorp',
-                body: 'Lectura de espectro verde anómalo en la superficie terrestre: la corporación dirigida por L. Luthor y su jefe de seguridad J. Corben están almacenando fragmentos de un meteorito radiactivo de origen kryptoniano.'
+                body: 'Lectura de espectro verde anómalo en la superficie terrestre: la corporación dirigida por L. Luthor y su jefe de seguridad J. Corben están almacenando fragmentos de un meteorito radiactivo de origen desconocido.'
             }
         ];
 
@@ -1229,7 +1230,7 @@ body.ring-over .oa-panel{box-shadow:0 0 34px rgba(34,211,238,.22)}
                 actTitle: 'CAPÍTULO 2: EL CRISOL DE VOLUNTAD EN OA',
                 location: 'Arena Orbital de Oa • Entrenamiento con Sinestro',
                 year: 'AÑO 2007',
-                visual: 'oa_citadel',
+                visual: 'oa_entrenamiento',
                 caption: 'FORJA DE LUZ SÓLIDA • 3 MISIONES DE ENTRENAMIENTO CON SINESTRO',
                 speaker: 'sinestro',
                 aiNote: '"Complete el trazado de nodos SVG y la solidificación de los 3 constructos tácticos para ganarse el respeto de Thaal Sinestro."',
@@ -1276,7 +1277,7 @@ body.ring-over .oa-panel{box-shadow:0 0 34px rgba(34,211,238,.22)}
                 speaker: 'hal',
                 aiNote: '"Se ha desviado hacia Korugar tras detectar una transmisión de socorro. Utilice el Escáner Espectral del anillo para analizar los 4 nodos de control militar."',
                 paragraphs: [
-                    'Durante tu patrullaje en 2012, te desvías hacia <strong>Korugar</strong>, el planeta natal de tu maestro Thaal Sinestro, y descubres una verdad aterradora.',
+                    'Durante tu patrullaje, te desvías hacia <strong>Korugar</strong>, el planeta natal de tu maestro Thaal Sinestro, y descubres una verdad aterradora.',
                     'Frustrado por la pasividad de los Guardianes del Universo, <strong>Sinestro ha usado el poder del anillo verde para instaurar una dictadura militar perfecta</strong>, controlando a su pueblo mediante el orden absoluto y el terror policial. Escanea los 4 nodos de opresión en la capital para registrar las pruebas.'
                 ],
                 minigame: 'korugar_evidence_scan',
@@ -1983,7 +1984,7 @@ body.ring-over .oa-panel{box-shadow:0 0 34px rgba(34,211,238,.22)}
                                     <button type="button" onclick="app.switchTab('forge')" class="px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-emerald-950 text-[#00ff88] border border-[#00ff88]/50 font-mono text-xs uppercase transition">
                                         <i class="fa-solid fa-wand-magic-sparkles mr-1.5"></i>Abrir Forja Libre de Constructos SVG
                                     </button>
-                                    <a href="dc_universe_launcher_hub_v03.html" class="px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-amber-300 border border-amber-500/40 font-mono text-xs uppercase transition">
+                                    <a href="index.html" class="px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-amber-300 border border-amber-500/40 font-mono text-xs uppercase transition">
                                         <i class="fa-solid fa-grip-vertical mr-1.5"></i>Volver al Hub DC Universe
                                     </a>
                                 </div>

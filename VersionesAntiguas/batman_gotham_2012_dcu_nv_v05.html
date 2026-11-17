@@ -270,7 +270,7 @@ body{--accent:#d97706}body.enygma-hack{--accent:#00ff66}
             <div class="flex items-center gap-3.5 w-full lg:w-auto justify-between lg:justify-start">
                 <div class="flex items-center gap-3.5">
                     <!-- Botón Volver al Hub o Ver Sinopsis -->
-                    <a href="dc_universe_launcher_hub.html" class="w-11 h-11 rounded-xl bg-black border border-slate-800 hover:border-amber-500/60 flex items-center justify-center text-slate-400 hover:text-amber-400 transition shadow-lg" title="Volver al Hub DC Universe">
+                    <a href="index.html" class="w-11 h-11 rounded-xl bg-black border border-slate-800 hover:border-amber-500/60 flex items-center justify-center text-slate-400 hover:text-amber-400 transition shadow-lg" title="Volver al Hub DC Universe">
                         <i class="fa-solid fa-chevron-left"></i>
                     </a>
                     <button type="button" onclick="app.showUniverseModal()" class="w-12 h-12 rounded-xl bg-black border border-amber-500/50 flex items-center justify-center shadow-lg group hover:border-amber-400 transition" title="Ver Guía de Imágenes de Escenas">
@@ -661,22 +661,23 @@ body{--accent:#d97706}body.enygma-hack{--accent:#00ff66}
            nombre de la escena para que nunca se vea un icono roto.
            ========================================================================== */
         const IMAGENES_ESCENAS = {
-            crime_alley: "Imagenes/Capitulos/cap01.jpg",         // Cap 1: Callejón del Crimen (1990)
-            ducard_mountain: "Imagenes/Capitulos/prologo.jpg",      // Cap 1: Montañas con Henri Ducard / Ra's al Ghul
-            wayne_boardroom: "Imagenes/Capitulos/regreso.jpg",  // Cap 2: Regreso de Bruce Wayne en 2012
-            vigilante_bleed: "Imagenes/Capitulos/cap02.jpg",// Cap 2: Primera noche sin traje / Herida de bala
-            batcave_medical: "Imagenes/Capitulos/alfredcura.jfif",     // Cap 2: Sutura con Alfred en la Batcueva
-            wayne_tower: "Imagenes/Capitulos/cap03.jpg",      // Cap 3: Lucius Fox, Traje Kevlar y Batmóvil
-            docks_stealth: "Imagenes/Capitulos/muelles.jpg", // Cap 4: Infiltración en los muelles
-            docks_penguin: "Imagenes/Capitulos/descarga.jfif",// Cap 4: Duelo contra El Pingüino
-            rooftop_gordon: "Imagenes/Capitulos/batmanyjim.jpeg", // Cap 4: Alianza en la azotea con Jim Gordon
-            riddler_hack: "Imagenes/Capitulos/cap05.jpg",// Cap 5: Enygma hackea las pantallas de Gotham
-            riddler_museum: "Imagenes/Capitulos/acertijos.jpg",  // Cap 5: Bombas y acertijos en el Museo
-            satellite_trace: "Imagenes/Capitulos/cap06.jpg",     // Cap 6: Triangulación satelital WayneTech
-            gcpd_bunker: "Imagenes/Capitulos/pelea.jpg",     // Cap 6: Guarida bajo la comisaría y explosión
-            ace_deduction: "Imagenes/Capitulos/pistas.jfif",// Cap 7: Deducción forense en el Batmóvil
-            ace_chemicals: "Imagenes/Capitulos/derrota.jpg",  // Cap 7: Clímax en Ace Chemicals
-            batcave_2014: "Imagenes/Capitulos/postcreditos.jpg"    // Cap 8: Escena Post-Créditos 2014 (Superman y Diana)
+            crime_alley: "Imagenes/Capitulos/1Batman/cap01.jpg",         // Cap 1: Callejón del Crimen (1990)
+            ducard_mountain: "Imagenes/Capitulos/1Batman/prologo.jpg",      // Cap 1: Montañas con Henri Ducard / Ra's al Ghul
+            wayne_boardroom: "Imagenes/Capitulos/1Batman/regreso.jpg",  // Cap 2: Regreso de Bruce Wayne en 2012
+            vigilante_bleed: "Imagenes/Capitulos/1Batman/cap02.jpg",// Cap 2: Primera noche sin traje / Herida de bala
+            batcave_medical: "Imagenes/Capitulos/1Batman/alfredcura.jfif",     // Cap 2: Sutura con Alfred en la Batcueva
+            wayne_tower: "Imagenes/Capitulos/1Batman/cap03.jpg",      // Cap 3: Lucius Fox, Traje Kevlar y Batmóvil
+            docks_stealth: "Imagenes/Capitulos/1Batman/muelles.jpg", // Cap 4: Infiltración en los muelles
+            docks_penguin: "Imagenes/Capitulos/1Batman/descarga.jfif",// Cap 4: Duelo contra El Pingüino
+            rooftop_gordon: "Imagenes/Capitulos/1Batman/batmanyjim.jpeg", // Cap 4: Alianza en la azotea con Jim Gordon
+            riddler_hack: "Imagenes/Capitulos/1Batman/cap05.jpg",// Cap 5: Enygma hackea las pantallas de Gotham
+            riddler_museum: "Imagenes/Capitulos/1Batman/acertijos.jpg",  // Cap 5: Bombas y acertijos en el Museo
+            satellite_trace: "Imagenes/Capitulos/1Batman/cap06.jpg",     // Cap 6: Triangulación satelital WayneTech
+            gcpd_bunker: "Imagenes/Capitulos/1Batman/pelea.jpg",     // Cap 6: Guarida bajo la comisaría y explosión
+            ace_deduction: "Imagenes/Capitulos/1Batman/pistas.jfif",// Cap 7: Deducción forense en el Batmóvil
+            ace_chemicals: "Imagenes/Capitulos/1Batman/derrota.jpg",  // Cap 7: Clímax en Ace Chemicals
+            enygma_derrotado: "Imagenes/Capitulos/1Batman/final.jpg",  // Cap 7: Clímax en Ace Chemicals
+            batcave_2014: "Imagenes/Capitulos/1Batman/postcreditos.jpg"    // Cap 8: Escena Post-Créditos 2014 (Superman y Diana)
         };
 
         const BLANK_WHITE_URI = "data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400' viewBox='0 0 400 400'%3E%3Crect width='400' height='400' fill='%23ffffff'/%3E%3C/svg%3E";
@@ -1475,7 +1476,7 @@ body{--accent:#d97706}body.enygma-hack{--accent:#00ff66}
                 actTitle: 'CAPÍTULO 8: LA RESPUESTA A SU MAYOR ENIGMA',
                 location: 'Puerta del GCPD / Interior de la Batcueva',
                 year: 'FIN DE 2012',
-                visual: 'rooftop_gordon',
+                visual: 'enygma_derrotado',
                 caption: 'EPÍLOGO 2012 • EL EGO DE ENYGMA COMO CANDADO',
                 speaker: 'bruce',
                 enygmaHack: false,
@@ -2312,7 +2313,7 @@ body{--accent:#d97706}body.enygma-hack{--accent:#00ff66}
                                     <button type="button" onclick="cargarCapitulo(1)" class="px-4 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-mono font-bold text-xs uppercase transition">
                                         <i class="fa-solid fa-rotate-right mr-1.5"></i>Rejugar desde el Capítulo 1
                                     </button>
-                                    <a href="dc_universe_launcher_hub.html" class="px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-sky-300 border border-slate-700 font-mono text-xs uppercase transition">
+                                    <a href="index.html" class="px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-sky-300 border border-slate-700 font-mono text-xs uppercase transition">
                                         <i class="fa-solid fa-grip-vertical mr-1.5"></i>Volver al Hub DC Universe
                                     </a>
                                 </div>
