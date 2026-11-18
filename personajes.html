@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#070b14">
+<title>Personajes | DC Universe</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Source+Serif+4:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#070b14;--surface:#0d1424;--line:#1c2740;--text:#eef2f8;--muted:#9aa8c0;--ui:'Barlow Condensed','Arial Narrow',sans-serif;--read:'Source Serif 4',Georgia,serif}
+*{box-sizing:border-box;margin:0}
+body{min-height:100dvh;background:radial-gradient(1100px 500px at 50% -10%,#14213d,var(--bg));color:var(--text);font-family:var(--ui);-webkit-font-smoothing:antialiased}
+.wrap{max-width:1320px;margin:0 auto;padding:clamp(18px,3vw,40px)}
+a{color:inherit}.back{color:var(--muted);text-decoration:none;font-size:1.05rem;letter-spacing:.08em;text-transform:uppercase}.back:hover{color:var(--text)}
+h1{font-size:clamp(2.2rem,6vw,4rem);font-weight:800;letter-spacing:.04em;line-height:1;margin:10px 0 6px}
+.sub{color:var(--muted);font-size:1.15rem;letter-spacing:.06em}
+.bar{position:sticky;top:0;z-index:5;margin:22px -8px 18px;padding:12px 8px;background:#070b14ee;backdrop-filter:blur(8px);border-bottom:1px solid var(--line);display:grid;gap:10px}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.lbl{color:var(--muted);font-size:.9rem;letter-spacing:.14em;text-transform:uppercase;min-width:74px}
+input,select{font:600 1.1rem var(--ui);color:var(--text);background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 14px;min-height:42px}
+input{flex:1;min-width:200px}input:focus,select:focus,.chip:focus-visible,.x:focus-visible{outline:2px solid #fff;outline-offset:2px}
+.chip{font:700 1rem var(--ui);letter-spacing:.06em;color:var(--muted);background:transparent;border:1px solid var(--line);border-radius:99px;padding:6px 14px;min-height:36px;cursor:pointer;transition:.15s}
+.chip:hover{color:var(--text);border-color:var(--muted)}
+.chip[aria-pressed=true]{color:#07101a;background:var(--a,#eef2f8);border-color:var(--a,#eef2f8)}
+.chip small{opacity:.7;margin-left:6px;font-weight:600}.chip.soon{border-style:dashed}
+.meta{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:1.05rem}
+.x{background:none;border:0;color:var(--text);text-decoration:underline;font:600 1.05rem var(--ui);cursor:pointer}
+.grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}
+.card{display:flex;gap:14px;background:var(--surface);border:1px solid color-mix(in srgb,var(--a) 30%,var(--line));border-radius:16px;padding:14px;transition:transform .2s,box-shadow .2s}
+.card:hover{transform:translateY(-3px);box-shadow:0 10px 30px -12px var(--a)}
+.ph{flex:none;position:relative;width:84px;height:104px;border-radius:12px;overflow:hidden;background:linear-gradient(160deg,color-mix(in srgb,var(--a) 40%,#0d1424),#0d1424);display:grid;place-items:center;font-weight:800;font-size:1.6rem;color:var(--a)}
+.ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.tp{font-size:.8rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--a)}
+h3{font-size:1.3rem;line-height:1.1;margin:2px 0 4px;font-weight:700}
+.ac{color:var(--text);font-size:1.05rem}.ro{color:var(--muted);font-family:var(--read);font-size:.92rem;line-height:1.35;margin-top:2px}
+.fl{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}.fc{font-size:.78rem;font-weight:700;letter-spacing:.06em;padding:2px 8px;border-radius:99px;border:1px solid var(--c);color:var(--c)}
+.empty{grid-column:1/-1;text-align:center;color:var(--muted);padding:48px 0;font-size:1.3rem}
+footer{margin-top:30px;color:var(--muted);font-size:.95rem;border-top:1px solid var(--line);padding-top:12px}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+ <a class="back" href="index.html">← Volver al hub</a>
+ <h1>PERSONAJES</h1>
+ <p class="sub">Todo el reparto del universo, sin repetidos. Filtra por película, tipo o busca por nombre.</p>
+ <div class="bar" role="search">
+  <div class="row"><input id="q" type="search" placeholder="Buscar personaje, actor o rol…" aria-label="Buscar"><select id="s" aria-label="Ordenar"><option value="az">Ordenar: A–Z</option><option value="ap">Más apariciones</option><option value="pr">Por película</option></select></div>
+  <div class="row"><span class="lbl">Película</span><span class="row" id="fp"></span></div>
+  <div class="row"><span class="lbl">Tipo</span><span class="row" id="ft"></span></div>
+  <div class="meta"><span id="cnt" aria-live="polite"></span><button class="x" id="clr" hidden>Limpiar filtros</button></div>
+ </div>
+ <main class="grid" id="grid"></main>
+ <footer>Un personaje que sale en varias películas aparece una sola vez, con todas sus apariciones. Los tipos (héroe, villano, aliado) son una clasificación editorial.</footer>
+</div>
+<script>
+/* Datos copiados del hub (CONFIG_PROYECTOS). Si añades personajes al hub, vuelve a copiarlos aquí. */
+const P=[{"id":"batman","titulo":"BATMAN (2012)","color":"amber","estado":"DISPONIBLE","reparto":[{"nombre":"Bruce Wayne / Batman","actor":"Armie Hammer (30 años)","rol":"El Caballero Oscuro","imagen":"Imagenes/batman_icon.jpg"},{"nombre":"Alfred Pennyworth","actor":"Anton Lesser (55 años)","rol":"Estratega logístico en la Batcueva","imagen":"Imagenes/alfred_icon.jfif"},{"nombre":"Jim Gordon","actor":"Jon Hamm (36 años)","rol":"Aliado policial en el GCPD","imagen":"Imagenes/gordon_icon.jpg"},{"nombre":"Lucius Fox","actor":"Giancarlo Esposito (54 años)","rol":"Contabilidad fantasma e I+D","imagen":"Imagenes/fox_icon.jpeg"},{"nombre":"Edward Nygma / El Acertijo","actor":"David Tennant (41 años)","rol":"Terrorista intelectual narcisista","imagen":"Imagenes/acertijo_icon.jpeg"},{"nombre":"Oswald Cobblepot / El Pingüino","actor":"Alfred Molina (59 años)","rol":"Aristócrata mafioso de los muelles","imagen":"Imagenes/pinguino_icon.jpg"},{"nombre":"Henri Ducard / Ra's al Ghul","actor":"Alexander Siddig (47 años)","rol":"Maestro de la Liga de las Sombras","imagen":"Imagenes/ras_icon.jpeg"}]},{"id":"green_lantern","titulo":"GREEN LANTERN (2012)","color":"emerald","estado":"DISPONIBLE","reparto":[{"nombre":"Hal Jordan / Green Lantern","actor":"Chris Pine (32 años)","rol":"Piloto temerario • Protector del Sector 2814","imagen":"Imagenes/jordan_icon.jpg"},{"nombre":"Thaal Sinestro","actor":"Mark Strong (49 años)","rol":"Antiguo mentor y portador del Anillo Amarillo","imagen":"Imagenes/sinestro_icon.jfif"},{"nombre":"Abin Sur","actor":"N/D","rol":"Antiguo Protector del Sector 2814","imagen":"Imagenes/abinsur_icon.jfif"},{"nombre":"Los Guardianes del Universo","actor":"N/D","rol":"Consejo supremo del cuerpo de Linternas Verdes","imagen":"Imagenes/guardianes_icon.jpg"}]},{"id":"wonder_woman","titulo":"WONDER WOMAN (2013)","color":"rose","estado":"DISPONIBLE","reparto":[{"nombre":"Diana / Wonder Woman","actor":"Jaimie Alexander","rol":"Princesa Amazona de Themyscira","imagen":"Imagenes/diana_icon.png"},{"nombre":"Steve Trevor","actor":"Charlie Hunnam (33 años)","rol":"Piloto y espía aliado en 1944","imagen":"Imagenes/steve_icon.png"},{"nombre":"Reina Hipólita","actor":"Lucy Lawless","rol":"Gobernante guerrera de Themyscira","imagen":"Imagenes/hipolita_icon.png"},{"nombre":"Ares","actor":"Mads Mikkelsen","rol":"Dios de la Guerra • Antagonista principal","imagen":"Imagenes/ares_icon.png"}]},{"id":"superman","titulo":"SUPERMAN (2014)","color":"sky","estado":"DISPONIBLE","reparto":[{"nombre":"Clark Kent / Superman","actor":"Matt Bomer (27 años)","rol":"El Hombre de Acero • Reportero del Daily Planet","imagen":"Imagenes/superman_icon.jpg"},{"nombre":"Lois Lane","actor":"Mary Elizabeth Winstead (29 años)","rol":"Reportera estrella del Daily Planet","imagen":"Imagenes/lois_icon.jpg"},{"nombre":"Jimmy Olsen","actor":"Nat Wolff (19 años)","rol":"Fotógrafo del Daily Planet • Mejor amigo de Clark","imagen":"Imagenes/jimmy_icon.png"},{"nombre":"Lex Luthor","actor":"Michael Fassbender (37 años)","rol":"CEO de LexCorp • Narcisista tecnológico","imagen":"Imagenes/lex_icon.jpg"},{"nombre":"John Corben / Metallo","actor":"Joel Kinnaman (34 años)","rol":"Ex-jefe de seguridad con núcleo de Kryptonita","imagen":"Imagenes/metallo_icon.jpg"},{"nombre":"Martha Kent","actor":"Annette Bening (56 años)","rol":"Madre adoptiva de Clark","imagen":"Imagenes/marthakent_icon.jpg"},{"nombre":"Jonathan Kent","actor":"Bruce Greenwood (58 años)","rol":"Padre adoptivo de Clark","imagen":"Imagenes/jonathankent_icon.jpg"},{"nombre":"Bruce Wayne / Batman","actor":"Armie Hammer (32 años)","rol":"El Caballero Oscuro","imagen":"Imagenes/batman_icon.jpg"},{"nombre":"Alfred Pennyworth","actor":"Anton Lesser (57 años)","rol":"Estratega logístico en la Batcueva","imagen":"Imagenes/alfred_icon.jfif"}]},{"id":"batmanyrobin","titulo":"BATMAN Y ROBIN (2014)","color":"amber","estado":"PRÓXIMAMENTE","reparto":[{"nombre":"Bruce Wayne / Batman","actor":"Armie Hammer (32 años)","rol":"El Caballero Oscuro","imagen":"Imagenes/batman_icon.jpg"},{"nombre":"Alfred Pennyworth","actor":"Anton Lesser (57 años)","rol":"Estratega logístico en la Batcueva","imagen":"Imagenes/alfred_icon.jfif"},{"nombre":"Jim Gordon","actor":"Jon Hamm (38 años)","rol":"Aliado policial en el GCPD","imagen":"Imagenes/gordon_icon.jpg"},{"nombre":"Lucius Fox","actor":"Giancarlo Esposito (56 años)","rol":"Contabilidad fantasma e I+D","imagen":"Imagenes/fox_icon.jpeg"}]},{"id":"flash","titulo":"THE FLASH (2015)","color":"rose","estado":"PRÓXIMAMENTE","reparto":[{"nombre":"¿? / The Flash","actor":"","rol":"Científico forense del CCPD • Velocista Escarlata","imagen":"Imagenes/flash_icon.jpg"},{"nombre":"Iris West","actor":"","rol":"Periodista de Central City","imagen":"Imagenes/iris_icon.jpg"}]},{"id":"justice_league","titulo":"LIGA DE LA JUSTICIA (2015)","color":"sky","estado":"PRÓXIMAMENTE","reparto":[{"nombre":"Bruce Wayne / Batman","actor":"Armie Hammer (33 años)","rol":"El Caballero Oscuro • Estratega de la Liga","imagen":"Imagenes/batman_icon.jpg"},{"nombre":"Clark Kent / Superman","actor":"Matt Bomer (28 años)","rol":"El Hombre de Acero • Faro de esperanza","imagen":"Imagenes/superman_icon.jpg"},{"nombre":"Diana / Wonder Woman","actor":"Jaimie Alexander","rol":"Princesa Amazona de Themyscira","imagen":"Imagenes/diana_icon.png"},{"nombre":"¿? / The Flash","actor":"","rol":"Velocista de Central City","imagen":"Imagenes/flash_icon.jpg"}]}];
+const ACC={amber:'#f2b632',emerald:'#2ee082',rose:'#ee4a5a',sky:'#4aa3ff'},T={heroe:'Héroes',villano:'Villanos',aliado:'Aliados y civiles'};
+const tipo=n=>/Batman|Green Lantern|Wonder Woman|Superman|Flash/.test(n)?'heroe':/Acertijo|Pingüino|Ra's|Sinestro|Luthor|Metallo|^Ares$/.test(n)?'villano':'aliado';
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const norm=s=>String(s).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+const col=p=>ACC[p.color]||ACC.amber,$=s=>document.querySelector(s),pid=Object.fromEntries(P.map((p,i)=>[p.id,{...p,i}]));
+const title=p=>p.titulo.replace(/\s*\((\d{4})\)/,' $1');
+/* fusiona personajes repetidos entre películas */
+const M=new Map();
+P.forEach(p=>p.reparto.forEach(r=>{let c=M.get(r.nombre);if(!c){c={n:r.nombre,a:'',r:r.rol,img:r.imagen,t:tipo(r.nombre),ap:[]};M.set(r.nombre,c)}
+ const a=(r.actor||'').replace(/\s*\(\d+ años\)/,'').trim();if(a&&a!=='N/D'&&!c.a)c.a=a;
+ c.ap.push({p:p.id,age:(String(r.actor).match(/\((\d+) años\)/)||[])[1]})}));
+const ALL=[...M.values()];
+const st={q:'',p:new Set(),t:new Set(),s:'az'};
+/* estado en la URL (#q=...&p=batman,flash&t=villano&s=ap) para compartir filtros */
+const H=new URLSearchParams(location.hash.slice(1));
+st.q=H.get('q')||'';(H.get('p')||'').split(',').filter(x=>pid[x]).forEach(x=>st.p.add(x));(H.get('t')||'').split(',').filter(x=>T[x]).forEach(x=>st.t.add(x));if(['az','ap','pr'].includes(H.get('s')))st.s=H.get('s');
+function sync(){const h=new URLSearchParams();if(st.q)h.set('q',st.q);if(st.p.size)h.set('p',[...st.p]);if(st.t.size)h.set('t',[...st.t]);if(st.s!=='az')h.set('s',st.s);
+ try{history.replaceState(null,'',h.toString()?'#'+h:location.pathname+location.search)}catch(e){}}
+function chips(){
+ $('#fp').innerHTML=P.map(p=>`<button class="chip ${p.estado!=='DISPONIBLE'?'soon':''}" style="--a:${col(p)}" data-p="${p.id}" aria-pressed="${st.p.has(p.id)}" title="${p.estado!=='DISPONIBLE'?'Próximamente':'Jugable'}">${esc(title(p))}<small>${p.reparto.length}</small></button>`).join('');
+ $('#ft').innerHTML=Object.entries(T).map(([k,l])=>`<button class="chip" data-t="${k}" aria-pressed="${st.t.has(k)}">${l}<small>${ALL.filter(c=>c.t===k).length}</small></button>`).join('')}
+function render(){
+ const q=norm(st.q.trim());
+ let L=ALL.filter(c=>(!st.p.size||c.ap.some(x=>st.p.has(x.p)))&&(!st.t.size||st.t.has(c.t))&&(!q||norm(c.n+' '+c.a+' '+c.r).includes(q)));
+ const first=c=>Math.min(...c.ap.map(x=>pid[x.p].i));
+ L.sort(st.s==='ap'?(a,b)=>b.ap.length-a.ap.length||a.n.localeCompare(b.n,'es'):st.s==='pr'?(a,b)=>first(a)-first(b)||a.n.localeCompare(b.n,'es'):(a,b)=>a.n.localeCompare(b.n,'es'));
+ $('#grid').innerHTML=L.length?L.map(c=>{const p0=pid[c.ap[0].p],ini=c.n.split(/[\s\/¿?]+/).filter(Boolean).slice(0,2).map(w=>w[0]).join('');
+  return `<article class="card" style="--a:${col(p0)}"><div class="ph">${esc(ini)}${c.img?`<img src="${esc(c.img)}" alt="" loading="lazy" decoding="async">`:''}</div><div><span class="tp">${T[c.t]}</span><h3>${esc(c.n)}</h3><p class="ac">${esc(c.a||'Reparto por anunciar')}</p><p class="ro">${esc(c.r)}</p><div class="fl">${c.ap.map(x=>{const p=pid[x.p];return `<span class="fc" style="--c:${col(p)}" title="${esc(p.titulo)}${x.age?' · '+x.age+' años':''}">${esc(title(p))}</span>`}).join('')}</div></div></article>`}).join(''):'<p class="empty">Ningún personaje coincide con estos filtros.</p>';
+ $('#cnt').textContent=L.length+' de '+ALL.length+' personajes';
+ $('#clr').hidden=!(st.q||st.p.size||st.t.size);sync()}
+function tog(set,k){set.has(k)?set.delete(k):set.add(k);chips();render()}
+$('#fp').onclick=e=>{const b=e.target.closest('[data-p]');b&&tog(st.p,b.dataset.p)};
+$('#ft').onclick=e=>{const b=e.target.closest('[data-t]');b&&tog(st.t,b.dataset.t)};
+$('#q').oninput=e=>{st.q=e.target.value;render()};$('#s').onchange=e=>{st.s=e.target.value;render()};
+$('#clr').onclick=()=>{st.q='';st.p.clear();st.t.clear();$('#q').value='';chips();render()};
+document.addEventListener('error',e=>{if(e.target instanceof HTMLImageElement)e.target.remove()},true);
+$('#q').value=st.q;$('#s').value=st.s;chips();render();
+</script>
+</body>
+</html>
