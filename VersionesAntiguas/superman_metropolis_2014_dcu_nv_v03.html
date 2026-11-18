@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SUPERMAN: Metrópolis 2014 | DCU NV</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=Barlow+Condensed:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{--pa:#e4e1d3;--pb:#efede1;--k:#16181c;--b:#1b4a9c;--r:#c8102e;--y:#f1c40f;--g:#6c6e66;--hd:'Playfair Display',Georgia,serif;--tx:'Source Serif 4',Georgia,serif;--ui:'Barlow Condensed','Arial Narrow',sans-serif}
+*{box-sizing:border-box;margin:0}
+body{font:16px/1.65 var(--tx);color:var(--k);min-height:100vh;padding:14px;background:#23272e}
+.sheet{max-width:1000px;margin:0 auto;background:var(--pa);padding:clamp(14px,3vw,32px);box-shadow:0 0 0 1px #0006,0 20px 50px #0009;background-image:repeating-linear-gradient(0deg,#0000 0 3px,#0000000a 3px 4px)}
+.strip{display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 16px;font:600 .92rem var(--ui);letter-spacing:.06em;border-top:3px solid var(--k);border-bottom:1px solid var(--k);padding:3px 0}
+.mast{display:flex;align-items:center;justify-content:center;gap:16px;padding:10px 0 8px;border-bottom:4px double var(--k)}
+.mast h1{font:900 clamp(2.2rem,8.4vw,5rem)/1 var(--hd);letter-spacing:-.01em}
+.mast svg{width:clamp(38px,8vw,70px);flex:none}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px 20px;margin:12px 0;font:600 1rem var(--ui);letter-spacing:.05em}
+.tr{height:12px;border:2px solid var(--k);background:var(--pb);margin-top:3px}.tr i{display:block;height:100%;transition:width .4s;background:var(--y)}.tr i.c{background:var(--b)}.tr i.f{background:#2d8f3a}
+nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.b{background:var(--k);color:var(--pb);border:2px solid var(--k);font:700 1.05rem var(--ui);letter-spacing:.07em;padding:8px 14px;cursor:pointer}
+.b:hover{background:var(--b)}.b:disabled{opacity:.4;cursor:not-allowed}.b:disabled:hover{background:var(--k)}
+.b.on{background:var(--r);border-color:var(--r)}.b.lk{background:var(--g);border-color:var(--g)}.b.sel{background:var(--b);border-color:var(--b)}
+.fr{position:relative;border:1px solid var(--k);background:#000}
+.fr img{display:block;width:100%;aspect-ratio:12/5;object-fit:cover;filter:grayscale(1) contrast(1.15)}.fr img.fb{filter:none}
+.fr::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(#0004 1px,transparent 1.6px) 0 0/4px 4px;mix-blend-mode:multiply}
+.cap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 12px;font:italic .9rem var(--tx);color:var(--g);border-bottom:1px solid var(--k);padding:5px 0;margin-bottom:10px}
+.role{font:700 .95rem var(--ui);letter-spacing:.1em;color:var(--pb);background:var(--b);padding:1px 9px}.role.s{background:var(--r)}.role.b{background:var(--k)}
+h2{font:900 clamp(1.7rem,5vw,2.9rem)/1.05 var(--hd);margin:6px 0 4px}
+.by{font:600 .98rem var(--ui);letter-spacing:.06em;color:var(--r);border-bottom:1px solid var(--k);padding-bottom:6px;margin-bottom:12px}
+.cols{column-width:300px;column-gap:30px;column-rule:1px solid #16181c44;text-align:justify;hyphens:auto}
+.cols p{margin-bottom:10px}.cols p:first-child::first-letter{font:900 3.4rem/.8 var(--hd);float:left;padding:6px 7px 0 0}
+.cols i{color:var(--b)}
+#game{background:var(--pb);border:2px solid var(--k);outline:1px solid var(--k);outline-offset:3px;padding:14px;margin:18px 3px 4px}#game:empty{display:none}
+#game h3{font:900 1.25rem var(--hd);margin-bottom:8px}
+blockquote{border-left:4px solid var(--r);padding:4px 12px;margin:8px 0;font-style:italic}
+.row{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.opt{display:block;width:100%;text-align:left;margin-top:8px;font:400 1rem var(--tx);letter-spacing:0}.opt small{display:block;font:italic .85rem var(--tx);opacity:.8}
+#msg{color:var(--r);min-height:1.5em;margin-top:8px;font-weight:600}.ok{font:900 1.2rem var(--hd);color:#2d8f3a;margin:14px 0 8px}
+.em{display:grid;grid-template-columns:1fr auto;gap:2px 10px;align-items:center;border-top:1px dashed var(--k);padding:7px 0}.em .tr{grid-column:1}.em button{grid-row:1/3;grid-column:2}
+.stm{border-top:1px dashed var(--k);padding:6px 0}.stm svg{width:100%;height:44px;background:#fff8;border:1px solid var(--k)}.stm .row{align-items:center;margin-top:4px}
+.kg{display:grid;gap:4px;max-width:460px;margin:12px auto}
+.kt{aspect-ratio:1;border:2px solid var(--k);font:700 1.05rem var(--ui);padding:0;cursor:pointer;color:var(--k);background:linear-gradient(#2d8f3a22,#2d8f3a22),var(--pb)}
+.kt:disabled{cursor:default;opacity:.8}.kt.pb{background:#b9bcc4}.kt.me{background:var(--b);color:#fff}.kt.core{background:#2d8f3a;color:#fff}.kt:not(:disabled):hover{outline:3px solid var(--r)}
+.front{border:3px double var(--k);padding:14px;text-align:center;background:#fff9;margin-top:12px}
+.front .mh{font:900 1.1rem var(--hd);border-bottom:2px solid var(--k);padding-bottom:4px}.front .fh{font:900 clamp(1.4rem,4.4vw,2.2rem)/1.1 var(--hd);margin:10px 0}.front p{font-size:.92rem}
+.grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}
+.card{border:2px solid var(--k);background:var(--pb);padding:12px}.card h3{font:900 1.1rem var(--hd)}.card small{font:700 .95rem var(--ui);letter-spacing:.06em;color:var(--r)}
+.ph{border:1px solid var(--k);margin-bottom:8px;position:relative;background:#000}.ph img{display:block;width:100%;aspect-ratio:4/5;object-fit:cover;filter:grayscale(1) contrast(1.15)}
+.ph::after{content:"";position:absolute;inset:0;background:radial-gradient(#0004 1px,transparent 1.6px) 0 0/3px 3px;mix-blend-mode:multiply}
+.card dl{display:grid;grid-template-columns:auto 1fr;gap:2px 8px;font-size:.88rem;margin:6px 0;border-top:1px solid var(--k);padding-top:6px}.card dt{font:700 .95rem var(--ui);color:var(--b)}.card dd{margin:0}
+h4{font:900 1.4rem var(--hd);margin:6px 0 10px}
+dialog{border:3px solid var(--k);background:var(--pa);color:var(--k);padding:0;width:min(500px,92vw);font:inherit;margin:auto}dialog::backdrop{background:#000c}
+.dh{display:flex;justify-content:space-between;align-items:center;background:var(--k);color:var(--pb);padding:8px 14px;font:700 1rem var(--ui);letter-spacing:.1em}
+.x{background:none;border:0;color:var(--pb);font-size:1.6rem;cursor:pointer}.db{padding:18px;text-align:center}.db .row{justify-content:center}
+#toast{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);background:var(--k);color:var(--pb);border-left:5px solid var(--r);padding:10px 16px;z-index:9;max-width:92vw}
+footer{margin-top:16px;border-top:4px double var(--k);padding-top:8px;display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between;font:600 1rem var(--ui);letter-spacing:.04em}
+a{color:var(--b)}:focus-visible{outline:3px solid var(--r);outline-offset:2px}[hidden]{display:none!important}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="sheet">
+<div class="strip"><span>AÑO MMXIV · Nº 01.938</span><span>METRÓPOLIS · EDICIÓN ESPECIAL DCU NV 2014</span><span>TRES CENTAVOS</span></div>
+<div class="mast"><svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="29" fill="none" stroke="#16181c" stroke-width="3"/><ellipse cx="32" cy="32" rx="12" ry="29" fill="none" stroke="#16181c" stroke-width="2"/><path d="M3 32h58M8 18h48M8 46h48" stroke="#16181c" stroke-width="2"/></svg><h1>The Daily Planet</h1></div>
+<div class="stats">
+ <div>ENERGÍA SOLAR <b id="en"></b><div class="tr"><i id="eb"></i></div></div>
+ <div>CONFIANZA DE METRÓPOLIS <b id="cn"></b> · <span id="mood"></span><div class="tr"><i id="cb" class="c"></i></div></div>
+ <div>CIUDADANOS A SALVO <b id="sv"></b></div>
+</div>
+<nav>
+ <button class="b" data-t="story">PORTADA</button><button class="b" data-t="cast">REDACCIÓN</button><button class="b" data-t="acts">HEMEROTECA</button>
+ <button class="b" id="snd" aria-pressed="false">🔇 SONIDO</button>
+</nav>
+<section id="view-story">
+ <div class="fr"><img id="img" alt=""></div>
+ <div class="cap"><span id="ct"></span><span id="loc"></span><span id="role" class="role"></span></div>
+ <div id="txt"></div><div id="game"></div><div id="next"></div>
+ <div class="row" id="pills" style="margin-top:18px"></div>
+</section>
+<section id="view-cast" hidden><h4>Credenciales de prensa y archivo</h4><div class="grid" id="cast"></div></section>
+<section id="view-acts" hidden><h4 id="prog"></h4><div class="grid" id="acts"></div></section>
+<footer><a href="index.html">← Volver al Hub DC Universe</a><span>Autoguardado activo · <a href="#" id="rst">Reiniciar edición</a></span></footer>
+</div>
+<div id="toast" role="status" hidden></div>
+<dialog id="dlg" aria-labelledby="dt"><div class="dh"><span id="dt">RETIRAR LA EDICIÓN</span><button class="x" data-c aria-label="Cerrar">×</button></div>
+ <div class="db"><h3 style="font:900 1.2rem var(--hd);margin-bottom:8px">¿Volver a empezar desde Smallville?</h3><p>Se borrará tu avance, la energía solar y la confianza de Metrópolis. <b>Los capítulos 2 a <span id="nn"></span> volverán a bloquearse.</b></p>
+ <div class="row"><button class="b" data-c>CANCELAR</button><button class="b on" id="ok2">REINICIAR</button></div></div></dialog>
+
+<script>
+/* ===== DATOS (editables) ===== */
+const IMG='Imagenes/Capitulos/4Superman/cap';   // cap1.jpg ... cap8.jpg; si no existe, se dibuja una foto de archivo
+const CAST=[
+ {f:'superman',e:'jpg',n:'Clark Kent / Superman',a:'Matt Bomer',r:'Reportero novato del Daily Planet',d:'Esperanza, idealismo y empatía genuina. Con gafas y encorvado es el novato torpe de la redacción; con el traje de Martha, irradia una calidez que inspira confianza al instante.'},
+ {f:'lois',e:'jpg',n:'Lois Lane',a:'Mary Elizabeth Winstead',r:'Reportera estrella del Daily Planet',d:'Pragmatismo callejero e inteligencia incisiva. Es el último bastión de la verdad en una ciudad hipnotizada por LexCorp y el ancla humana de Superman.'},
+ {f:'jimmy',e:'png',n:'Jimmy Olsen',a:'Nat Wolff',r:'Fotógrafo del Daily Planet',d:'Entusiasta, leal y siempre con la cámara a punto. Da la bienvenida a Clark en la redacción y se convierte en uno de sus mejores amigos.'},
+ {f:'lex',e:'jpg',n:'Lex Luthor',a:'Michael Fassbender',r:'CEO de LexCorp',d:'Magnetismo público y frialdad sociópata. Su ego se fractura al saberse obsoleto ante un alienígena, y mueve los hilos de la ciudad desde su torre de cristal.'},
+ {f:'metallo',e:'jpg',n:'John Corben / Metallo',a:'Joel Kinnaman',r:'Exmilitar y jefe de seguridad de LexCorp',d:'Mutilado bajo los escombros y reconstruido por Lex con un endoesqueleto de combate fusionado a su carne y una Kryptonita en el pecho. Un antagonista trágico movido por la rabia y las mentiras.'},
+ {f:'marthakent',e:'jpg',n:'Martha Kent',a:'Annette Bening',r:'Madre adoptiva de Clark',d:'Ancla emocional de Clark. Con sus propias manos, cosió el traje utilizando las mantas indestructibles de la nave kryptoniana, dándole a su hijo los colores para inspirar al mundo.'},
+ {f:'jonathankent',e:'jpg',n:'Jonathan Kent',a:'Bruce Greenwood',r:'Padre adoptivo de Clark',d:'Brújula moral de Clark. Es quien le transmite la lección vital: no esconderse como una leyenda urbana, sino ser un símbolo de esperanza a plena luz del día.'},
+ {f:'batman',e:'jpg',n:'Bruce Wayne / Batman',a:'Armie Hammer',r:'El caballero oscuro',d:'Observa la pelea desde Gotham y descubre que Superman no es el único ser extraordinario entre nosotros.'},
+ {f:'alfred',e:'jfif',n:'Alfred',a:'Anton Lesser',r:'Mayordomo y Estratega Logístico en la Batcueva',d:'Junto con Bruce, Alfred descubre que una nueva era está apunto de comenzar'}
+];
+const CH=[
+ {t:'Un traje cosido a mano',l:'Smallville, Kansas',y:'Antes de 2014',r:'c',by:'Crónica familiar de los Kent',
+  p:['Krypton cayó hace mucho y su último hijo creció entre maizales. Antes de que parta hacia Metrópolis, <b>Jonathan y Martha Kent</b> le entregan un paquete envuelto en papel de estraza.','Dentro hay un traje que Martha ha cosido con las mantas indestructibles de su nave, con la «S» en el pecho. «Si vas a cambiar el mundo, no puedes esconderte en las sombras», dice Jonathan. «Tienes que ser un símbolo a plena luz del día».'],
+  g:{k:'choice',q:'Ante el traje, ¿qué le dices a Martha?',o:[{t:'«Lo llevaré. Un símbolo tiene que verse».',c:8,r:'Martha sonríe: llevaba años esperando oírlo.'},{t:'«¿Y si los colores me convierten en un blanco?»',c:3,r:'Jonathan responde: «Entonces que apunten a la luz, no a ti».'}]}},
+ {t:'Bienvenido al Daily Planet',l:'Redacción del Daily Planet',y:'2014',r:'c',by:'Primer día de Clark Kent',
+  p:['2014. <b>Clark</b> llega a Metrópolis como reportero novato, con gafas y un traje que le queda grande. En la redacción, entre teclados y teléfonos, un joven con una cámara al cuello le corta el paso con una sonrisa enorme: <b>Jimmy Olsen</b>, fotógrafo del Planet.','«¡Tú debes de ser el nuevo! Te enseño la única cafetera que funciona y el único escritorio donde no debes sentarte: el de Lois». Jimmy le cuenta que el periódico está al borde de la ruina por no venderse a LexCorp y que, aun así, nadie se ha ido. Clark tropieza con una pila de ejemplares; Jimmy se ríe, se agacha a ayudarle y, sin saberlo, empieza una gran amistad.'],
+  g:{k:'choice',q:'Jimmy te tiende la mano. ¿Cómo respondes?',o:[{t:'Aceptar su café y que te enseñe la redacción.',c:4,r:'«Aquí lo mejor es la gente», dice Jimmy. «Y las fotos».'},{t:'Preguntarle cómo es trabajar con Lois.',c:3,r:'«Dura como el acero, y la mejor», susurra Jimmy. «Pero no le digas que te lo he dicho».'}]}},
+ {t:'LexCorp, la luz del mañana',l:'Redacción del Daily Planet',y:'2014',r:'c',by:'Por Lois Lane, con Clark Kent',
+  p:['Con su escritorio aún sin estrenar, <b>Clark</b> mira por la ventana: la ciudad entera solo habla de <b>Lex Luthor</b>, el visionario tecnológico al que todos ven como el salvador del mañana.','En la redacción, <b>Lois Lane</b> y su equipo son los únicos que investigan las sombras éticas de LexCorp, aun a costa de la ruina financiera del periódico. Esta noche cierran edición y Lois te encarga verificar qué papeles merecen portada.'],
+  g:{k:'facts',q:'Elige los 3 documentos verificados. Un periódico no imprime rumores:',cd:6,head:'LEXCORP SE SALTÓ LA SEGURIDAD: PERMISOS COMPRADOS Y PRUEBAS IGNORADAS',cards:[
+   {t:'Contrato de LexCorp con el Ayuntamiento, sin licitación pública',s:'Registro municipal, copia sellada',ok:1,w:'Es un documento oficial y verificable.'},
+   {t:'Informe interno: se saltaron dos protocolos de seguridad en la demostración',s:'Dos ingenieros y el original firmado',ok:1,w:'Dos fuentes y documento original.'},
+   {t:'Rumor: Lex Luthor quiere comprar el Daily Planet',s:'Comentario anónimo en un foro',ok:0,w:'Una fuente anónima y sin pruebas no sirve.'},
+   {t:'Pagos ocultos a la oficina de licencias',s:'Extracto bancario con sello',ok:1,w:'Un extracto sellado es prueba documental.'},
+   {t:'Lex guarda un búnker secreto bajo la ciudad',s:'Un taxista',ok:0,w:'Una anécdota de un taxista no es una fuente.'}]}},
+ {t:'El hombre que vuela',l:'Plaza de la Demostración',y:'2014',r:'s',by:'Edición especial, 16:42',
+  p:['LexCorp organiza una demostración arrogante en el centro de Metrópolis y, ignorando los protocolos, el evento colapsa. Miles de personas están en peligro, <b>Lois</b> entre ellas.','Clark sabe que su tiempo de anonimato ha terminado. Cruza el cielo a plena luz del día, frente a miles de cámaras. <b>No puedes estar en todas partes:</b> volar a un punto lleva tiempo y cada rescate te cuesta energía. Elige bien el orden.'],
+  g:{k:'rescue',q:'Seis emergencias a la vez. Salva al menos 5:',min:5,fly:2.2,ev:[{n:'Escenario de LexCorp a punto de caer',t:9,c:12},{n:'Autobús colgando de un cable',t:11,c:10},{n:'Lois atrapada bajo una grúa',t:13,c:12},{n:'Pasarela peatonal cediendo',t:16,c:8},{n:'Fuego en la cabina de control',t:18,c:12},{n:'Niño atrapado en un ascensor',t:21,c:10}]}},
+ {t:'Frente a las cámaras',l:'Plaza de la Demostración',y:'2014',r:'s',by:'Por Lois Lane',
+  p:['Superman deposita a <b>Lois</b> sobre la acera mientras miles de teléfonos lo graban. El mundo entero descubre que no estamos solos.','Desde su torre, <b>Lex Luthor</b> lo ve en todas las pantallas. De un segundo a otro, su intelecto y su poder quedan humillados por la existencia de un «dios alienígena». Abajo, Lois te mira con el bolígrafo en la mano: «¿Quién eres?».'],
+  g:{k:'choice',q:'Tus primeras palabras ante el mundo:',o:[{t:'«Soy alguien que quiere ayudar. Nada más».',c:8,r:'Lois apunta la frase. Será el titular de mañana.'},{t:'No decir nada y alzar el vuelo.',c:2,r:'El misterio alimenta tantas esperanzas como miedos.'}]}},
+ {t:'El Proyecto Metallo',l:'Escombros y laboratorio de LexCorp',y:'2014',r:'c',by:'Investigación de Lois Lane y Clark Kent',
+  p:['Durante el colapso, <b>John Corben</b>, exmilitar y despiadado jefe de seguridad de LexCorp, quedó horriblemente aplastado y mutilado bajo los escombros. <b>Lex</b> vio la oportunidad perfecta.','En su lecho de muerte le susurra que Superman causó el accidente y le ofrece volver a caminar a cambio de ser el primer sujeto del «Proyecto Metallo»: un endoesqueleto de combate integrado en su carne y huesos destrozados. Para alimentar su soporte vital, Lex inserta en su pecho un meteorito radiactivo, Kryptonita, que LexCorp había extraído en secreto. Corben despierta como un cyborg monstruoso, con la radiación verde recorriéndole el sistema nervioso, que le arrebata la poca humanidad que le quedaba y alimenta su ira.','Lois ha conseguido papeles del proyecto. ¿Cuáles resisten una verificación?'],
+  g:{k:'facts',q:'Elige los 3 elementos verificados sobre el Proyecto Metallo:',cd:6,head:'LEXCORP CONVIRTIÓ A SU JEFE DE SEGURIDAD EN UN ARMA: EL PROYECTO METALLO',cards:[
+   {t:'Orden de compra de un meteorito radiactivo extraído en secreto',s:'Registro de aduanas de LexCorp, original',ok:1,w:'Es un documento original y verificable.'},
+   {t:'Historial médico de Corben alterado la misma noche del accidente',s:'Hospital militar y dos testigos',ok:1,w:'Dos testigos y un registro comprobable.'},
+   {t:'Planos de un endoesqueleto de combate firmados por LexCorp',s:'Archivo del laboratorio, con sello',ok:1,w:'Un plano sellado es prueba documental.'},
+   {t:'Corben ha jurado venganza contra Superman',s:'Un guardia anónimo',ok:0,w:'Es una declaración anónima sin comprobar.'},
+   {t:'Lex vende tecnología a militares extranjeros',s:'Una columna de opinión',ok:0,w:'Una opinión no es una fuente.'}]}},
+ {t:'Cuando la luz verde brilla',l:'Calles de Metrópolis',y:'2014',r:'s',by:'Despacho urgente',
+  p:['Consumido por el odio, el trauma de su mutilación y la manipulación de Lex, <b>Metallo</b> desata el infierno en las calles buscando a Superman.','En el primer choque, la radiación de su corazón de Kryptonita te somete a algo que jamás habías sentido: dolor agonizante, sangrado y vulnerabilidad mortal. Sin vuelo ni fuerza, solo puedes caminar. La radiación crece cuanto más te acercas, pero el <b>plomo</b> de ciertas estructuras la bloquea.'],
+  g:{k:'kryp',q:'Mapa de 7×7. Avanza una casilla por turno hasta Metallo (M) sin superar 27 de radiación. Algunos refugios de plomo (Pb) son callejones sin salida:',cd:6,n:7,b:34,max:27,st:[6,0],core:[3,3],L:['0,1','0,5','0,6','1,1','1,2','2,0','2,2','2,3','3,0','3,2','5,0']}},
+ {t:'Proteger antes que golpear',l:'Distrito financiero',y:'2014',r:'s',by:'Crónica de guerra urbana',
+  p:['Incapaz de ganar con fuerza bruta, Superman confía en su humanidad: primero los ciudadanos, después la máquina de <b>Corben</b>.','Metallo destroza el distrito financiero mientras persigue a un único objetivo. Cada vida a salvo es un minuto más para encontrar la forma de desarmarlo.'],
+  g:{k:'rescue',q:'Seis emergencias en el distrito. Salva al menos 5:',min:5,fly:2,ev:[{n:'Cristales cayendo sobre una acera',t:8,c:8},{n:'Coche aplastado con una familia',t:10,c:12},{n:'Tranvía suspendido en el aire',t:13,c:14},{n:'Metro inundándose',t:16,c:10},{n:'Edificio lleno de humo',t:18,c:12},{n:'Operadora de emergencias atrapada',t:22,c:10}]}},
+ {t:'Desarmar los implantes',l:'Puerto de Metrópolis',y:'2014',r:'s',by:'Despacho urgente',
+  p:['Con los civiles a salvo, llega el último asalto. Tu verdadero poder no está en tus músculos, sino en tu inteligencia y en tu disposición a sacrificarte por los demás.','Bajo el metal sigue habiendo un hombre. Para desarmar los implantes de <b>Corben</b> debes acercarte a su corazón de Kryptonita, y el único refugio son las estructuras de plomo del puerto. Esta vez la radiación es peor.'],
+  g:{k:'kryp',q:'El puerto está plagado de contenedores de plomo. Llega a los implantes de Metallo (M) sin superar 26 de radiación; esta vez solo hay un camino bueno:',cd:6,n:7,b:36,max:26,st:[6,6],core:[2,3],L:['0,1','1,4','2,0','2,1','3,2','3,3','4,1','4,2','4,4','5,1','6,3','6,4']}},
+ {t:'Lex se lava las manos',l:'Torre LexCorp, sala de prensa',y:'2014',r:'c',by:'Por Clark Kent',
+  p:['Metallo es desmantelado y encerrado en unas instalaciones militares de máxima seguridad. Lex Luthor comparece ante la prensa y asegura que Corben robó la tecnología y actuó por su cuenta.','Entre los periodistas, <b>Clark</b> escucha algo que los demás no: el latido de Lex. Cada vez que miente, el pulso se dispara.'],
+  g:{k:'heart',q:'Marca las declaraciones en las que el pulso se dispara:',cd:8,s:[
+   {q:'John Corben robó nuestra tecnología y actuó por su cuenta.',lie:1},
+   {q:'LexCorp lamenta profundamente las víctimas de aquella tarde.',lie:0,nz:1},
+   {q:'Jamás autoricé un proyecto llamado Metallo.',lie:1},
+   {q:'Corben tenía un historial militar impecable.',lie:0,nz:1},
+   {q:'Superman no es ninguna amenaza para LexCorp.',lie:1}]}},
+ {t:'Edición especial: la esperanza',l:'Redacción del Daily Planet',y:'2014',r:'c',by:'Cierre de edición',
+  p:['A puerta cerrada, Lex jura destruir al Hombre de Acero: así empieza su legendaria enemistad. En público, Superman es aceptado por el mundo como un faro de luz.','Pero su aparición global rompe el frágil silencio de la Tierra y alerta a los gobiernos. <b>Jimmy</b> irrumpe con su carrete: tiene tres fotos que valen una portada. Falta la portada de mañana. Tú decides cómo se cuenta lo ocurrido.'],
+  g:{k:'front'}},
+ {t:'Post-créditos: Los dioses bajan del cielo',l:'La Batcueva, Gotham',y:'2014',r:'b',by:'Escena post-créditos',
+  p:['La Batcueva, iluminada solo por decenas de monitores gigantes. En las pantallas se repite, desde cámaras de seguridad y teléfonos, la pelea entre Superman y Metallo. <b>Bruce Wayne</b>, aún de espaldas y con la capucha a medio quitar, observa en silencio. <b>Alfred</b> se acerca con una bandeja.','<i>—El mundo entero ha cambiado hoy, señor Wayne. Parece que los dioses han decidido bajar de los cielos.</i>','<i>—No es un dios, Alfred. Es un alienígena. Y puede borrar una ciudad entera si un día decide que ya no le gustamos.</i>','Bruce teclea en la consola. Su software de reconocimiento facial de grado militar aísla a una mujer entre la multitud que huye de LexCorp: está quieta, observando a Superman surcar el cielo, sin intervenir. El ordenador la compara con una fotografía clasificada de 1944, tomada en una trinchera aliada. Es la misma mujer. No ha envejecido un solo día.','<i>—No es el único «dios» entre nosotros. Estaba ahí, Alfred, evaluándolo igual que nosotros. Pero decidió no intervenir.</i>'],
+  g:{k:'choice',q:'Alfred pregunta: «¿Qué se necesita para obligar a alguien así a salir de las sombras?»',o:[{t:'Observarla en silencio. Aún no es el momento.',c:0,r:'Alfred asiente: la paciencia también es una estrategia.'},{t:'Encontrarla y hacerle ver que el mundo la necesita.',c:0,r:'La Trinidad empieza a tomar forma. Fundido a negro.'}]}}
+];
+/* ===== ESTADO ===== */
+const $=s=>document.querySelector(s),KEY='sm_dcu_nv_2014_v2',cl=x=>Math.max(0,Math.min(100,x));
+let S={done:[],cur:1,e:100,c:40,sv:0},tm=null,snd=false,ac;
+try{Object.assign(S,JSON.parse(localStorage.getItem(KEY))||{})}catch(e){}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+const unl=()=>{let n=0;while(S.done.includes(n+1))n++;return Math.min(CH.length,n+1)};
+const stop=()=>{clearInterval(tm);tm=null};
+function beep(f=520,d=.06){if(!snd)return;ac=ac||new(window.AudioContext||window.webkitAudioContext)();const o=ac.createOscillator(),g=ac.createGain();o.type='triangle';o.frequency.value=f;g.gain.value=.05;o.connect(g);g.connect(ac.destination);o.start();o.stop(ac.currentTime+d)}
+function toast(m){const t=$('#toast');t.textContent=m;t.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(()=>t.hidden=true,3400)}
+function stats(){$('#eb').style.width=S.e+'%';$('#en').textContent=Math.round(S.e)+'%';$('#cb').style.width=S.c+'%';$('#cn').textContent=S.c+'%';$('#sv').textContent=S.sv;$('#mood').textContent=S.c>66?'Fe en el símbolo':S.c>33?'Expectación':'Desconfianza'}
+const art=(n,c)=>'data:image/svg+xml;utf8,'+encodeURIComponent(`<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 500'><rect width='1200' height='500' fill='#d6d3c3'/><g fill='#1b4a9c' opacity='.14'>${[...Array(14)].map((_,i)=>`<rect x='${i*90}' y='${300-((i*37)%7)*30}' width='70' height='500'/>`).join('')}</g><path d='M600 80L720 130Q715 250 600 330Q485 250 480 130Z' fill='#c8102e'/><text x='600' y='255' font-size='130' text-anchor='middle' fill='#f1c40f' font-family='Georgia,serif' font-weight='900'>S</text><text x='600' y='420' font-size='34' text-anchor='middle' fill='#16181c' font-family='Georgia,serif' font-style='italic'>${c} (foto de archivo pendiente)</text></svg>`);
+const sil=()=>'data:image/svg+xml;utf8,'+encodeURIComponent("<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500'><rect width='400' height='500' fill='#d6d3c3'/><circle cx='200' cy='190' r='85' fill='#6c6e66'/><path d='M40 500C50 340 120 290 200 290S350 340 360 500Z' fill='#6c6e66'/><text x='200' y='470' font-size='28' text-anchor='middle' fill='#efede1' font-family='Georgia,serif' font-style='italic'>foto pendiente</text></svg>");
+
+/* ===== MECÁNICAS ===== */
+function ok(n,dc=0,sv=0){beep(880,.2);$('#next').innerHTML=`<p class="ok">✔ Edición cerrada</p><button class="b" id="go">${n<CH.length?'PASAR AL CAPÍTULO '+(n+1)+' →':'FINALIZAR LA EDICIÓN'}</button>`;
+ $('#go').onclick=()=>{if(!S.done.includes(n)){S.done.push(n);S.done.sort((a,b)=>a-b);S.c=cl(S.c+dc);S.sv+=sv;S.e=cl(S.e+30)}save();
+  if(n<CH.length){toast('✓ Capítulo '+n+' cerrado. Energía solar recargada');load(n+1)}else{toast('🏆 Edición completa: los '+CH.length+' capítulos');stats();pills();tab('acts')}}}
+const G={
+ choice(g,n){const box=$('#game');box.innerHTML=`<h3>${g.q}</h3>`+g.o.map((o,j)=>`<button class="b opt" data-j="${j}">${o.t}</button>`).join('')+'<p id="msg"></p>';
+  box.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{const o=g.o[+b.dataset.j];box.querySelectorAll('.opt').forEach(x=>x.disabled=true);$('#msg').textContent=o.r;ok(n,o.c)})},
+ /* Verificar fuentes: solo se publica lo comprobado */
+ facts(g,n){const box=$('#game'),sel=new Set();
+  box.innerHTML=`<h3>${g.q}</h3>`+g.cards.map((c,j)=>`<button class="b opt" data-j="${j}"><b>${c.t}</b><small>Fuente: ${c.s}</small></button>`).join('')+'<div class="row"><button class="b on" id="pr">ENVIAR A IMPRENTA</button></div><p id="msg"></p>';
+  box.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{const j=+b.dataset.j;sel.has(j)?sel.delete(j):sel.add(j);b.classList.toggle('sel',sel.has(j));beep(500)});
+  $('#pr').onclick=()=>{const bad=g.cards.findIndex((c,j)=>!!c.ok!==sel.has(j));
+   if(bad<0){$('#msg').innerHTML='<span style="color:#2d8f3a">Titular publicado: «'+g.head+'»</span>';ok(n,g.cd)}
+   else{S.c=cl(S.c-3);stats();beep(150,.2);$('#msg').textContent='✖ La jefa de redacción lo devuelve: '+g.cards[bad].w}}},
+ /* Triaje: no puedes estar en todas partes */
+ rescue(g,n){stop();const ev=g.ev.map(e=>({...e,left:e.t,st:0})),box=$('#game');let fly=0,tg=-1,sv=0,lost=0;
+  box.innerHTML=`<h3>${g.q}</h3><p id="rs"></p>`+ev.map((e,j)=>`<div class="em"><span><b>${e.n}</b> · cuesta ${e.c}%</span><button class="b" data-j="${j}">VOLAR</button><div class="tr"><i id="t${j}" class="c" style="width:100%"></i></div></div>`).join('')+'<p id="msg">Elige a dónde ir. Mientras vuelas, las demás cuentas atrás siguen corriendo.</p>';
+  const upd=()=>{$('#rs').innerHTML=`Salvados <b>${sv}</b> · Perdidos <b>${lost}</b> · Objetivo ${g.min} de ${ev.length}`;box.querySelectorAll('[data-j]').forEach(b=>{const e=ev[+b.dataset.j];b.disabled=e.st||fly>0;b.textContent=e.st==1?'✔ A SALVO':e.st==2?'✖ PERDIDO':fly>0&&+b.dataset.j==tg?'VOLANDO…':'VOLAR';$('#t'+b.dataset.j).style.width=(e.st?(e.st==1?100:0):e.left/e.t*100)+'%'})};
+  const end=()=>{stop();if(sv>=g.min){$('#msg').textContent='Metrópolis respira: salvaste a '+sv+' de '+ev.length+'.';ok(n,sv*2-lost*2,sv)}
+   else{$('#msg').innerHTML='✖ Salvaste a '+sv+'. No es suficiente. <button class="b on" id="rt">REINTENTAR</button>';$('#rt').onclick=()=>{S.e=Math.max(S.e,60);stats();G.rescue(g,n)}}};
+  tm=setInterval(()=>{ev.forEach((e,j)=>{if(!e.st){e.left-=.1;if(e.left<=0){e.st=2;lost++;if(tg==j){tg=-1;fly=0}beep(130,.25)}}});
+   if(fly>0){fly-=.1;if(fly<=0&&tg>=0){const e=ev[tg];if(!e.st){e.st=1;sv++;beep(760,.15)}tg=-1;fly=0}}
+   upd();if(ev.every(e=>e.st))end()},100);
+  box.querySelectorAll('[data-j]').forEach(b=>b.onclick=()=>{const j=+b.dataset.j,e=ev[j];if(S.e<e.c){$('#msg').textContent='✖ Energía solar insuficiente para esa misión.';beep(150,.2);return}S.e=cl(S.e-e.c);stats();fly=g.fly;tg=j;beep(420,.1);upd()});upd()},
+ /* Súper-oído: el latido delata la mentira */
+ heart(g,n){const box=$('#game'),f=new Set();
+  const wave=(i,s)=>[...Array(30)].map((_,k)=>{let v=70+Math.sin(i*7+k*1.7)*3+Math.cos(i*3+k*2.9)*2;if(s.lie&&k>=13&&k<=19)v+=17+Math.sin(k*3)*4;else if(s.nz&&k>=15&&k<=17)v+=6;return v});
+  box.innerHTML=`<h3>${g.q}</h3>`+g.s.map((s,i)=>{const w=wave(i+1,s);return `<div class="stm"><blockquote>«${s.q}»</blockquote><svg viewBox="0 0 300 46" preserveAspectRatio="none"><polyline fill="none" stroke="#c8102e" stroke-width="2" points="${w.map((v,k)=>k*10+','+Math.max(2,(100-v)*1.4)).join(' ')}"/></svg><div class="row"><span>Pulso máx. <b>${Math.round(Math.max(...w))}</b> ppm</span><button class="b" data-i="${i}">MIENTE</button></div></div>`}).join('')+'<div class="row"><button class="b on" id="pr">DENUNCIAR EN PORTADA</button></div><p id="msg"></p>';
+  box.querySelectorAll('[data-i]').forEach(b=>b.onclick=()=>{const i=+b.dataset.i;f.has(i)?f.delete(i):f.add(i);b.classList.toggle('sel',f.has(i));beep(480)});
+  $('#pr').onclick=()=>{if(g.s.every((s,i)=>!!s.lie===f.has(i))){$('#msg').innerHTML='<span style="color:#2d8f3a">Tres mentiras señaladas: Lex ya no controla el relato.</span>';ok(n,g.cd)}else{S.c=cl(S.c-3);stats();beep(150,.2);$('#msg').textContent='✖ La prensa no publica sin pruebas. Busca los picos claros, no los leves.'}}},
+ /* Kryptonita: sin poderes, la ruta lo es todo */
+ kryp(g,n){const box=$('#game'),core=g.core||[0,2],L=new Set(g.L||['3,1','2,1','1,2']),MX=g.max||60,N=g.n||5,ST=g.st||[4,0];let pos=[...ST],K=0,m='Cada casilla muestra la radiación que sufrirás al pisarla. Pb = plomo (0).';
+  const cost=(r,c)=>L.has(r+','+c)?0:r==core[0]&&c==core[1]?0:Math.max(2,(g.b||30)-5*(Math.abs(r-core[0])+Math.abs(c-core[1])));
+  const d=()=>{let h=`<h3>${g.q}</h3><p>Radiación acumulada: <b>${K}</b>/${MX}</p><div class="tr"><i class="f" style="width:${K/MX*100}%"></i></div><div class="kg" style="grid-template-columns:repeat(${N},1fr)">`;
+   for(let r=0;r<N;r++)for(let c=0;c<N;c++){const me=r==pos[0]&&c==pos[1],cr=r==core[0]&&c==core[1],pb=L.has(r+','+c),adj=Math.abs(r-pos[0])+Math.abs(c-pos[1])==1;h+=`<button class="kt ${pb?'pb':''} ${cr?'core':''} ${me?'me':''}" data-r="${r}" data-c="${c}" ${adj?'':'disabled'}>${me?'C':cr?'M':pb?'Pb':cost(r,c)}</button>`}
+   box.innerHTML=h+`</div><p id="msg">${m}</p>`;
+   box.querySelectorAll('.kt').forEach(b=>b.onclick=()=>{const r=+b.dataset.r,c=+b.dataset.c;K+=cost(r,c);pos=[r,c];beep(300,.08);
+    if(r==core[0]&&c==core[1]){d();$('#msg').textContent='Llegas hasta Corben, tambaleándote pero de pie.';ok(n,g.cd)}
+    else if(K>=MX){S.e=cl(S.e-10);stats();K=0;pos=[...ST];m='✖ La Kryptonita te derriba. Retrocedes y buscas otra ruta (−10% de energía).';beep(120,.3);d()}else{m='Radiación acumulada: '+K+'.';d()}})};d()},
+ /* Cierre de edición: tú escribes la portada */
+ front(g,n){const box=$('#game'),H=[{t:'SUPERMAN SALVA METRÓPOLIS: «LA ESPERANZA NO NECESITA PERMISO»',w:8},{t:'UN EXTRATERRESTRE SOBREVUELA LA CIUDAD: ¿AMENAZA O MILAGRO?',w:-3},{t:'METALLO, CREADO POR LEXCORP: EL HOMBRE DE ACERO DESTAPA LA VERDAD',w:5}],P=[{t:'Superman a plena luz, de cara a las cámaras (foto de Jimmy)',w:5},{t:'La ciudad en ruinas tras la pelea',w:-2},{t:'Lois, Clark y Jimmy en la redacción',w:3}];let h,p;
+  const pick=(a,q,cb)=>{box.innerHTML=`<h3>${q}</h3>`+a.map((o,j)=>`<button class="b opt" data-j="${j}">${o.t}</button>`).join('');box.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{beep(600);cb(a[+b.dataset.j])})};
+  pick(H,'Elige el titular de la portada de mañana:',x=>{h=x;pick(P,'Elige la fotografía de portada:',y=>{p=y;
+   box.innerHTML=`<h3>Portada de mañana</h3><div class="front"><div class="mh">The Daily Planet · Edición especial</div><div class="fh">${h.t}</div><p><i>Foto: ${p.t}.</i></p><p>Ciudadanos salvados por Superman en esta crónica: <b>${S.sv}</b>. Confianza pública: <b>${cl(S.c+h.w+p.w)}%</b>.</p></div>`;ok(n,h.w+p.w)})})}
+};
+/* ===== NAVEGACIÓN ===== */
+function load(n){if(n>unl()){toast('🔒 Capítulo '+n+' bloqueado: cierra antes el '+(n-1));beep(160,.25);return}
+ stop();S.cur=n;save();const c=CH[n-1],im=$('#img');im.className='';im.onerror=()=>{im.onerror=null;im.className='fb';im.src=art(n,c.t)};im.src=IMG+n+'.jpg';im.alt=c.t;
+ $('#ct').textContent='Capítulo '+n+' de '+CH.length;$('#loc').textContent=c.l+' · '+c.y;const r=$('#role');r.textContent=c.r=='s'?'COMO SUPERMAN':c.r=='b'?'EN LA BATCUEVA':'COMO CLARK KENT';r.className='role '+c.r;
+ $('#txt').innerHTML=`<h2>${c.t}</h2><div class="by">${c.by}</div><div class="cols">`+c.p.map(x=>`<p>${x}</p>`).join('')+'</div>';$('#next').innerHTML='';
+ G[c.g.k](c.g,n);stats();pills();tab('story');scrollTo({top:0})}
+function pills(){const u=unl();$('#pills').innerHTML=CH.map((_,j)=>{const n=j+1,lk=n>u;return `<button class="b ${n===S.cur?'on':''} ${lk?'lk':''}" data-n="${n}" aria-disabled="${lk}" title="${lk?'Bloqueado':S.done.includes(n)?'Cerrado':'Disponible'}">${lk?'🔒 ':S.done.includes(n)?'✔ ':''}CAP ${n}</button>`}).join('');
+ document.querySelectorAll('#pills button').forEach(b=>b.onclick=()=>load(+b.dataset.n))}
+function acts(){const u=unl();$('#prog').textContent=S.done.length+' de '+CH.length+' capítulos cerrados';
+ $('#acts').innerHTML=CH.map((c,j)=>{const n=j+1,lk=n>u;return `<div class="card" ${lk?'style="opacity:.55"':''}><small>CAPÍTULO ${n} · ${lk?'🔒 BLOQUEADO':S.done.includes(n)?'✔ CERRADO':'DISPONIBLE'}</small><h3>${c.t}</h3><p>${c.l} · ${c.y}</p><div class="row"><button class="b" ${lk?'disabled':''} data-n="${n}">${lk?'CIERRA EL CAP. '+(n-1):S.done.includes(n)?'REJUGAR':'JUGAR'}</button></div></div>`}).join('');
+ document.querySelectorAll('#acts button').forEach(b=>b.onclick=()=>load(+b.dataset.n))}
+function tab(t){stop();['story','cast','acts'].forEach(v=>$('#view-'+v).hidden=v!==t);document.querySelectorAll('nav [data-t]').forEach(b=>b.classList.toggle('on',b.dataset.t===t));if(t==='acts')acts();
+ if(t==='story'&&CH[S.cur-1].g.k==='rescue'&&!$('#next').innerHTML)G.rescue(CH[S.cur-1].g,S.cur)}
+document.querySelectorAll('nav [data-t]').forEach(b=>b.onclick=()=>tab(b.dataset.t));
+$('#snd').onclick=e=>{snd=!snd;e.target.textContent=snd?'🔊 SONIDO':'🔇 SONIDO';e.target.setAttribute('aria-pressed',snd);beep(600,.08)};
+const dlg=$('#dlg');
+$('#rst').onclick=e=>{e.preventDefault();$('#nn').textContent=CH.length;dlg.showModal()};
+dlg.addEventListener('click',e=>{if(e.target===dlg||e.target.closest('[data-c]'))dlg.close()});
+$('#ok2').onclick=()=>{dlg.close();S={done:[],cur:1,e:100,c:40,sv:0};save();load(1);toast('↺ Edición reiniciada: capítulos 2 a '+CH.length+' bloqueados de nuevo')};
+$('#cast').innerHTML=CAST.map((c,j)=>`<div class="card"><div class="ph"><img src="Imagenes/${c.f}_icon.${c.e}" alt="${c.n}" onerror="this.onerror=null;this.src=sil()"></div><small>CREDENCIAL Nº 14-0${j+1}</small><h3>${c.n}</h3><dl><dt>Intérprete</dt><dd>${c.a}</dd><dt>Cargo</dt><dd>${c.r}</dd></dl><p>${c.d}</p></div>`).join('');
+S.cur=Math.min(Math.max(1,S.cur|0),unl());load(S.cur);
+</script>
+</body>
+</html>

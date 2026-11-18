@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#070b14">
+<title>DC Universe | Fase 1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#070b14;--surface:#0d1424;--line:#1c2740;--text:#eef2f8;--muted:#9aa8c0;
+--ui:'Barlow Condensed','Arial Narrow',sans-serif;--read:'Source Serif 4',Georgia,serif}
+*{box-sizing:border-box;margin:0}
+html{background:var(--bg)}
+body{min-height:100vh;min-height:100dvh;color:var(--text);font-family:var(--ui);-webkit-font-smoothing:antialiased;
+background:radial-gradient(60% 45% at 15% 0%,rgba(242,182,50,.10),transparent 70%),radial-gradient(55% 45% at 90% 5%,rgba(74,163,255,.10),transparent 70%),var(--bg)}
+#bg{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;opacity:.35}
+.wrap{position:relative;max-width:1320px;margin:0 auto;padding:clamp(20px,4vw,48px) clamp(16px,3vw,40px) 28px}
+:focus-visible{outline:2px solid #fff;outline-offset:3px}
+header{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px 32px;margin-bottom:clamp(22px,3.5vw,40px)}
+h1{font-weight:800;font-size:clamp(3rem,9vw,6.5rem);line-height:.88;letter-spacing:.06em}
+.sub{margin-top:14px;font-size:1.2rem;font-weight:500;color:var(--muted);letter-spacing:.03em}
+.rule{display:flex;height:4px;width:min(320px,70%);margin-top:18px;border-radius:2px;overflow:hidden}
+.rule i{flex:1}
+.status{text-align:right;font-size:1.15rem;font-weight:600;color:var(--muted)}
+.status b{display:block;font-size:2rem;font-weight:700;color:var(--text);line-height:1.1}
+.grid{display:grid;gap:clamp(14px,2vw,26px);grid-template-columns:1fr}
+@media(min-width:560px){.grid{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:1040px){.grid{grid-template-columns:repeat(4,1fr)}}
+.card{position:relative;display:flex;flex-direction:column;background:var(--surface);border-radius:10px;overflow:hidden;
+border:1px solid color-mix(in srgb,var(--a) 28%,var(--line));transition:opacity .25s,transform .25s,box-shadow .25s}
+.card.in{animation:rise .6s cubic-bezier(.16,1,.3,1) both;animation-delay:calc(var(--i)*90ms)}
+.card.live{border-color:color-mix(in srgb,var(--a) 70%,transparent);box-shadow:0 22px 50px -26px var(--a)}
+.poster[data-dossier]{cursor:pointer}
+@media(hover:hover){
+.card:hover{transform:translateY(-4px)}
+.grid:has(.card:hover) .card:not(:hover){opacity:.55}
+}
+@keyframes rise{from{opacity:0;transform:translateY(18px)}}
+.poster{position:relative;aspect-ratio:2/3;overflow:hidden;
+background:radial-gradient(110% 70% at 50% 0%,color-mix(in srgb,var(--a) 38%,transparent),transparent 65%),linear-gradient(#111a2e,#0a101d)}
+.poster img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top}
+.card.soon .poster img{filter:grayscale(.55) brightness(.75)}
+.poster::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,#070b14 0%,rgba(7,11,20,.88) 24%,transparent 58%)}
+.yr{position:absolute;top:30%;left:0;right:0;text-align:center;font-weight:800;font-size:clamp(4.5rem,9vw,7rem);
+color:color-mix(in srgb,var(--a) 22%,transparent);letter-spacing:.04em}
+.chip{position:absolute;z-index:2;top:12px;left:12px;display:inline-flex;align-items:center;gap:6px;padding:4px 10px 4px 8px;
+border-radius:99px;background:rgba(7,11,20,.78);backdrop-filter:blur(6px);font-size:1rem;font-weight:600;letter-spacing:.03em;
+border:1px solid color-mix(in srgb,var(--a) 55%,transparent)}
+.live .chip{color:var(--a)}.soon .chip{color:var(--muted)}
+.chip svg{width:13px;height:13px;fill:currentColor}
+.meta{position:absolute;z-index:2;left:0;right:0;bottom:0;padding:18px}
+h2{font-weight:800;font-size:clamp(1.9rem,2.6vw,2.4rem);line-height:1;letter-spacing:.05em}
+.meta p{margin-top:8px;font:italic 400 .95rem/1.4 var(--read);color:#cbd5e6}
+.actions{display:flex;gap:8px;padding:14px;position:relative}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 16px;border-radius:6px;
+font:700 1.15rem var(--ui);letter-spacing:.06em;text-decoration:none;cursor:pointer;border:1px solid transparent;transition:filter .2s,background .2s}
+.btn svg{width:15px;height:15px;fill:currentColor}
+.go{flex:1}
+.actions .go::after{content:"";position:absolute;inset:0;z-index:1}
+a.go{background:var(--a);color:#07101a}
+a.go:hover{filter:brightness(1.12)}
+.ghost{background:transparent;color:var(--text);border-color:var(--line);position:relative;z-index:2}
+.ghost:hover{background:rgba(255,255,255,.06);border-color:var(--muted)}
+.soon .go.ghost{color:var(--a);border-color:color-mix(in srgb,var(--a) 50%,transparent)}
+footer{margin-top:26px;font-size:1.05rem;color:var(--muted);letter-spacing:.02em}
+dialog{margin:auto;width:min(760px,calc(100% - 24px));max-height:88vh;padding:0;border:1px solid var(--line);border-radius:12px;background:#0b1120;color:var(--text);overflow:hidden}
+dialog::backdrop{background:rgba(3,6,12,.78);backdrop-filter:blur(8px)}
+dialog[open]{animation:rise .3s ease-out}
+.d-head{display:flex;justify-content:space-between;gap:16px;padding:22px 24px 18px;border-bottom:1px solid var(--line);
+background:linear-gradient(135deg,color-mix(in srgb,var(--a) 20%,transparent),transparent 60%)}
+.d-head h3{font-size:2.3rem;font-weight:800;letter-spacing:.05em;line-height:1}
+.d-head p{margin-top:8px;color:var(--muted);font:italic 1rem var(--read)}
+.x{flex:none;width:40px;height:40px;border-radius:8px;border:1px solid var(--line);background:transparent;color:var(--text);cursor:pointer;font-size:1.4rem}
+.x:hover{background:rgba(255,255,255,.08)}
+.d-body{padding:22px 24px 26px;overflow-y:auto;display:grid;gap:22px}
+.d-body h4{font-size:1.25rem;font-weight:700;letter-spacing:.06em;color:var(--a);margin-bottom:10px}
+.syn p{font:400 1.02rem/1.7 var(--read);max-width:68ch;color:#d8e0ee}
+.syn p+p{margin-top:12px}.syn strong{color:var(--text)}
+.cast{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px}
+.who{display:flex;gap:12px;align-items:center;padding:10px;border:1px solid var(--line);border-radius:8px;background:rgba(255,255,255,.02)}
+.av{position:relative;flex:none;width:52px;height:64px;border-radius:6px;overflow:hidden;display:grid;place-items:center;font-weight:800;font-size:1.3rem;
+color:var(--a);background:color-mix(in srgb,var(--a) 16%,#0f1626);border:1px solid color-mix(in srgb,var(--a) 45%,transparent)}
+.av img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top}
+.who b{display:block;font-size:1.1rem;font-weight:700;line-height:1.15}
+.who span{display:block;font-size:1rem;color:var(--a);font-weight:600}
+.who small{display:block;font:400 .85rem/1.35 var(--read);color:var(--muted);margin-top:2px}
+
+html:has(dialog[open]){overflow:hidden}
+.filters{display:flex;flex-wrap:wrap;gap:8px;margin:-8px 0 clamp(16px,2.5vw,26px)}
+.fbtn{min-height:40px;padding:0 16px;border-radius:99px;border:1px solid var(--line);background:transparent;color:var(--muted);
+font:700 1.05rem var(--ui);letter-spacing:.06em;cursor:pointer;transition:background .2s,color .2s,border-color .2s}
+.fbtn:hover{color:var(--text);border-color:var(--muted)}
+.fbtn[aria-pressed="true"]{background:var(--text);color:var(--bg);border-color:var(--text)}
+.fbtn span{margin-left:6px;opacity:.65;font-weight:600}
+.empty{grid-column:1/-1;padding:40px 0;text-align:center;color:var(--muted);font-size:1.2rem}
+.d-wrap{display:flex;flex-direction:column;max-height:88vh}
+.d-body{flex:1 1 auto;min-height:0}
+.d-nav{display:flex;justify-content:space-between;gap:8px;padding:12px 24px;border-top:1px solid var(--line)}
+.d-nav .btn{min-height:40px;max-width:48%;font-size:1rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.d-nav .btn:only-child{margin-left:auto}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<canvas id="bg" aria-hidden="true"></canvas>
+<div class="wrap">
+  <header>
+    <div>
+      <h1>DC UNIVERSE</h1>
+      <p class="sub">Fase 1, de 2012 a 2014</p>
+      <div class="rule" id="rule" aria-hidden="true"></div>
+    </div>
+    <div class="status" id="status" aria-live="polite"></div>
+  </header>
+  <nav class="filters" id="filters" aria-label="Filtrar proyectos"></nav>
+  <main class="grid" id="grid"></main>
+  <footer>Elige un proyecto jugable para empezar. En cada título puedes abrir el dossier con sinopsis y reparto.</footer>
+</div>
+<dialog id="dossier" aria-labelledby="d-title"></dialog>
+<noscript><p style="padding:24px;color:#9aa8c0">Esta página necesita JavaScript para mostrar los proyectos.</p></noscript>
+
+<script>
+/* ==========================================================================
+   PROYECTOS (editable)
+   - urlArchivo: archivo .html del juego. Con estado 'DISPONIBLE' y una ruta, el proyecto es jugable.
+   - imagenPoster / reparto[].imagen: ruta de la imagen. Si está vacía o no carga, se muestra un
+     recuadro con el color del proyecto (o las iniciales del personaje).
+   - colorAcento: 'amber' | 'emerald' | 'rose' | 'sky'
+   ========================================================================== */
+const CONFIG_PROYECTOS = [
+            {
+                id: 'batman',
+                tituloCorto: 'batman',
+                tituloOficial: 'BATMAN (2012)',
+                subtitulo: 'El Caballero Oscuro de Gotham',
+                estado: 'DISPONIBLE', // 'DISPONIBLE' o 'PRÓXIMAMENTE'
+                etiquetaSuperior: 'PROYECTO 01 • JUGABLE',
+                urlArchivo: 'batman_gotham_2012_dcu_nv.html', // <-- Ruta a tu videojuego de Batman
+                imagenPoster: 'Imagenes/Posters/poster_batman.jpg', // <-- Pon aquí la imagen vertical del póster de Batman (vacío = blanco #FFFFFF)
+                colorAcento: 'amber',
+                icono: 'fa-bat',
+                resumenCorto: 'Bruce Wayne regresa a Gotham en 2012. Junto a Alfred, Lucius Fox y Jim Gordon, se enfrenta a Oswald Cobblepot y al terror intelectual de Edward Nygma.',
+                sinopsisCompleta: [
+                    'El origen del trauma: La historia arranca la lluviosa noche en que Thomas y Martha Wayne son asesinados en un callejón a manos de Jack Napier frente a un Bruce de 8 años.',
+                    'El regreso y la leyenda: En 2012, un Bruce de 30 años regresa tras entrenar con Ra\'s al Ghul. Tras recibir un disparo en su primera noche sin traje, acude a Lucius Fox para obtener el traje de Kevlar/carbono y el Batmóvil militar.',
+                    'Corrupción y Enygma: Detiene un trato de armas del Pingüino en los muelles y sella un pacto en la azotea con Jim Gordon. Cuando Edward Nygma hackea la ciudad, asalta el museo y revela desde su guarida bajo la comisaría que conoce la identidad de Bruce, Batman escapa fingiendo golpear a Gordon y derrota a Nygma en Ace Chemicals.',
+                    'Post-créditos (2014): Alfred le muestra a Bruce el periódico con el debut de Superman en Metrópolis y descubren la fotografía de Diana en 1944.'
+                ],
+                reparto: [
+                    { nombre: 'Bruce Wayne / Batman', actor: 'Armie Hammer (30 años)', rol: 'Depredador analítico', imagen: 'Imagenes/batman_icon.jpg' },
+                    { nombre: 'Alfred Pennyworth', actor: 'Anton Lesser (55 años)', rol: 'Estratega logístico en la Batcueva', imagen: 'Imagenes/alfred_icon.jfif' },
+                    { nombre: 'Jim Gordon', actor: 'Jon Hamm (36 años)', rol: 'Aliado policial en el GCPD', imagen: 'Imagenes/gordon_icon.jpg' },
+                    { nombre: 'Lucius Fox', actor: 'Giancarlo Esposito (54 años)', rol: 'Contabilidad fantasma e I+D', imagen: 'Imagenes/fox_icon.jpeg' },
+                    { nombre: 'Edward Nygma / El Acertijo', actor: 'David Tennant (41 años)', rol: 'Terrorista intelectual narcisista', imagen: 'Imagenes/acertijo_icon.jpeg' },
+                    { nombre: 'Oswald Cobblepot / El Pingüino', actor: 'Alfred Molina (59 años)', rol: 'Aristócrata mafioso de los muelles', imagen: 'Imagenes/pinguino_icon.jpg' },
+                    { nombre: 'Henri Ducard / Ra\'s al Ghul', actor: 'Alexander Siddig (47 años)', rol: 'Maestro de la Liga de las Sombras', imagen: 'Imagenes/ras_icon.jpeg' }
+                ]
+            },
+            {
+                id: 'green_lantern',
+                tituloCorto: 'proximamente',
+                tituloOficial: 'GREEN LANTERN (2012)',
+                subtitulo: 'El Guardián del Sector 2814',
+                estado: 'DISPONIBLE',
+                etiquetaSuperior: 'PROYECTO 02 • JUGABLE',
+                urlArchivo: 'green_lantern_sector_2814_dcu_nv.html', // <-- Juego de Green Lantern
+                imagenPoster: 'Imagenes/Posters/greenlantern_poster.jpg', // <-- Imagen en blanco (#FFFFFF) lista para tu póster
+                colorAcento: 'emerald',
+                icono: 'fa-ring',
+                resumenCorto: 'Reclutado en 2007 y entrenado por Thaal Sinestro , Hal Jordan descubre en 2012 la dictadura de su mentor en Korugar y se enfrenta al primer Anillo Amarillo.',
+                sinopsisCompleta: [
+                    'El origen del anillo (2007): Abin Sur se estrella en la Tierra y su anillo elige a Hal Jordan, un piloto de pruebas brillante, temerario y arrogante. En Oa, es entrenado por el condecorado y estricto Thaal Sinestro.',
+                    'La dictadura en Korugar (2012): Cinco años después, Hal es un veterano endurecido en el espacio profundo. Al desviarse hacia Korugar, descubre que Sinestro ha instaurado una dictadura militar perfecta basada en el orden absoluto y el terror.',
+                    'El gran giro y el Anillo Amarillo: Expuesto ante los Guardianes en Oa, Sinestro asesina a sangre fría a un Guardián, escapa al universo de antimateria de Qward y forja el primer Anillo Amarillo alimentado por el miedo.',
+                    'Clímax: Hal comprende que la verdadera voluntad es aceptar y superar el miedo, quebrando las construcciones amarillas de Sinestro y encerrándolo en Oa mientras la Tierra sigue ignorando que no está sola.'
+                ],
+                reparto: [
+                    { nombre: 'Hal Jordan / Green Lantern', actor: 'Chris Pine (32 años)', rol: 'Piloto temerario • Protector del Sector 2814', imagen: 'Imagenes/jordan_icon.jpg' },
+                    { nombre: 'Thaal Sinestro', actor: 'Mark Strong (49 años)', rol: 'Antiguo mentor y portador del Anillo Amarillo', imagen: 'Imagenes/sinestro_icon.jfif' },
+                    { nombre: 'Abin Sur', actor: 'N/D', rol: 'Antiguo Protector del Sector 2814', imagen: 'Imagenes/abinsur_icon.jfif' },
+                    { nombre: 'Los Guardianes del Universo', actor: 'N/D', rol: 'Consejo supremo del cuerpo de Linternas Verdes', imagen: 'Imagenes/guardianes_icon.jpg' }
+                ]
+            },
+            {
+                id: 'wonder_woman',
+                tituloCorto: 'proximamente',
+                tituloOficial: 'WONDER WOMAN (2013)',
+                subtitulo: 'La Guerrera de 1944 y el Silencio de 70 Años',
+                estado: 'DISPONIBLE',
+                etiquetaSuperior: 'PROYECTO 03 • JUGABLE',
+                urlArchivo: 'wonder_woman_1944_dcu_nv.html',
+                imagenPoster: 'Imagenes/Posters/wonderwoman_poster.jfif',
+                colorAcento: 'rose',
+                icono: 'fa-shield-halved',
+                resumenCorto: 'Moldeada en arcilla por la Reina Hipólita, Diana viaja a la Segunda Guerra Mundial en 1944 junto a Steve Trevor frente a Ares, el dios de la guerra.',
+                sinopsisCompleta: [
+                    'El origen de la arcilla y 1944: Moldeada en arcilla en Themyscira por la Reina Hipólita y dotada de vida por los dioses, Diana rescata en 1944 al piloto y espía aliado Steve Trevor cuando su avión atraviesa la barrera mágica.',
+                    'El viaje al frente sin retorno: Convencida de que Ares, el dios de la guerra, manipula la Segunda Guerra Mundial, Diana roba la armadura sagrada y abandona Themyscira para siempre. En las trincheras, un misterioso consejero de traje impecable susurra ideas de nuevas armas a ambos bandos.',
+                    'El gran giro y el sacrificio: Al matar al general que creía que era Ares, la guerra no se detiene: el verdadero Ares revela que él solo dio las ideas de las armas; la humanidad eligió la masacre. Mientras Diana derrota a Ares en el barro, Steve Trevor se sacrifica pilotando el bombardero con gas letal hacia la atmósfera.',
+                    'El exilio en las sombras: Desilusionada con la humanidad y rota por la pérdida de Steve, Diana borra todo rastro y vive 70 años en el anonimato hasta ser captada por el software de Bruce Wayne en 2014.'
+                ],
+                reparto: [
+                    { nombre: 'Diana / Wonder Woman', actor: 'Jaimie Alexander', rol: 'Princesa Amazona de Themyscira', imagen: 'Imagenes/diana_icon.png' },
+                    { nombre: 'Steve Trevor', actor: 'Charlie Hunnam (33 años)', rol: 'Piloto y espía aliado en 1944', imagen: 'Imagenes/steve_icon.png' },
+                    { nombre: 'Reina Hipólita', actor: 'Lucy Lawless', rol: 'Gobernante guerrera de Themyscira', imagen: 'Imagenes/hipolita_icon.png' },
+                    { nombre: 'Ares', actor: 'Mads Mikkelsen', rol: 'Dios de la Guerra • Antagonista principal', imagen: 'Imagenes/ares_icon.png' }
+                ]
+            },
+            {
+                id: 'superman',
+                tituloCorto: 'proximamente',
+                tituloOficial: 'SUPERMAN (2014)',
+                subtitulo: 'El Símbolo de Esperanza en Metrópolis',
+                estado: 'DISPONIBLE',
+                etiquetaSuperior: 'PROYECTO 04 • JUGABLE',
+                urlArchivo: 'superman_metropolis_2014_dcu_nv.html',
+                imagenPoster: 'Imagenes/Posters/superman_poster.jfif', // <-- Imagen en blanco (#FFFFFF) lista para tu póster
+                colorAcento: 'sky',
+                icono: 'fa-sun',
+                resumenCorto: 'Clark Kent se revela ante el mundo salvando Metrópolis del desastre de Lex Luthor y enfrentándose a John Corben / Metallo junto a Lois Lane.',
+                sinopsisCompleta: [
+                    'El símbolo de Martha Kent: Tras la caída de Krypton y su juventud en Smallville, Jonathan y Martha Kent le entregan un traje cosido con las mantas indestructibles de su nave: debe ser un símbolo de esperanza a plena luz del día.',
+                    'La revelación en Metrópolis (2014): Clark llega al Daily Planet junto a la incisiva Lois Lane en una ciudad hipnotizada por Lex Luthor. Cuando una demostración de LexCorp colapsa, Clark vuela frente a miles de cámaras y salva la ciudad.',
+                    'La creación de Metallo: Humillado en su ego narcisista, Luthor aprovecha que su jefe de seguridad, John Corben, ha quedado mutilado bajo los escombros. Lo manipula en su lecho de muerte, culpa a Superman del accidente y le ofrece volver a caminar a cambio de ser el primer sujeto del Proyecto Metallo: un endoesqueleto de combate integrado en su carne, alimentado por un meteorito de Kryptonita en el pecho.',
+                    'Clímax y conexión con la Trinidad: Superman supera el dolor agonizante de la radiación verde para desarmar los implantes de Metallo protegiendo a los civiles. Lex se lava las manos culpando a Corben. En la escena post-créditos, Bruce Wayne y Alfred observan la pelea en la Batcueva y descubren a Diana entre la multitud de Metrópolis.'
+                ],
+                reparto: [
+                    { nombre: 'Clark Kent / Superman', actor: 'Matt Bomer (27 años)', rol: 'El Hombre de Acero • Reportero del Daily Planet', imagen: 'Imagenes/superman_icon.jpg' },
+                    { nombre: 'Lex Luthor', actor: 'Michael Fassbender (37 años)', rol: 'CEO de LexCorp • Narcisista tecnológico', imagen: '' },
+                    { nombre: 'John Corben / Metallo', actor: 'Joel Kinnaman (34 años)', rol: 'Ex-jefe de seguridad con núcleo de Kryptonita', imagen: '' },
+                    { nombre: 'Lois Lane', actor: 'Mary Elizabeth Winstead (29 años)', rol: 'Reportera estrella del Daily Planet', imagen: '' }
+                ]
+            }
+        ];
+
+const ACCENTS = { amber:'#f2b632', emerald:'#2ee082', rose:'#ee4a5a', sky:'#4aa3ff' };
+const PLAY = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 1.5v13l11-6.5z"/></svg>';
+const LOCK = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 7V5a4 4 0 118 0v2h1v8H3V7zm2 0h4V5a2 2 0 10-4 0z"/></svg>';
+const FILTERS = [['all', 'Todos'], ['live', 'Jugables'], ['soon', 'Próximamente']];
+
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const color = p => ACCENTS[p.colorAcento] || ACCENTS.amber;
+const missing = new Set();   // proyectos cuyo archivo devuelve 404 (solo se detecta sirviendo la web por http)
+const hasUrl = p => String(p.urlArchivo || '').trim() !== '';
+const playable = p => String(p.estado).toUpperCase() === 'DISPONIBLE' && hasUrl(p) && !missing.has(p.id);
+const parts = p => { const m = p.tituloOficial.match(/^(.*?)\s*\((\d{4})\)$/); return m ? {name:m[1], year:m[2]} : {name:p.tituloOficial, year:''}; };
+const initials = n => n.split(/[\s\/]+/).filter(Boolean).slice(0,2).map(w => w[0]).join('');
+const poster = p => p.imagenPoster ? `<img src="${esc(p.imagenPoster)}" alt="" loading="lazy" decoding="async">` : '';
+const chip = p => playable(p) ? PLAY + 'Jugable' : LOCK + (missing.has(p.id) ? 'Archivo no encontrado' : 'Próximamente');
+
+/* Si una imagen no carga, se quita y queda el fondo de color / las iniciales */
+document.addEventListener('error', e => { if (e.target instanceof HTMLImageElement) e.target.remove(); }, true);
+
+function card(p, i, animate) {
+  const ok = playable(p), {name, year} = parts(p);
+  return `<article class="card ${ok ? 'live' : 'soon'}${animate ? ' in' : ''}" style="--a:${color(p)};--i:${i}">
+    <div class="poster" data-dossier="${esc(p.id)}"><span class="yr" aria-hidden="true">${esc(year)}</span>${poster(p)}
+      <span class="chip">${chip(p)}</span>
+      <div class="meta"><h2>${esc(name)}</h2><p>${esc(p.subtitulo)}</p></div>
+    </div>
+    <div class="actions">${ok
+      ? `<a class="btn go" href="${esc(p.urlArchivo)}">${PLAY}Jugar</a><button type="button" class="btn ghost" data-dossier="${esc(p.id)}" aria-label="Dossier de ${esc(name)}">Dossier</button>`
+      : `<button type="button" class="btn ghost go" data-dossier="${esc(p.id)}">Ver dossier</button>`}</div>
+  </article>`;
+}
+
+function dossier(p) {
+  const ok = playable(p), L = CONFIG_PROYECTOS, n = L.length, i = L.indexOf(p);
+  const prev = L[(i - 1 + n) % n], next = L[(i + 1) % n];
+  const syn = p.sinopsisCompleta.map(t => { const k = t.indexOf(': ');
+    return k > 0 && k < 60 ? `<p><strong>${esc(t.slice(0,k))}.</strong> ${esc(t.slice(k+2))}</p>` : `<p>${esc(t)}</p>`; }).join('');
+  const cast = p.reparto.map(r => `<div class="who"><span class="av">${esc(initials(r.nombre))}${r.imagen ? `<img src="${esc(r.imagen)}" alt="" loading="lazy" decoding="async">` : ''}</span>
+    <div><b>${esc(r.nombre)}</b><span>${esc(r.actor)}</span><small>${esc(r.rol)}</small></div></div>`).join('');
+  const nav = n > 1 ? `<div class="d-nav">
+      <button type="button" class="btn ghost" data-open="${esc(prev.id)}" aria-label="Anterior: ${esc(parts(prev).name)}">← ${esc(parts(prev).name)}</button>
+      <button type="button" class="btn ghost" data-open="${esc(next.id)}" aria-label="Siguiente: ${esc(parts(next).name)}">${esc(parts(next).name)} →</button></div>` : '';
+  return `<div class="d-wrap" style="--a:${color(p)}">
+    <div class="d-head"><div><h3 id="d-title">${esc(p.tituloOficial)}</h3><p>${esc(p.subtitulo)}</p></div>
+      <button type="button" class="x" data-close aria-label="Cerrar">×</button></div>
+    <div class="d-body">
+      ${ok ? `<a class="btn go" href="${esc(p.urlArchivo)}">${PLAY}Jugar ahora</a>` : ''}
+      <section><h4>Resumen</h4><div class="syn"><p>${esc(p.resumenCorto)}</p></div></section>
+      <section><h4>Historia</h4><div class="syn">${syn}</div></section>
+      <section><h4>Reparto (${p.reparto.length})</h4><div class="cast">${cast}</div></section>
+    </div>${nav}</div>`;
+}
+
+const grid = document.getElementById('grid'), dlg = document.getElementById('dossier'),
+      filtersEl = document.getElementById('filters'), statusEl = document.getElementById('status');
+let filter = 'all';
+
+document.getElementById('rule').innerHTML = CONFIG_PROYECTOS.map(p => `<i style="background:${color(p)}"></i>`).join('');
+
+function count(k) {
+  const live = CONFIG_PROYECTOS.filter(playable).length;
+  return k === 'all' ? CONFIG_PROYECTOS.length : k === 'live' ? live : CONFIG_PROYECTOS.length - live;
+}
+
+function render(animate) {
+  const list = CONFIG_PROYECTOS.filter(p => filter === 'all' || (filter === 'live') === playable(p));
+  grid.innerHTML = list.length ? list.map((p, i) => card(p, i, animate)).join('') : '<p class="empty">No hay proyectos en esta categoría.</p>';
+  filtersEl.innerHTML = FILTERS.map(([k, l]) =>
+    `<button type="button" class="fbtn" data-filter="${k}" aria-pressed="${k === filter}">${l}<span>${count(k)}</span></button>`).join('');
+  const live = count('live'), soon = count('soon');
+  statusEl.innerHTML = `<b>${live} ${live === 1 ? 'jugable' : 'jugables'}</b>${soon} en desarrollo`;
+}
+
+function openDossier(id) {
+  const p = CONFIG_PROYECTOS.find(q => q.id === id); if (!p) return;
+  dlg.innerHTML = dossier(p);
+  if (!dlg.open) dlg.showModal();
+  dlg.querySelector('.d-body').scrollTop = 0;
+  try { history.replaceState(null, '', '#' + encodeURIComponent(id)); } catch (_) {}
+}
+
+grid.addEventListener('click', e => {
+  const b = e.target.closest('[data-dossier]'); if (b) openDossier(b.dataset.dossier);
+});
+filtersEl.addEventListener('click', e => {
+  const b = e.target.closest('[data-filter]'); if (!b) return;
+  filter = b.dataset.filter; render(true);
+  filtersEl.querySelector(`[data-filter="${filter}"]`).focus();   // mantiene el foco al re-renderizar
+});
+
+/* Diálogo: cierra solo si el clic empieza Y termina en el fondo (no al soltar tras seleccionar texto) */
+let downOnBackdrop = false;
+dlg.addEventListener('pointerdown', e => { downOnBackdrop = e.target === dlg; });
+dlg.addEventListener('click', e => {
+  if ((e.target === dlg && downOnBackdrop) || e.target.closest('[data-close]')) return dlg.close();
+  const o = e.target.closest('[data-open]'); if (o) openDossier(o.dataset.open);
+});
+dlg.addEventListener('keydown', e => {
+  if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+  const btns = dlg.querySelectorAll('[data-open]'); if (btns.length < 2) return;
+  openDossier(btns[e.key === 'ArrowLeft' ? 0 : 1].dataset.open);
+});
+dlg.addEventListener('close', () => {
+  try { history.replaceState(null, '', location.pathname + location.search); } catch (_) {}
+});
+
+render(true);
+{ const id = decodeURIComponent(location.hash.slice(1)); if (id) openDossier(id); }   // enlace directo: index.html#batman
+
+/* Si la web se sirve por http, avisa de los juegos cuyo archivo no existe (404) en lugar de dejar un enlace roto */
+if (/^https?:$/.test(location.protocol)) {
+  CONFIG_PROYECTOS.filter(p => playable(p)).forEach(p =>
+    fetch(p.urlArchivo, {method:'HEAD'}).then(r => { if (r.status === 404) { missing.add(p.id); render(false); } }).catch(() => {}));
+}
+
+/* Partículas de fondo: nítidas en pantallas retina, sin consumo si el usuario prefiere reducir movimiento (se reacciona en vivo) */
+(function () {
+  const c = document.getElementById('bg'), x = c.getContext('2d'), mq = matchMedia('(prefers-reduced-motion: reduce)');
+  let w = 0, h = 0, raf = 0, ps = [];
+  const size = () => { const d = Math.min(devicePixelRatio || 1, 2); w = innerWidth; h = innerHeight;
+    c.width = w * d; c.height = h * d; x.setTransform(d, 0, 0, d, 0, 0); };
+  const make = () => Array.from({length: Math.round(Math.min(60, Math.max(25, w * h / 30000)))},
+    () => ({x:Math.random()*w, y:Math.random()*h, r:.8+Math.random()*1.6, v:.2+Math.random()*.4, a:.2+Math.random()*.5}));
+  function loop() {
+    x.clearRect(0, 0, w, h);
+    for (const p of ps) { x.fillStyle = `rgba(238,242,248,${p.a})`; x.beginPath(); x.arc(p.x, p.y, p.r, 0, 6.283); x.fill();
+      p.y -= p.v; if (p.y < -5) { p.y = h + 5; p.x = Math.random() * w; } }
+    raf = requestAnimationFrame(loop);
+  }
+  const start = () => { if (!raf) { if (!ps.length) ps = make(); raf = requestAnimationFrame(loop); } };
+  const stop = () => { cancelAnimationFrame(raf); raf = 0; x.clearRect(0, 0, w, h); };
+  size();
+  let t; addEventListener('resize', () => { clearTimeout(t); t = setTimeout(() => { size(); ps = make(); }, 150); });
+  const sync = () => mq.matches ? stop() : start();
+  mq.addEventListener('change', sync); sync();
+})();
+</script>
+</body>
+</html>
